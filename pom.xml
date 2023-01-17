@@ -12,13 +12,49 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <discord-api.version>5.0.0-beta.2</discord-api.version>
+        <log4j.version>2.19.0</log4j.version>
+        <jcabi-log.version>0.22.0</jcabi-log.version>
     </properties>
+
     <dependencies>
+        <!-- DISCORD API -->
         <!-- https://mvnrepository.com/artifact/net.dv8tion/JDA -->
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
             <version>${discord-api.version}</version>
         </dependency>
+        <!-- DISCORD API -->
+        <!--        LOGGING-->
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>${log4j.version}</version>
+<!--            <scope>test</scope>-->
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+<!--        Log color-->
+        <!-- https://mvnrepository.com/artifact/com.jcabi/jcabi-log -->
+        <dependency>
+            <groupId>com.jcabi</groupId>
+            <artifactId>jcabi-log</artifactId>
+            <version>${jcabi-log.version}</version>
+        </dependency>
+        <!--        Log color-->
+
+        <!--        LOGGING-->
     </dependencies>
 </project>
