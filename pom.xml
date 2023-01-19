@@ -13,7 +13,6 @@
         <maven.compiler.target>11</maven.compiler.target>
         <discord-api.version>5.0.0-beta.2</discord-api.version>
         <log4j.version>2.19.0</log4j.version>
-        <jcabi-log.version>0.22.0</jcabi-log.version>
     </properties>
 
     <dependencies>
@@ -46,14 +45,6 @@
             <artifactId>log4j-api</artifactId>
             <version>${log4j.version}</version>
         </dependency>
-<!--        Log color-->
-        <!-- https://mvnrepository.com/artifact/com.jcabi/jcabi-log -->
-        <dependency>
-            <groupId>com.jcabi</groupId>
-            <artifactId>jcabi-log</artifactId>
-            <version>${jcabi-log.version}</version>
-        </dependency>
-        <!--        Log color-->
 
         <!--        LOGGING-->
     </dependencies>
