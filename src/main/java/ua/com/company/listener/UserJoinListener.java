@@ -17,7 +17,6 @@ import org.apache.logging.log4j.Logger;
 import ua.com.company.type.ChanelType;
 import ua.com.company.type.RoleType;
 
-import java.awt.*;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
@@ -35,7 +34,6 @@ public class UserJoinListener extends ListenerAdapter {
         User user = event.getUser();
         if (user.isBot()) return;
         Guild guild = event.getGuild();
-        JDA jda = event.getJDA();//TODO route create role
 
        /* if (guild.getRoleCache().size() == 250) {
             log.error("Maximum roles on server. Can`t create new");
@@ -57,15 +55,43 @@ public class UserJoinListener extends ListenerAdapter {
 
         guild.addRoleToMember(
                 user, Objects.requireNonNull(
-                guild.getRolesByName(RoleType.SUSPENDED.name(),true).get(0), "Roll type is NULL")).queue();
+                        guild.getRolesByName(RoleType.SUSPENDED.name(), true).get(0), "Roll type is NULL")).queue();
     }
+
+
 
     @Override
     public void onGuildMemberRemove(GuildMemberRemoveEvent event) {
         super.onGuildMemberRemove(event);
     }
 
+    /**
+     * When adding specific role, DENY all permission in all channels. Allow only view in VERIFICATION_CHANEL
+     *
+     * @param event
+     */
+    @Override
+    public void onGuildMemberRoleAdd(GuildMemberRoleAddEvent event) {
+        Member member = event.getMember();
 
+        for (Role role : member.getRoles()) {
+            if (role.getName().equals(RoleType.SUSPENDED.name())) {
+
+                Guild guild = event.getGuild();
+
+
+                List<GuildChannel> channels = guild.getChannels();
+                for (GuildChannel channel : channels) {
+                    if (channel.getName().equals(ChanelType.VERIFICATION_CHANEL.name())) {
+                        channel.getPermissionContainer().upsertPermissionOverride(member).grant(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND).queue();
+                    }
+                    channel.getPermissionContainer().upsertPermissionOverride(member).deny(List.of(Permission.values())).queue();
+                }
+            }
+        }
+
+
+    }
 
 
 

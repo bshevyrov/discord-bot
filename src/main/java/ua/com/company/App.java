@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ua.com.company.listener.ContextMenuBot;
 import ua.com.company.listener.GuildJoinListener;
 import ua.com.company.listener.RoleCreateListener;
 import ua.com.company.listener.UserJoinListener;
@@ -16,10 +17,12 @@ public class App {
     public static void main(String[] args) {
 
         JDA jda = JDABuilder.createDefault(PropertiesReader.getToken())
-                .enableIntents(GatewayIntent.GUILD_MEMBERS)
+                .enableIntents(GatewayIntent.GUILD_MEMBERS,
+                        GatewayIntent.MESSAGE_CONTENT)
                 .addEventListeners(new UserJoinListener())
                 .addEventListeners(new GuildJoinListener())
                 .addEventListeners(new RoleCreateListener())
+                .addEventListeners(new ContextMenuBot())
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .build();
 

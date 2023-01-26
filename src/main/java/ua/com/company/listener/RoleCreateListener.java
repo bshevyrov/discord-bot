@@ -10,14 +10,20 @@ import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleRemoveEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.components.ActionRow;
+import net.dv8tion.jda.api.interactions.components.Component;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
+import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import ua.com.company.type.ChanelType;
+import ua.com.company.type.GreetingMassage;
 import ua.com.company.type.RoleType;
 
 import java.util.List;
 
 public class RoleCreateListener extends ListenerAdapter {
 
-    @Override
+  /*  @Override
     public void onMessageReactionAdd(MessageReactionAddEvent event) {
       TextChannel textChannel = (TextChannel) event.getChannel();
         Member member = event.getMember();
@@ -33,7 +39,7 @@ public class RoleCreateListener extends ListenerAdapter {
              event.getGuild().removeRoleFromMember(event.getUser(),event.getGuild().getRolesByName(RoleType.SUSPENDED.name(),true).get(0)).queue();
          }
     }
-
+*/
     /**
      * When adding specific role, DENY all permission in all channels. Allow only view in VERIFICATION_CHANEL
      *
@@ -48,13 +54,17 @@ public class RoleCreateListener extends ListenerAdapter {
                 List<GuildChannel> channels = event.getGuild().getChannels();
                 for (GuildChannel channel : channels) {
                     if (channel.getName().equalsIgnoreCase(ChanelType.VERIFICATION_CHANEL.name())) {
-                        channel.getPermissionContainer().upsertPermissionOverride(member).grant(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND).queue();
+                        channel.getPermissionContainer().upsertPermissionOverride(member).grant(Permission.VIEW_CHANNEL).queue();
                         continue;
                     }
                     channel.getPermissionContainer().upsertPermissionOverride(member).deny(List.of(Permission.values())).queue();
                 }
              TextChannel textChannel = event.getGuild().getTextChannelCache().getElementsByName(ChanelType.VERIFICATION_CHANEL.name(),true).get(0);
-                textChannel.sendMessage("Welcome to MY channel. If u are ready add reaction").queue();
+                textChannel.sendMessage( new MessageCreateBuilder().addContent(  GreetingMassage.getMessage().getContent()).build())
+                        .setActionRow(
+                                Button.danger("disAgree","No"),
+                                Button.primary("agree","Ok"))
+                        .queue();
             }
         }
 
