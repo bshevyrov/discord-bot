@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import ua.com.company.utils.PropertiesReader;
 
 public class App {
+    //TODO BUMPER UPDATE for Owner and some roles to update bots
     public static void main(String[] args) {
 
         JDA jda = JDABuilder.createDefault(PropertiesReader.getToken())
@@ -16,7 +17,8 @@ public class App {
 //                .addEventListeners(new GuildJoinListener())
 //                .addEventListeners(new RoleCreateListener())
 //                .addEventListeners(new ContextMenuBot())
-                .addEventListeners(new GuildJoin())
+                .addEventListeners(new BumperCommand())
+                .addEventListeners(new BumperCommandReaction())
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .build();
 
