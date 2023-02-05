@@ -3,7 +3,10 @@ package ua.com.company;
 
 import net.dv8tion.jda.api.entities.Member;
 
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Bumper {
@@ -27,11 +30,11 @@ public class Bumper {
     }
 
     /**
-     * @return Numerated String with User.name and separeted by \n or "There is no bumpers in the list" if list is empty.
+     * @return Numerated String with User.name and bump time separeted by \n or "There is no bumpers in the list" if list is empty.
      */
     public String findAll() {
         List<String> list = bumpers.stream()
-                .map(Entity::getUsername)
+                .map(bumper -> bumper.getUsername() + " " + bumper.getBumpTime())
                 .collect(Collectors.toList());
         if (list.size() == 0) {
             return "There is no bumpers in the list.";
@@ -47,6 +50,23 @@ public class Bumper {
     }
 
     /**
+     * This method search Entity in set of bumpers.
+     * @param id String id of Member
+     * @return Entity if find it in bumpers or throw RuntimeException
+     */
+    public Entity findById(String id) {
+        Optional<Entity> current = bumpers.stream()
+                .filter(bumpers -> bumpers.equals(new Entity(id)))
+                .findFirst();
+        if (current.isPresent()) {
+            return current.get();
+        } else {
+            throw new RuntimeException();//TODO add to list new bumper
+        }
+
+    }
+
+    /**
      * This method remove Entity from bumpers list/
      *
      * @param member Guild Member
@@ -57,6 +77,7 @@ public class Bumper {
         rsl = bumpers.remove(new Entity(member.getId()));
         return rsl ? "Member " + member.getUser().getName() + " removed" : member.getUser().getName() + " not added to list.";
     }
+
 
     /**
      * This method sort set by desc role position.
@@ -86,11 +107,13 @@ public class Bumper {
     }
 
 
-    private static class Entity {
+    static class Entity {
 
         private final String id;
         private String username;
         private int higherRoleId;
+
+        private ZonedDateTime bumpTime;
 
         public String getId() {
             return id;
@@ -100,12 +123,24 @@ public class Bumper {
             return username;
         }
 
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
         public int getHigherRoleId() {
             return higherRoleId;
         }
 
         public void setHigherRoleId(int higherRoleId) {
             this.higherRoleId = higherRoleId;
+        }
+
+        public ZonedDateTime getBumpTime() {
+            return bumpTime;
+        }
+
+        public void setBumpTime(ZonedDateTime bumpTime) {
+            this.bumpTime = bumpTime;
         }
 
         public Entity(String id, String username, int higherRoleId) {

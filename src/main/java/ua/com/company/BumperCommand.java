@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 
 public class BumperCommand extends ListenerAdapter {
+    //TODO BUMPER AD STRICTLY for Owner end some roles/ add members by option.
     /**
      * https://jda.wiki/using-jda/interactions/#command-interactions
      *Add slash commands
