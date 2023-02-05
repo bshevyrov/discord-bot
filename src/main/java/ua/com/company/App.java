@@ -12,8 +12,8 @@ public class App {
 
         JDA jda = JDABuilder.createDefault(PropertiesReader.getToken())
                 .enableIntents(GatewayIntent.GUILD_MEMBERS,
-                        GatewayIntent.GUILD_MESSAGES)
-//                        GatewayIntent.MESSAGE_CONTENT)
+                        GatewayIntent.GUILD_MESSAGES,
+                        GatewayIntent.MESSAGE_CONTENT)
 //                .addEventListeners(new UserJoinListener())
 //                .addEventListeners(new GuildJoinListener())
 //                .addEventListeners(new RoleCreateListener())
