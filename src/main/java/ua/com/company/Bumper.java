@@ -2,11 +2,10 @@ package ua.com.company;
 
 
 import net.dv8tion.jda.api.entities.Member;
+import ua.com.company.exception.BumperNotFound;
 
-import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Bumper {
@@ -22,7 +21,7 @@ public class Bumper {
      * @param member Discord Member
      * @return Answer add member or already added member
      */
-    public String add(Member member) {
+    public static String add(Member member) {
         boolean rsl;
         rsl = bumpers.add(new Entity(member.getId(), member.getUser().getName(), getHigherRolePosition(member)));
         sort(bumpers);
@@ -32,7 +31,7 @@ public class Bumper {
     /**
      * @return Numerated String with User.name and bump time separeted by \n or "There is no bumpers in the list" if list is empty.
      */
-    public String findAll() {
+    public static String findAll() {
         List<String> list = bumpers.stream()
                 .map(bumper -> bumper.getUsername() + " " + bumper.getBumpTime())
                 .collect(Collectors.toList());
@@ -51,19 +50,31 @@ public class Bumper {
 
     /**
      * This method search Entity in set of bumpers.
+     *
      * @param id String id of Member
      * @return Entity if find it in bumpers or throw RuntimeException
      */
-    public Entity findById(String id) {
+    public static Entity findById(String id) throws BumperNotFound {
         Optional<Entity> current = bumpers.stream()
                 .filter(bumpers -> bumpers.equals(new Entity(id)))
                 .findFirst();
         if (current.isPresent()) {
             return current.get();
         } else {
-            throw new RuntimeException();//TODO add to list new bumper
+            throw new BumperNotFound(id);
         }
+    }
 
+    /**
+     * This method check exist or not Bumper in list.
+     * @param id String id of Bumper.
+     * @return true if bumper in exist in list.
+     */
+    public static boolean isExistId(String id) {
+        Optional<Entity> current = bumpers.stream()
+                .filter(bumpers -> bumpers.equals(new Entity(id)))
+                .findFirst();
+        return current.isPresent();
     }
 
     /**
@@ -72,7 +83,7 @@ public class Bumper {
      * @param member Guild Member
      * @return String representation of result
      */
-    public String remove(Member member) {
+    public static String remove(Member member) {
         boolean rsl;
         rsl = bumpers.remove(new Entity(member.getId()));
         return rsl ? "Member " + member.getUser().getName() + " removed" : member.getUser().getName() + " not added to list.";
@@ -84,7 +95,7 @@ public class Bumper {
      *
      * @param bumpers Set of Entity.
      */
-    private void sort(Set<Entity> bumpers) {
+    private static void sort(Set<Entity> bumpers) {
         Bumper.bumpers = bumpers.stream()
                 .sorted(Comparator.comparingInt(Entity::getHigherRoleId).reversed())
                 .collect(Collectors.toCollection(LinkedHashSet::new));
@@ -96,7 +107,7 @@ public class Bumper {
      * @param member Discord member
      * @return Position of higher Role
      */
-    private int getHigherRolePosition(Member member) {
+    private static int getHigherRolePosition(Member member) {
         final int[] roleId = {0};
         member.getRoles().forEach(role -> {
             if (role.getPosition() > roleId[0]) {
