@@ -4,8 +4,10 @@ package ua.com.company;
 import net.dv8tion.jda.api.entities.Member;
 import ua.com.company.exception.BumperNotFound;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class Bumper {
@@ -29,23 +31,24 @@ public class Bumper {
     }
 
     /**
-     * @return Numerated String with User.name and bump time separeted by \n or "There is no bumpers in the list" if list is empty.
+     * @return Set of Entity;
      */
-    public static String findAll() {
+    public static Set<Entity> findAll() {
         List<String> list = bumpers.stream()
                 .map(bumper -> bumper.getUsername() + " " + bumper.getBumpTime())
                 .collect(Collectors.toList());
-        if (list.size() == 0) {
-            return "There is no bumpers in the list.";
-        }
-        StringBuilder resultAnswer = new StringBuilder();
-        for (int i = 0; i < list.size(); i++) {
-            resultAnswer.append(i + 1);
-            resultAnswer.append(". ");
-            resultAnswer.append(list.get(i));
-            resultAnswer.append("\n");
-        }
-        return resultAnswer.toString();
+//        if (list.size() == 0) {
+//            return "There is no bumpers in the list.";
+//        }
+//        StringBuilder resultAnswer = new StringBuilder();
+//        for (int i = 0; i < list.size(); i++) {
+//            resultAnswer.append(i + 1);
+//            resultAnswer.append(". ");
+//            resultAnswer.append(list.get(i));
+//            resultAnswer.append("\n");
+//        }
+//        return resultAnswer.toString();
+        return bumpers;
     }
 
     /**
@@ -67,6 +70,7 @@ public class Bumper {
 
     /**
      * This method check exist or not Bumper in list.
+     *
      * @param id String id of Bumper.
      * @return true if bumper in exist in list.
      */
@@ -118,13 +122,21 @@ public class Bumper {
     }
 
 
-    static class Entity {
+    public static class Entity {
 
         private final String id;
         private String username;
         private int higherRoleId;
-
         private ZonedDateTime bumpTime;
+        private boolean alreadyBumped;
+
+        public boolean isAlreadyBumped() {
+            return alreadyBumped;
+        }
+
+        public void setAlreadyBumped(boolean alreadyBumped) {
+            this.alreadyBumped = alreadyBumped;
+        }
 
         public String getId() {
             return id;
@@ -158,6 +170,8 @@ public class Bumper {
             this.id = id;
             this.username = username;
             this.higherRoleId = higherRoleId;
+            this.bumpTime = ZonedDateTime.now(ZoneId.of("Europe/Kiev")).minusYears(100);//Initial date 19XX year
+
         }
 
         public Entity(String id) {
@@ -176,5 +190,15 @@ public class Bumper {
         public int hashCode() {
             return Objects.hash(id);
         }
+
+        @Override
+        public String toString() {
+            return "Entity{" +
+                    "username='" + username + '\'' +
+                    ", bumpTime=" + bumpTime +
+                    '}';
+        }
     }
+
+
 }
