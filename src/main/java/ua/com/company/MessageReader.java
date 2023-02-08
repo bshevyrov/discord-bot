@@ -11,6 +11,9 @@ import ua.com.company.message.NewCircleTimerTask;
 import java.time.ZoneId;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 public class MessageReader extends ListenerAdapter {
@@ -26,9 +29,10 @@ public class MessageReader extends ListenerAdapter {
 
     private boolean isBumped = false;
     private Timer timer;
+    private ScheduledExecutorService executor;
     private TimerTask task;
-//    private final long FOUR_HOUR_DELAY=4*60*60*1000;
-    private final long FOUR_HOUR_DELAY=60*1000;
+    //    private final long FOUR_HOUR_DELAY=4*60*60*1000;
+    private final long FOUR_HOUR_DELAY = 60 * 1000;
 
     @Override
     public void onGenericMessage(GenericMessageEvent event) {
@@ -40,16 +44,7 @@ public class MessageReader extends ListenerAdapter {
 
 
                     });
-            /*if (isBumped) {
-                if (timer != null) {
-                    task.cancel();
-                }
-                System.out.println("i bumped");
-                task = new NewCircleTimerTask(event);
-                timer = new Timer("Every 4 hour timer");
-                System.out.println("start shedule");
-                timer.schedule(task, FOUR_HOUR_DELAY);
-            }*/
+
         }
     }
 
@@ -68,16 +63,22 @@ public class MessageReader extends ListenerAdapter {
 //       log.error(e.getMessage());
             }
             entity.setBumpTime(currentMessage.getTimeCreated().atZoneSameInstant(ZoneId.of("Europe/Kiev")));
-            isBumped=true;
+            isBumped = true;
         }
         if (isBumped) {
-            isBumped=false;
-            if (timer != null) {
-                task.cancel();
+            isBumped = false;
+            if (executor != null) {
+                return;
             }
             task = new NewCircleTimerTask(event);
-            timer = new Timer("Every 4 hour timer");
-            timer.schedule(task, FOUR_HOUR_DELAY); //wait here
+            executor = Executors.newSingleThreadScheduledExecutor();
+
+            long delay = 0;
+//            long period = 4L;
+//            executor.scheduleAtFixedRate(task, delay, period, TimeUnit.HOURS);
+            long period = 4L;
+            executor.scheduleWithFixedDelay(task, delay, period, TimeUnit.MINUTES);
+
         }
     }
 }

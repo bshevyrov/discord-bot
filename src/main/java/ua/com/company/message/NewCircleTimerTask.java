@@ -9,9 +9,7 @@ import ua.com.company.Bumper;
 import ua.com.company.MessageReader;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class NewCircleTimerTask extends TimerTask {
@@ -30,13 +28,19 @@ public class NewCircleTimerTask extends TimerTask {
     public void run() {
         TextChannel textChannel = event.getJDA().getTextChannelById(new MessageReader().getCHANNEL_ID());
 
-        List<Bumper.Entity> bumpers = new ArrayList<>(Bumper.findAll());
 
+
+/*        if (isNight()) {
+            sendChannelMessage(textChannel, "I don't send any PM's at night :new_moon_with_face: . Please BUMP someone!!");
+//                this.cancel();
+            return;
+        }*/
+        List<Bumper.Entity> bumpers = new ArrayList<>(Bumper.findAll());
         while (true) {
 
             for (Bumper.Entity bumper : bumpers) {
                 ZonedDateTime lastBumpTime = bumper.getBumpTime();
-                sendChannelMessage(bumper, textChannel, "Send PM to " + bumper.getUsername());
+                sendChannelMessage(textChannel, "Send PM to " + bumper.getUsername());
                 sendPrivateMessage(bumper, textChannel, PRIVATE_MESSAGE);
 
                 try {
@@ -46,14 +50,13 @@ public class NewCircleTimerTask extends TimerTask {
                 }
 
                 if (lastBumpTime.equals(bumper.getBumpTime())) {
-                    sendChannelMessage(bumper, textChannel, bumper.getUsername() + " dont answer(\nChoose another Member.");
+                    sendChannelMessage(textChannel, bumper.getUsername() + " dont answer(\nChoose another Member.");
                 } else {
-                    sendChannelMessage(bumper, textChannel, bumper.getUsername() + " bumped. GREAT JOB");
-                    this.cancel();
+                    sendChannelMessage(textChannel, bumper.getUsername() + " bumped. GREAT JOB");
+                   return;
                 }
-                sendChannelMessage(bumper, textChannel, "All bumpers ignore. Start again!");
+                sendChannelMessage(textChannel, "All bumpers ignore. Start again!");
             }
-
         }
     }
 
@@ -85,11 +88,16 @@ public class NewCircleTimerTask extends TimerTask {
     /**
      * This method send message to channel
      *
-     * @param bumper  Entity to whom send message
-     * @param message String text that send
+     * @param context TextChannel where send message
+     * @param message String message
      */
-    private void sendChannelMessage(Bumper.Entity bumper, TextChannel context, String message) {
+    private void sendChannelMessage(TextChannel context, String message) {
         context.sendMessage(message)
                 .queue();
+    }
+    private boolean isNight() {
+        int hour=Calendar.getInstance(TimeZone.getTimeZone("Europe/Kiev"))
+                .get(Calendar.HOUR_OF_DAY);
+        return  hour > 0 && hour < 12;
     }
 }
