@@ -1,5 +1,6 @@
 package ua.com.company;
 
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -11,8 +12,16 @@ public class BumperCommandReaction extends ListenerAdapter {
 
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         String rsl = "";
-        if (event.getFullCommandName().equals("bumper add")) {
+        if (event.getFullCommandName().equals("bumper add")&&event.getOption("name")==null) {
             rsl = new Bumper().add(event.getMember());
+            event.reply(rsl)
+                    .setEphemeral(true)
+                    .queue(); // reply immediately
+            return;
+        }
+
+        if (event.getFullCommandName().equals("bumper add")&&event.getOption("name")!=null) {
+            rsl = new Bumper().add((event.getOption("name").getAsMember()));
             event.reply(rsl)
                     .setEphemeral(true)
                     .queue(); // reply immediately
