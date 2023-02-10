@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import ua.com.company.Bumper;
-import ua.com.company.MessageReader;
+import ua.com.company.utils.PropertiesReader;
 
 import java.time.ZonedDateTime;
 import java.util.*;
@@ -14,11 +14,10 @@ import java.util.concurrent.TimeUnit;
 
 public class NewCircleTimerTask extends TimerTask {
     private final Event event;
-    private final String YAP_TWIST_ID = "437682338009317376";
-    private final String MY_ID = "232929050652311553";
-    private final String ALEXXL_ID = "1065267975092969613";
-    private final String MY_GUILD_ID = "1064965633743278081";
+
     private final String PRIVATE_MESSAGE = "TIME TO BUMP!!!";
+    private final long DELAY_BEFORE_DELETE_MESSAGE = 4*60*1000+30*1000;//4min 30 sec
+    private final long DELAY_BEFORE_SEND_ANOTHER_MESSAGE = 5*60*1000;//5min
 
     public NewCircleTimerTask(Event event) {
         this.event = event;
@@ -26,15 +25,13 @@ public class NewCircleTimerTask extends TimerTask {
 
     @Override
     public void run() {
-        TextChannel textChannel = event.getJDA().getTextChannelById(new MessageReader().getCHANNEL_ID());
+        TextChannel textChannel = event.getJDA().getTextChannelById(PropertiesReader.getChannel());
 
-
-
-/*        if (isNight()) {
+        if (isNight()) {
             sendChannelMessage(textChannel, "I don't send any PM's at night :new_moon_with_face: . Please BUMP someone!!");
 //                this.cancel();
             return;
-        }*/
+        }
         List<Bumper.Entity> bumpers = new ArrayList<>(Bumper.findAll());
         while (true) {
 
@@ -44,7 +41,7 @@ public class NewCircleTimerTask extends TimerTask {
                 sendPrivateMessage(bumper, textChannel, PRIVATE_MESSAGE);
 
                 try {
-                    Thread.sleep(/*5 * 60*/30 * 1000);// Timer between call another bumper
+                    Thread.sleep(DELAY_BEFORE_SEND_ANOTHER_MESSAGE);// Timer between call another bumper
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -53,7 +50,7 @@ public class NewCircleTimerTask extends TimerTask {
                     sendChannelMessage(textChannel, bumper.getUsername() + " dont answer(\nChoose another Member.");
                 } else {
                     sendChannelMessage(textChannel, bumper.getUsername() + " bumped. GREAT JOB");
-                   return;
+                    return;
                 }
                 sendChannelMessage(textChannel, "All bumpers ignore. Start again!");
             }
@@ -71,7 +68,7 @@ public class NewCircleTimerTask extends TimerTask {
         event.getJDA().retrieveUserById(bumper.getId()).complete()
                 .openPrivateChannel() // RestAction<PrivateChannel>
                 .flatMap(channel -> channel.sendMessage(message)) // RestAction<Message>
-                .delay(30, TimeUnit.SECONDS) // RestAction<Message> with delayed response
+                .delay(DELAY_BEFORE_DELETE_MESSAGE, TimeUnit.SECONDS) // RestAction<Message> with delayed response
 //                .delay(Duration.ofSeconds(30)) // RestAction<Message> with delayed response
 //                .delay(5, TimeUnit.MINUTES) // RestAction<Message> with delayed response
                 .flatMap(Message::delete)
@@ -95,9 +92,10 @@ public class NewCircleTimerTask extends TimerTask {
         context.sendMessage(message)
                 .queue();
     }
+
     private boolean isNight() {
-        int hour=Calendar.getInstance(TimeZone.getTimeZone("Europe/Kiev"))
+        int hour = Calendar.getInstance(TimeZone.getTimeZone("Europe/Kiev"))
                 .get(Calendar.HOUR_OF_DAY);
-        return  hour > 0 && hour < 12;
+        return hour > 0 && hour < 12;
     }
 }

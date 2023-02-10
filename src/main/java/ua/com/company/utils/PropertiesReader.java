@@ -13,15 +13,14 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class PropertiesReader {
-//    private static final Logger log = LoggerFactory.getLogger(PropertiesReader.class);
     private static final Logger log = LogManager.getLogger(PropertiesReader.class);
     private static Properties prop;
 
     /**
-     * Method read and return API key from properties file.
-     * @return String representation of bot API key.
+     * Method read properties file.
+     *
      */
-    public static String getToken() {
+    private static void loadProperties() {
         try (InputStream inputStream = new FileInputStream("src/main/resources/discord.properties")) {
             prop = new Properties();
             prop.load(inputStream);
@@ -34,6 +33,20 @@ public class PropertiesReader {
             log.error("Can`t read discord.properties file. Exiting");
             System.exit(1);
         }
+    }
+
+    public static String getToken() {
+        loadProperties();
         return prop.getProperty("discord.token");
     }
+
+    public static String getGuild() {
+        loadProperties();
+        return prop.getProperty("discord.guild");
+    }
+    public static String getChannel() {
+        loadProperties();
+        return prop.getProperty("discord.channel");
+    }
+
 }
