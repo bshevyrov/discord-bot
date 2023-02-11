@@ -74,8 +74,8 @@ public class MessageReader extends ListenerAdapter {
 
     private boolean isValidMessage(Message currentMessage) {
         return
-                //currentMessage.getAuthor().isBot()
-                //&&
+                currentMessage.getAuthor().isBot()
+                &&
                 triggerWords.contains(currentMessage.getContentDisplay());
     }
 

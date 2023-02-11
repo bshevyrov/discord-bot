@@ -41,10 +41,10 @@ public class NewCircleTimerTask extends TimerTask {
     public void run() {
         textChannel = event.getJDA().getTextChannelById(PropertiesReader.getChannel());
 
-//        if (isNight()) {
-//            sendChannelMessage(textChannel, "I don't send any PM's at night :new_moon_with_face: . Please BUMP someone!!");
-//            return;
-//        }
+        if (isNight()) {
+            sendChannelMessage(textChannel, "I don't send any PM's at night :new_moon_with_face: . Please BUMP someone!!");
+            return;
+        }
 
         List<Bumper.Entity> bumpers = new ArrayList<>(Bumper.findAll());
         while (!bumped) {
