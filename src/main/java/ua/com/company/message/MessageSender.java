@@ -25,7 +25,6 @@ public class MessageSender extends Thread {
             ex.printStackTrace();
         }
         if (isAlive()) {
-            System.out.println("Alive sender");
             NewCircleTimerTask.setMessageSenderInterrupted(false);
             NewCircleTimerTask.sendChannelMessage(textChannel, bumper.getUsername() + " dont answer(\nChoose another Member.");
         }

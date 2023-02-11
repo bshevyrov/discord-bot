@@ -20,8 +20,8 @@ import java.util.concurrent.TimeUnit;
 
 public class MessageReader extends ListenerAdapter {
     private final String CHANNEL_ID = PropertiesReader.getChannel(); //HARD CODED CHANEL IS
-    //    List<String> triggerWords = List.of("фиксации", "bumped");
-    List<String> triggerWords = List.of("11", "qq");
+        List<String> triggerWords = List.of("фиксации", "bumped");
+//    List<String> triggerWords = List.of("11", "qq");
 //    private final String WORD_A = "11"; //HARD Bot word
     //    private final String WORD_A = "фиксации"; //HARD Bot word
 //    private final String WORD_B = "qq"; //HARD CODED CHANEL IS
@@ -52,10 +52,8 @@ public class MessageReader extends ListenerAdapter {
                                     NewCircleTimerTask.setMessageSenderInterrupted(true);
                             } catch (BumperNotFound e) {
 //       log.error(e.getMessage());
-                                System.out.println("not found");
                             }
                             if (executor == null) {
-                                System.out.println("sch1");
                                 startSchedule(event);
                             } else {
                                 NewCircleTimerTask.setBumped(true);
