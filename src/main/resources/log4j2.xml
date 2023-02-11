@@ -2,7 +2,9 @@
 <Configuration status="WARN" monitorInterval="30">
     <Properties>
         <Property name="LOG_PATTERN">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %p %m%n</Property>
-        <Property name="APP_LOG_ROOT">src/main/resources/logs</Property>
+<!--        <Property name="APP_LOG_ROOT">src/main/resources/logs</Property>-->
+        <Property name="APP_LOG_ROOT">logs</Property>
+
     </Properties>
     <Appenders>
         <Console name="console" target="SYSTEM_OUT">

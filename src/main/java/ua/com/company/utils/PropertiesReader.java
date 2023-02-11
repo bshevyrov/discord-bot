@@ -21,7 +21,8 @@ public class PropertiesReader {
      *
      */
     private static void loadProperties() {
-        try (InputStream inputStream = new FileInputStream("src/main/resources/discord.properties")) {
+//        try (InputStream inputStream = new FileInputStream("src/main/resources/discord.properties")) {
+        try (InputStream inputStream = new FileInputStream("discord.properties")) {
             prop = new Properties();
             prop.load(inputStream);
             log.debug("warn");
