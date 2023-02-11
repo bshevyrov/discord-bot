@@ -6,18 +6,32 @@ import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import ua.com.company.Bumper;
+import ua.com.company.utils.BumperConstants;
 import ua.com.company.utils.PropertiesReader;
 
-import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class NewCircleTimerTask extends TimerTask {
-    private final Event event;
+    private static Event event = null;
+    private static TextChannel textChannel;
 
-    private final String PRIVATE_MESSAGE = "TIME TO BUMP!!!";
-    private final long DELAY_BEFORE_DELETE_MESSAGE = 4*60*1000+30*1000;//4min 30 sec
-    private final long DELAY_BEFORE_SEND_ANOTHER_MESSAGE = 5*60*1000;//5min
+    private static MessageSender thread;
+
+    public static MessageSender getThread() {
+        return thread;
+    }
+
+    static boolean isMessageSenderInterrupted = false;
+
+    public static void setMessageSenderInterrupted(boolean messageSenderInterrupted) {
+        isMessageSenderInterrupted = messageSenderInterrupted;
+    }
+    private static boolean bumped = false;
+
+    public static void setBumped(boolean bumped) {
+        NewCircleTimerTask.bumped = bumped;
+    }
 
     public NewCircleTimerTask(Event event) {
         this.event = event;
@@ -25,36 +39,41 @@ public class NewCircleTimerTask extends TimerTask {
 
     @Override
     public void run() {
-        TextChannel textChannel = event.getJDA().getTextChannelById(PropertiesReader.getChannel());
+        textChannel = event.getJDA().getTextChannelById(PropertiesReader.getChannel());
 
-        if (isNight()) {
-            sendChannelMessage(textChannel, "I don't send any PM's at night :new_moon_with_face: . Please BUMP someone!!");
-//                this.cancel();
-            return;
-        }
+//        if (isNight()) {
+//            sendChannelMessage(textChannel, "I don't send any PM's at night :new_moon_with_face: . Please BUMP someone!!");
+//            return;
+//        }
+
         List<Bumper.Entity> bumpers = new ArrayList<>(Bumper.findAll());
-        while (true) {
+        while (!bumped) {
 
             for (Bumper.Entity bumper : bumpers) {
-                ZonedDateTime lastBumpTime = bumper.getBumpTime();
-                sendChannelMessage(textChannel, "Send PM to " + bumper.getUsername());
-                sendPrivateMessage(bumper, textChannel, PRIVATE_MESSAGE);
-
+                System.out.println(bumper.getUsername());
+                thread = new MessageSender(textChannel, bumper);
+                thread.start();
                 try {
-                    Thread.sleep(DELAY_BEFORE_SEND_ANOTHER_MESSAGE);// Timer between call another bumper
+                    thread.join();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
-                if (lastBumpTime.equals(bumper.getBumpTime())) {
-                    sendChannelMessage(textChannel, bumper.getUsername() + " dont answer(\nChoose another Member.");
-                } else {
-                    sendChannelMessage(textChannel, bumper.getUsername() + " bumped. GREAT JOB");
-                    return;
+                if (isMessageSenderInterrupted) {
+                    break;
                 }
+            }
+            if (!isMessageSenderInterrupted) {
+                System.out.println("new tread alive");
                 sendChannelMessage(textChannel, "All bumpers ignore. Start again!");
+            } else {
+                System.out.println("new tread dead");
+                bumped=false;
+                return;
+//                continue;
             }
         }
+
+        bumped = false;
     }
 
     /**
@@ -63,12 +82,12 @@ public class NewCircleTimerTask extends TimerTask {
      * @param bumper  bumper Entity to whom send message
      * @param message message String text that send
      */
-    private void sendPrivateMessage(Bumper.Entity bumper, TextChannel context, String message) {
+    static void sendPrivateMessage(Bumper.Entity bumper, TextChannel context, String message) {
         // Send message and delete 30 seconds later
         event.getJDA().retrieveUserById(bumper.getId()).complete()
                 .openPrivateChannel() // RestAction<PrivateChannel>
                 .flatMap(channel -> channel.sendMessage(message)) // RestAction<Message>
-                .delay(DELAY_BEFORE_DELETE_MESSAGE, TimeUnit.SECONDS) // RestAction<Message> with delayed response
+                .delay(BumperConstants.DELAY_BEFORE_DELETE_MESSAGE, TimeUnit.SECONDS) // RestAction<Message> with delayed response
 //                .delay(Duration.ofSeconds(30)) // RestAction<Message> with delayed response
 //                .delay(5, TimeUnit.MINUTES) // RestAction<Message> with delayed response
                 .flatMap(Message::delete)
@@ -88,7 +107,7 @@ public class NewCircleTimerTask extends TimerTask {
      * @param context TextChannel where send message
      * @param message String message
      */
-    private void sendChannelMessage(TextChannel context, String message) {
+    static void sendChannelMessage(TextChannel context, String message) {
         context.sendMessage(message)
                 .queue();
     }
@@ -98,4 +117,9 @@ public class NewCircleTimerTask extends TimerTask {
                 .get(Calendar.HOUR_OF_DAY);
         return hour > 0 && hour < 12;
     }
+
+    public void sendBumped(Bumper.Entity bumper) {
+        sendChannelMessage(textChannel, bumper.getUsername() + " bumped. GREAT JOB");
+    }
+
 }

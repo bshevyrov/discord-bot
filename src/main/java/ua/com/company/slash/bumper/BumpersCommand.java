@@ -23,11 +23,13 @@ public class BumpersCommand implements Slash {
         String rsl = "";
 
         if (event.getFullCommandName().equals("bumpers add") && event.getOption("name") != null) {
+            if(!event.getOption("name").getAsUser().isBot()){
             rsl = new Bumper().add((event.getOption("name").getAsMember()));
             event.reply(rsl)
                     .setEphemeral(true)
                     .queue(); // reply immediately
             return;
+            }
         }
 
         if (event.getFullCommandName().equals("bumpers remove") && event.getOption("name") != null) {
@@ -40,22 +42,6 @@ public class BumpersCommand implements Slash {
     }
 
 
-    private String createAnswer(Set<Bumper.Entity> bumpers) {
-        List<String> list = bumpers.stream()
-                .map(bumper -> bumper.getUsername() + " " + bumper.getBumpTime())
-                .collect(Collectors.toList());
-        if (list.size() == 0) {
-            return "There is no bumpers in the list.";
-        }
-        StringBuilder resultAnswer = new StringBuilder();
-        for (int i = 0; i < list.size(); i++) {
-            resultAnswer.append(i + 1);
-            resultAnswer.append(". ");
-            resultAnswer.append(list.get(i));
-            resultAnswer.append("\n");
-        }
-        return resultAnswer.toString();
-    }
 
     @Override
     public String getName() {
