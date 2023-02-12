@@ -63,10 +63,8 @@ public class NewCircleTimerTask extends TimerTask {
                 }
             }
             if (!isMessageSenderInterrupted) {
-                System.out.println("new tread alive");
                 sendChannelMessage(textChannel, "All bumpers ignore. Start again!");
             } else {
-                System.out.println("new tread dead");
                 bumped=false;
                 return;
 //                continue;

@@ -12,7 +12,6 @@ import ua.com.company.utils.PropertiesReader;
 
 import java.time.ZoneId;
 import java.util.List;
-import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -20,7 +19,8 @@ import java.util.concurrent.TimeUnit;
 
 public class MessageReader extends ListenerAdapter {
     private final String CHANNEL_ID = PropertiesReader.getChannel(); //HARD CODED CHANEL IS
-        List<String> triggerWords = List.of("фиксации", "bumped");
+//    List<String> triggerWords = List.of("фиксации", "bumped");
+    List<String> triggerWords = List.of("фиксации");
 //    List<String> triggerWords = List.of("11", "qq");
 //    private final String WORD_A = "11"; //HARD Bot word
     //    private final String WORD_A = "фиксации"; //HARD Bot word
@@ -29,7 +29,7 @@ public class MessageReader extends ListenerAdapter {
 
 
     private ScheduledExecutorService executor;
-    private NewCircleTimerTask tasktask ;
+    private NewCircleTimerTask tasktask;
     Bumper.Entity bumper;
 
 
@@ -49,7 +49,7 @@ public class MessageReader extends ListenerAdapter {
                                 bumper.
                                         setBumpTime(message.getTimeCreated()
                                                 .atZoneSameInstant(ZoneId.of("Europe/Kiev")));
-                                    NewCircleTimerTask.setMessageSenderInterrupted(true);
+                                NewCircleTimerTask.setMessageSenderInterrupted(true);
                             } catch (BumperNotFound e) {
 //       log.error(e.getMessage());
                             }
@@ -73,8 +73,9 @@ public class MessageReader extends ListenerAdapter {
     private boolean isValidMessage(Message currentMessage) {
         return
                 currentMessage.getAuthor().isBot()
-                &&
-                triggerWords.contains(currentMessage.getContentDisplay());
+                        &&
+                        (currentMessage.getEmbeds().contains(triggerWords.get(0)));
+//                                || currentMessage.getEmbeds().contains(triggerWords.get(1)));
     }
 
     private void startSchedule(Event event) {
