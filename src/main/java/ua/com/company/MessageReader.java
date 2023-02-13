@@ -38,7 +38,7 @@ public class MessageReader extends ListenerAdapter {
         tasktask = new NewCircleTimerTask(event);
         if (event.getChannel().getId().equals(CHANNEL_ID)) {
             MessageChannel channel = event.getGuild().getTextChannelById(CHANNEL_ID);
-            channel.retrieveMessageById(event.getMessageId())
+           channel.retrieveMessageById(event.getMessageId())
                     .queue(message -> {
                         if (isValidMessage(message)) {
                             if (isNewBumper(message)) {
@@ -62,7 +62,9 @@ public class MessageReader extends ListenerAdapter {
                                 tasktask.sendBumped(bumper);
                             }
                         }
-                    });
+                        });
+
+
         }
     }
 
@@ -71,11 +73,15 @@ public class MessageReader extends ListenerAdapter {
     }
 
     private boolean isValidMessage(Message currentMessage) {
+        //loop all trigered words compare containing word
         return
                 currentMessage.getAuthor().isBot()
                         &&
-                        (currentMessage.getEmbeds().contains(triggerWords.get(0)));
+                        (currentMessage.getEmbeds().get(0)
+                                .getDescription()
+                                .contains(triggerWords.get(0)));
 //                                || currentMessage.getEmbeds().contains(triggerWords.get(1)));
+        //                        message.getEmbeds().forEach(messageEmbed -> System.out.println(messageEmbed.getDescription()));
     }
 
     private void startSchedule(Event event) {

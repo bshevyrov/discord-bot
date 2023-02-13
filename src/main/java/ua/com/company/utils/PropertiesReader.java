@@ -18,11 +18,19 @@ public class PropertiesReader {
 
     /**
      * Method read properties file.
-     *
      */
     private static void loadProperties() {
-//        try (InputStream inputStream = new FileInputStream("src/main/resources/discord.properties")) {
-        try (InputStream inputStream = new FileInputStream("discord.properties")) {
+        // prod user ubuntu
+        // dev user bohdan
+        String pathToPropFile;
+        ///etc/environment
+        if (System.getenv("SERVER_ENVIRONMENT").equals("DEV")) {
+            pathToPropFile = "src/main/resources/discord.properties";
+
+        } else {//System.getenv("SERVER_ENVIRONMENT").equals("PROD")
+            pathToPropFile = "discord.properties";
+        }
+        try (InputStream inputStream = new FileInputStream(pathToPropFile)) {
             prop = new Properties();
             prop.load(inputStream);
             log.debug("warn");
@@ -45,9 +53,22 @@ public class PropertiesReader {
         loadProperties();
         return prop.getProperty("discord.guild");
     }
+
     public static String getChannel() {
         loadProperties();
         return prop.getProperty("discord.channel");
+    }
+    public static String getDeleteDelay() {
+        loadProperties();
+        return prop.getProperty("discord.delay.in.ms.before.del.message");
+    }
+    public static String getSendDelay() {
+        loadProperties();
+        return prop.getProperty("discord.delay.in.ms.before.send.another.dm");
+    }
+    public static String getRoundDelay() {
+        loadProperties();
+        return prop.getProperty("discord.delay.in.m.before.new.bump.round");
     }
 
 }
