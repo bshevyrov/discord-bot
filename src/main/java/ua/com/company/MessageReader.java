@@ -1,6 +1,9 @@
 package ua.com.company;
 
+import kotlin.concurrent.ThreadsKt;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageReference;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.message.GenericMessageEvent;
@@ -20,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 public class MessageReader extends ListenerAdapter {
     private final String CHANNEL_ID = PropertiesReader.getChannel(); //HARD CODED CHANEL IS
 //    List<String> triggerWords = List.of("фиксации", "bumped");
-    List<String> triggerWords = List.of("фиксации");
+    List<String> triggerWords = List.of("bumped");
 //    List<String> triggerWords = List.of("11", "qq");
 //    private final String WORD_A = "11"; //HARD Bot word
     //    private final String WORD_A = "фиксации"; //HARD Bot word
@@ -34,18 +37,21 @@ public class MessageReader extends ListenerAdapter {
 
 
     @Override
-    public void onGenericMessage(GenericMessageEvent event) {
+    public void onGenericMessage(GenericMessageEvent event) { //for Server Monitoring
         tasktask = new NewCircleTimerTask(event);
         if (event.getChannel().getId().equals(CHANNEL_ID)) {
             MessageChannel channel = event.getGuild().getTextChannelById(CHANNEL_ID);
+//           channel.retrieveMessageById("1074671286938251304")
            channel.retrieveMessageById(event.getMessageId())
                     .queue(message -> {
                         if (isValidMessage(message)) {
                             if (isNewBumper(message)) {
-                                Bumper.add(message.getReferencedMessage().getMember());
+                                Bumper.add(event.getGuild()
+                                        .getMemberById(
+                                                getMemberFromEmbeddedDescription(message)));
                             }
                             try {
-                                bumper = Bumper.findById(message.getReferencedMessage().getAuthor().getId());
+                                bumper = Bumper.findById(getMemberFromEmbeddedDescription(message));
                                 bumper.
                                         setBumpTime(message.getTimeCreated()
                                                 .atZoneSameInstant(ZoneId.of("Europe/Kiev")));
@@ -69,9 +75,15 @@ public class MessageReader extends ListenerAdapter {
     }
 
     private boolean isNewBumper(Message currentMessage) {
-        return !Bumper.isExistId(currentMessage.getReferencedMessage().getAuthor().getId());
+       return !Bumper.isExistId(getMemberFromEmbeddedDescription(currentMessage));
+//        return !Bumper.isExistId(currentMessage.getReferencedMessage().getAuthor().getId());
     }
 
+    private String getMemberFromEmbeddedDescription(Message message) {
+        String embeddedMessageDescription = message.getEmbeds().get(0).getDescription();
+        String memberId=embeddedMessageDescription.substring(embeddedMessageDescription.indexOf('@')+1,embeddedMessageDescription.indexOf('>'));
+return memberId;
+    }
     private boolean isValidMessage(Message currentMessage) {
         //loop all trigered words compare containing word
         return
