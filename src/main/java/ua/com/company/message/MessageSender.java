@@ -4,6 +4,9 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import ua.com.company.Bumper;
 import ua.com.company.utils.BumperConstants;
 
+import java.util.Calendar;
+import java.util.TimeZone;
+
 public class MessageSender extends Thread {
     TextChannel textChannel;
     Bumper.Entity bumper;
@@ -16,7 +19,12 @@ public class MessageSender extends Thread {
 
     @Override
     public void run() {
+        if (isNight()) {
+            NewCircleTimerTask.sendChannelMessage(textChannel, "I don't send any PM's at night :new_moon_with_face: . Please BUMP someone!!");
+            return;
+        }
         NewCircleTimerTask.setMessageSenderInterrupted(true);
+
         NewCircleTimerTask.sendChannelMessage(textChannel, "Send PM to " + bumper.getUsername());
         NewCircleTimerTask.sendPrivateMessage(bumper, textChannel, BumperConstants.PRIVATE_MESSAGE);
         try {
@@ -29,4 +37,11 @@ public class MessageSender extends Thread {
             NewCircleTimerTask.sendChannelMessage(textChannel, bumper.getUsername() + " dont answer(\nChoose another Member.");
         }
     }
+
+    private boolean isNight() {
+        int hour = Calendar.getInstance(TimeZone.getTimeZone("Europe/Kiev"))
+                .get(Calendar.HOUR_OF_DAY);
+        return hour > 0 && hour < 12;
+    }
+
 }

@@ -14,11 +14,6 @@ public class App {
 
 
     public static void main(String[] args) throws InterruptedException {
-
-
-
-
-
                 JDA jda = JDABuilder.createDefault(PropertiesReader.getToken())
                 .enableIntents(GatewayIntent.GUILD_MEMBERS,
                         GatewayIntent.GUILD_MESSAGES,

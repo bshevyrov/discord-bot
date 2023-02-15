@@ -40,17 +40,16 @@ public class NewCircleTimerTask extends TimerTask {
     @Override
     public void run() {
         textChannel = event.getJDA().getTextChannelById(PropertiesReader.getChannel());
-
-        if (isNight()) {
-            sendChannelMessage(textChannel, "I don't send any PM's at night :new_moon_with_face: . Please BUMP someone!!");
-            return;
-        }
+//
+//        if (isNight()) {
+//            sendChannelMessage(textChannel, "I don't send any PM's at night :new_moon_with_face: . Please BUMP someone!!");
+//            return;
+//        }
 
         List<Bumper.Entity> bumpers = new ArrayList<>(Bumper.findAll());
         while (!bumped) {
 
             for (Bumper.Entity bumper : bumpers) {
-                System.out.println(bumper.getUsername());
                 thread = new MessageSender(textChannel, bumper);
                 thread.start();
                 try {
@@ -110,11 +109,6 @@ public class NewCircleTimerTask extends TimerTask {
                 .queue();
     }
 
-    private boolean isNight() {
-        int hour = Calendar.getInstance(TimeZone.getTimeZone("Europe/Kiev"))
-                .get(Calendar.HOUR_OF_DAY);
-        return hour > 0 && hour < 12;
-    }
 
     public void sendBumped(Bumper.Entity bumper) {
         sendChannelMessage(textChannel, bumper.getUsername() + " bumped. GREAT JOB");
