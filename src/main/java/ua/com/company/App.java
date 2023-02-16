@@ -5,16 +5,15 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import ua.com.company.handler.SlashCommandHandler;
+import ua.com.company.message.MessageReader;
 import ua.com.company.utils.PropertiesReader;
-
-import java.util.function.BiConsumer;
 
 public class App {
     //TODO BUMPER UPDATE for Owner and some roles to update bots
 
 
     public static void main(String[] args) throws InterruptedException {
-                JDA jda = JDABuilder.createDefault(PropertiesReader.getToken())
+        JDA jda = JDABuilder.createDefault(PropertiesReader.getToken())
                 .enableIntents(GatewayIntent.GUILD_MEMBERS,
                         GatewayIntent.GUILD_MESSAGES,
                         GatewayIntent.MESSAGE_CONTENT,

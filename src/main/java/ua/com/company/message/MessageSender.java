@@ -19,11 +19,11 @@ public class MessageSender extends Thread {
 
     @Override
     public void run() {
+        NewCircleTimerTask.setMessageSenderInterrupted(true);
         if (isNight()) {
             NewCircleTimerTask.sendChannelMessage(textChannel, "I don't send any PM's at night :new_moon_with_face: . Please BUMP someone!!");
             return;
         }
-        NewCircleTimerTask.setMessageSenderInterrupted(true);
 
         NewCircleTimerTask.sendChannelMessage(textChannel, "Send PM to " + bumper.getUsername());
         NewCircleTimerTask.sendPrivateMessage(bumper, textChannel, BumperConstants.PRIVATE_MESSAGE);
