@@ -16,6 +16,7 @@
         <oracle.jdbc.version>21.8.0.0</oracle.jdbc.version>
         <classgraph.version>4.8.154</classgraph.version>
         <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
+        <mal4j.version>3.0.1</mal4j.version>
 
     </properties>
 
@@ -47,7 +48,6 @@
             </plugin>
         </plugins>
     </build>
-
 
 
     <dependencies>
@@ -100,6 +100,15 @@
             <version>${classgraph.version}</version>
         </dependency>
         <!--        PROJECT SCANNER-->
+        <!--        MY ANIME LIST-->
+        <!-- https://mvnrepository.com/artifact/dev.katsute/mal4j -->
+        <dependency>
+            <groupId>dev.katsute</groupId>
+            <artifactId>mal4j</artifactId>
+            <version>${mal4j.version}</version>
+        </dependency>
+
+        <!--        MY ANIME LIST-->
 
     </dependencies>
 </project>

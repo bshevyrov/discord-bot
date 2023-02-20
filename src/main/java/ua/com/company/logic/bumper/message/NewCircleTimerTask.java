@@ -1,4 +1,4 @@
-package ua.com.company.message;
+package ua.com.company.logic.bumper.message;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;

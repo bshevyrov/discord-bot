@@ -19,7 +19,7 @@ public class PropertiesReader {
     /**
      * Method read properties file.
      */
-    private static void loadProperties() {
+    private static void loadDiscordProperties() {
         // prod user ubuntu
         // dev user bohdan
         String pathToPropFile;
@@ -45,30 +45,59 @@ public class PropertiesReader {
     }
 
     public static String getToken() {
-        loadProperties();
+        loadDiscordProperties();
         return prop.getProperty("discord.token");
     }
 
     public static String getGuild() {
-        loadProperties();
+        loadDiscordProperties();
         return prop.getProperty("discord.guild");
     }
 
     public static String getChannel() {
-        loadProperties();
+        loadDiscordProperties();
         return prop.getProperty("discord.channel");
     }
     public static String getDeleteDelay() {
-        loadProperties();
+        loadDiscordProperties();
         return prop.getProperty("discord.delay.in.ms.before.del.message");
     }
     public static String getSendDelay() {
-        loadProperties();
+        loadDiscordProperties();
         return prop.getProperty("discord.delay.in.ms.before.send.another.dm");
     }
     public static String getRoundDelay() {
-        loadProperties();
+        loadDiscordProperties();
         return prop.getProperty("discord.delay.in.m.before.new.bump.round");
+    }
+
+    private static void loadMyAnimeListProperties() {
+        // prod user ubuntu
+        // dev user bohdan
+        String pathToPropFile;
+        ///etc/environment
+        if (System.getenv("SERVER_ENVIRONMENT").equals("DEV")) {
+            pathToPropFile = "src/main/resources/mal.properties";
+
+        } else {//System.getenv("SERVER_ENVIRONMENT").equals("PROD")
+            pathToPropFile = "mal.properties";
+        }
+        try (InputStream inputStream = new FileInputStream(pathToPropFile)) {
+            prop = new Properties();
+            prop.load(inputStream);
+            log.debug("warn");
+
+        } catch (FileNotFoundException e) {
+            log.error("File discord.properties not found. Exiting");
+            System.exit(1);
+        } catch (IOException e) {
+            log.error("Can`t read discord.properties file. Exiting");
+            System.exit(1);
+        }
+    }
+    public static String getClientId() {
+        loadMyAnimeListProperties();
+        return prop.getProperty("mal.client.id");
     }
 
 }

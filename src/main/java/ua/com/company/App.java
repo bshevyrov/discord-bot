@@ -5,7 +5,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import ua.com.company.handler.SlashCommandHandler;
-import ua.com.company.message.MessageReader;
+import ua.com.company.logic.bumper.message.MessageReader;
 import ua.com.company.utils.PropertiesReader;
 
 public class App {
@@ -18,12 +18,7 @@ public class App {
                         GatewayIntent.GUILD_MESSAGES,
                         GatewayIntent.MESSAGE_CONTENT,
                         GatewayIntent.DIRECT_MESSAGES)
-//                .addEventListeners(new UserJoinListener())
-//                .addEventListeners(new GuildJoinListener())
-//                .addEventListeners(new RoleCreateListener())
-//                .addEventListeners(new ContextMenuBot())
-//                .addEventListeners(new BumperCommand())
-//                .addEventListeners(new BumperCommandReaction())
+
                 .addEventListeners(new MessageReader())
                 .addEventListeners(new ListenerEvents())
                 .addEventListeners()

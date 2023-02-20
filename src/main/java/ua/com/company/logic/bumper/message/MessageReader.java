@@ -1,4 +1,4 @@
-package ua.com.company.message;
+package ua.com.company.logic.bumper.message;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
@@ -7,11 +7,14 @@ import net.dv8tion.jda.api.events.message.GenericMessageEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import ua.com.company.Bumper;
 import ua.com.company.exception.BumperNotFound;
+import ua.com.company.handler.BotMessageCommand;
+import ua.com.company.logic.bumper.bot.IBot;
 import ua.com.company.utils.BumperConstants;
 import ua.com.company.utils.PropertiesReader;
 
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -30,49 +33,21 @@ public class MessageReader extends ListenerAdapter {
 
     private ScheduledExecutorService executor;
     private NewCircleTimerTask tasktask;
-    Bumper.Entity bumper;
+
+
+    private Map<String, IBot> botMap;
 
 
     @Override
     public void onGenericMessage(GenericMessageEvent event) { //for Server Monitoring
         tasktask = new NewCircleTimerTask(event);
-        if (event.getChannel().getId().equals(CHANNEL_ID)) {
-            MessageChannel channel = event.getGuild().getTextChannelById(CHANNEL_ID);
-//           channel.retrieveMessageById("1074671286938251304")
-            channel.retrieveMessageById(event.getMessageId())
-                    .queue(message -> {
-                        if (isValidMessage(message)) {
-                            if (isNewBumper(message)) {
-                                event.getGuild().retrieveMemberById(getMemberFromEmbeddedDescription(message))
-                                        .queue(Bumper::add);
+        if (event.getChannel().getId().equals(CHANNEL_ID)
+        && event.getChannel().retrieveMessageById(event.getMessageId()).complete().getAuthor().isBot()) {
+            BotMessageCommand botMessageCommand = new BotMessageCommand();
+           botMap= botMessageCommand.getBotsMap();
+           botMap.get(event.getChannel().retrieveMessageById(event.getMessageId()).complete().getAuthor().getAsTag())
+                   .execute(event);
 
-                             /*   Bumper.add(event.getGuild()
-                                        .getMemberById(
-                                                getMemberFromEmbeddedDescription(message)));*/
-                            }
-                            try {
-                                bumper = Bumper.findById(getMemberFromEmbeddedDescription(message));
-                                bumper.
-                                        setBumpTime(message.getTimeCreated()
-                                                .atZoneSameInstant(ZoneId.of("Europe/Kiev")));
-                                NewCircleTimerTask.setMessageSenderInterrupted(true);
-                            } catch (BumperNotFound e) {
-//       log.error(e.getMessage());
-                            }
-                            if (executor == null) {
-                                startSchedule(event);
-                            } else {
-                                //this equivalent to executor.shutdownNow(); because close all
-//                                NewCircleTimerTask.setBumped(true);
-//                                NewCircleTimerTask.getThread().interrupt();
-                                tasktask.sendBumped(bumper);
-                                NewCircleTimerTask.getMessageSenderThread().stop();
-
-                                executor.shutdownNow();
-                                startSchedule(event);
-                            }
-                        }
-                    });
 
 
         }
@@ -83,12 +58,9 @@ public class MessageReader extends ListenerAdapter {
 //        return !Bumper.isExistId(currentMessage.getReferencedMessage().getAuthor().getId());
     }
 
-    private String getMemberFromEmbeddedDescription(Message message) {
-        String embeddedMessageDescription = message.getEmbeds().get(0).getDescription();
-        String memberId = embeddedMessageDescription.substring(embeddedMessageDescription.indexOf('@') + 1, embeddedMessageDescription.indexOf('>'));
-        return memberId;
-    }
 
+
+/*
     private boolean isValidMessage(Message currentMessage) {
         //loop all trigered words compare containing word
         return
@@ -100,6 +72,7 @@ public class MessageReader extends ListenerAdapter {
 //                                || currentMessage.getEmbeds().contains(triggerWords.get(1)));
         //                        message.getEmbeds().forEach(messageEmbed -> System.out.println(messageEmbed.getDescription()));
     }
+*/
 
     private void startSchedule(Event event) {
         tasktask = new NewCircleTimerTask(event);
