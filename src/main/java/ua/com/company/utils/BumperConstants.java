@@ -7,6 +7,7 @@ public class BumperConstants {
 //   public static final long DELAY_BEFORE_SEND_ANOTHER_MESSAGE = 30*1000;//5min
    public static final long DELAY_BEFORE_SEND_ANOTHER_MESSAGE = Long.parseLong(PropertiesReader.getSendDelay());//5min
 //    public static final long PAUSE_BETWEEN_NEW_TASK = 4*60*60*1000L;
-    public static final long PAUSE_BETWEEN_NEW_TASK = Long.parseLong(PropertiesReader.getRoundDelay());//MINUTES
+    public static final long PAUSE_BETWEEN_MANUAL_NEW_TASK = Long.parseLong(PropertiesReader.getManualRoundDelay());//MINUTES
+    public static final long PAUSE_BETWEEN_AUTO_NEW_TASK = Long.parseLong(PropertiesReader.getAutoRoundDelay());//MINUTES
 
 }

@@ -66,9 +66,13 @@ public class PropertiesReader {
         loadDiscordProperties();
         return prop.getProperty("discord.delay.in.ms.before.send.another.dm");
     }
-    public static String getRoundDelay() {
+    public static String getManualRoundDelay() {
         loadDiscordProperties();
-        return prop.getProperty("discord.delay.in.m.before.new.bump.round");
+        return prop.getProperty("discord.delay.in.m.before.new.manual.bump.round");
+    }
+    public static String getAutoRoundDelay() {
+        loadDiscordProperties();
+        return prop.getProperty("discord.delay.in.m.before.new.auto.bump.round");
     }
 
     private static void loadMyAnimeListProperties() {

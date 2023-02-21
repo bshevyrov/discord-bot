@@ -1,4 +1,4 @@
-package ua.com.company.logic.bumper.message;
+package ua.com.company.logic.bumper.task;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -6,34 +6,37 @@ import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import ua.com.company.Bumper;
+import ua.com.company.logic.bumper.message.MessageSender;
 import ua.com.company.utils.BumperConstants;
 import ua.com.company.utils.PropertiesReader;
 
-import java.util.*;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class NewCircleTimerTask extends TimerTask {
+public class AutoBotTimerTask extends TimerTask {
     private static Event event = null;
     private static TextChannel textChannel;
+    private final String slashCommand;
 
     private static MessageSender thread;
 
-    public static MessageSender getMessageSenderThread() {
+    public  MessageSender getMessageSenderThread() {
         return thread;
     }
 
     static boolean isMessageSenderInterrupted = false;
 
-    public static void setMessageSenderInterrupted(boolean messageSenderInterrupted) {
+    public  void setMessageSenderInterrupted(boolean messageSenderInterrupted) {
         isMessageSenderInterrupted = messageSenderInterrupted;
     }
     private static boolean bumped = false;
 
     public static void setBumped(boolean bumped) {
-        NewCircleTimerTask.bumped = bumped;
+        AutoBotTimerTask.bumped = bumped;
     }
 
-    public NewCircleTimerTask(Event event) {
+    public AutoBotTimerTask(Event event, String slashCommand) {
+        this.slashCommand = slashCommand;
         this.event = event;
     }
 
@@ -41,31 +44,7 @@ public class NewCircleTimerTask extends TimerTask {
     public void run() {
         textChannel = event.getJDA().getTextChannelById(PropertiesReader.getChannel());
 
-        List<Bumper.Entity> bumpers = new ArrayList<>(Bumper.findAll());
-        while (!bumped) {
-
-            for (Bumper.Entity bumper : bumpers) {
-                thread = new MessageSender(textChannel, bumper);
-                thread.start();
-                try {
-                    thread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if (isMessageSenderInterrupted) {
-                    break;
-                }
-            }
-            if (!isMessageSenderInterrupted) {
-                sendChannelMessage(textChannel, "All bumpers ignore. Start again!");
-            } else {
-                bumped=false;
-                return;
-//                continue;
-            }
-        }
-
-        bumped = false;
+      sendChannelMessage(textChannel,slashCommand);
     }
 
     /**
