@@ -17,6 +17,8 @@
         <classgraph.version>4.8.154</classgraph.version>
         <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
         <mal4j.version>3.0.1</mal4j.version>
+        <selenium-java.version>4.8.1</selenium-java.version>
+        <commons-math3.version>3.6.1</commons-math3.version>
 
     </properties>
 
@@ -109,6 +111,26 @@
         </dependency>
 
         <!--        MY ANIME LIST-->
+<!--        BROWSER EMULATOR-->
+        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium-java.version}</version>
+        </dependency>
+<!--        BROWSER EMULATOR-->
+<!--
+        APACHE COMMONS
+         https://mvnrepository.com/artifact/org.apache.commons/commons-math3
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+            <version>${commons-math3.version}</version>
+        </dependency>
+
+                APACHE COMMONS
+-->
+
 
     </dependencies>
 </project>

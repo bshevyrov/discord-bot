@@ -1,13 +1,12 @@
 package ua.com.company.logic.bumper.bot.impl;
 
 import ua.com.company.logic.bumper.bot.AutoBumpBot;
-import ua.com.company.logic.bumper.bot.ManualBumpBot;
 
-public class DHBumpBot extends AutoBumpBot {
+public class DSMonitoringBot extends AutoBumpBot {
     //3 hour
     @Override
 //    public String getTag() {
-//        return "DH Bump#1844";
+//        return "DSMonitoring#0015";
 //    }
     public String getTag() {
         return "Журбака#8713";
@@ -15,7 +14,7 @@ public class DHBumpBot extends AutoBumpBot {
 
     @Override
     public String getSlashCommand() {
-        return "Command slash";
+        return "/like";
     }
 
 /*    @Override
