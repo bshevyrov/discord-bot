@@ -4,19 +4,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import ua.com.company.utils.PropertiesReader;
 
-public class Discadia implements SiteBot {
-    @Override
-    public String getUrl() {
-        return PropertiesReader.getDiscadiaUrl();
-    }
-
+public class Discadia extends SiteBot {
 
     public void init() {
         // Maximize the browser
 //       driver.manage().window().maximize();
         // Launch Website
-        WebDriver driver = getLoggedConfiguredChromeDriver(getUrl());
-        Actions actions = new Actions(driver);
+        WebDriver driver = getLoggedConfiguredChromeDriver(PropertiesReader.getDiscadiaUrl());
+
 
 
         // https://discadia.com/accounts/discord/login/

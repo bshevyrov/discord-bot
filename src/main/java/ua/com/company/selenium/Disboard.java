@@ -2,34 +2,36 @@ package ua.com.company.selenium;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import ua.com.company.utils.PropertiesReader;
 
 import java.util.Random;
 
-public class Disboard implements SiteBot {
+public class Disboard extends SiteBot {
 
-    @Override
-    public String getUrl() {
-        return PropertiesReader.getDisboardUrl();
-    }
+//FINISH
 
     public void init() {
-        WebDriver driver = getLoggedConfiguredChromeDriver(getUrl());
-        Actions actions = new Actions(driver);
-        if (driver.findElements(By.className("contents-3NembX")).size() > 0) {
-            actions.moveToElement(driver.findElement(By.className("contents-3NembX"))).contextClick().perform();
-            try {
-                Thread.sleep(10000 + new Random().nextInt(5000));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        WebDriver driver = getLoggedConfiguredChromeDriver(PropertiesReader.getDisboardUrl());
+        Actions actions = getActions();
+        String bumpXpathButton ="/html/body/div[1]/div/div[3]/div[2]/div/div[2]/div/a[3]/span[2]";
+        WebElement webElement = driver.findElement(By.xpath(bumpXpathButton));
+        actions.moveToElement(webElement).contextClick().perform();
+        try {
+            Thread.sleep(5000 + new Random().nextInt(5000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        String successXpath = "/html/body/div[2]/div[1]/div[1]/h3";
-        if (driver.findElements(By.xpath(successXpath)).size() > 0
-                && driver.findElement(By.xpath(successXpath)).getText().equalsIgnoreCase("SUCCESSFULLY LIKE!")) {
-            System.out.println("WELL DONE!");
+        if(webElement.getText().length()==8){
+            System.out.println("DISBOARD BUMPED!");
+        } else {
+            System.out.println("DISBOARD SOMETHING GOES WRONG(");
         }
+
+       //
+
         driver.quit();
     }
+    //2 hour
 }

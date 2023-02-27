@@ -1,23 +1,22 @@
 package ua.com.company.selenium;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.interactions.Actions;
 import ua.com.company.utils.PropertiesReader;
 
-public class DiscordServerInfo implements SiteBot {
+public class DiscordServerInfo extends SiteBot {
 
-    @Override
-    public String getUrl() {
-        return PropertiesReader.getDiscordServerInfoUrl();
-    }
 
     public void init() {
 
-        WebDriver driver = getLoggedConfiguredChromeDriver(getUrl());
-        Actions actions = new Actions(driver);
+        WebDriver driver = getLoggedConfiguredChromeDriver(PropertiesReader.getDiscordServerInfoUrl());
 
-//TODO WHAT BEHEVARIO???
-
+        String successXpath = "/html/body/div[2]/div[1]/div[1]/h3";
+        if (driver.findElements(By.xpath(successXpath)).size() > 0
+                && driver.findElement(By.xpath(successXpath)).getText().equalsIgnoreCase("SUCCESSFULLY LIKE!")) {
+            System.out.println("WELL DONE!");
+        }
+//4 hour
 
         driver.quit();
 

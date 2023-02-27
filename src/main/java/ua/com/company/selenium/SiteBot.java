@@ -1,24 +1,30 @@
 package ua.com.company.selenium;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
 import ua.com.company.utils.PropertiesReader;
 
 import java.util.Random;
 
-public interface SiteBot {
-    String getUrl();
+public class SiteBot {
+  private   Actions actions = null;
+    public Actions getActions(){
+        return  actions;
+    }
 
-    default WebDriver getLoggedConfiguredChromeDriver(String url) {
+    public WebDriver getLoggedConfiguredChromeDriver(String url) {
 
         // Instantiate a ChromeDriver class.
         WebDriver driver = new ChromeDriver(getChromeOptions());
 
         //Creating the JavascriptExecutor interface object by Type casting
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        driver.get(getUrl());
+        actions= new Actions(driver);
+        driver.get(url);
 
         try {
             Thread.sleep(5000 + new Random().nextInt(5000));
@@ -31,6 +37,14 @@ public interface SiteBot {
             Thread.sleep(5000 + new Random().nextInt(5000));
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+        if (driver.findElements(By.className("contents-3NembX")).size() > 0) {
+            actions.moveToElement(driver.findElement(By.className("contents-3NembX"))).contextClick().perform();
+            try {
+                Thread.sleep(10000 + new Random().nextInt(5000));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         return driver;
 
