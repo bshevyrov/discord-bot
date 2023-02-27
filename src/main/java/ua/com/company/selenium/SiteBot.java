@@ -1,0 +1,68 @@
+package ua.com.company.selenium;
+
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import ua.com.company.utils.PropertiesReader;
+
+import java.util.Random;
+
+public interface SiteBot {
+    String getUrl();
+
+    default WebDriver getLoggedConfiguredChromeDriver(String url) {
+
+        // Instantiate a ChromeDriver class.
+        WebDriver driver = new ChromeDriver(getChromeOptions());
+
+        //Creating the JavascriptExecutor interface object by Type casting
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        driver.get(getUrl());
+
+        try {
+            Thread.sleep(5000 + new Random().nextInt(5000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        js.executeScript(loginWithTokenScript(PropertiesReader.getUserToken()));
+
+        try {
+            Thread.sleep(5000 + new Random().nextInt(5000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return driver;
+
+    }
+
+    private ChromeOptions getChromeOptions() {
+
+        ChromeOptions chrome = new ChromeOptions();
+
+        chrome.addArguments("user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36");
+        chrome.addArguments("--window-size=1280,1024");//1280X1024
+        chrome.addArguments("--disable-extensions");
+        chrome.addArguments("--profile-directory=Default");
+        chrome.addArguments("--incognito");
+        chrome.addArguments("--disable-plugins-discovery");
+        chrome.addArguments("--disable-blink-features");
+        chrome.addArguments("--disable-blink-features=AutomationControlled");
+        chrome.addArguments("--start-maximized");
+
+//chrome.addArguments("--headless");
+        return chrome;
+    }
+
+    private String loginWithTokenScript(String token) {
+        return " function login(token) {"
+                + "setInterval(() => {"
+                + "document.body.appendChild(document.createElement `iframe`).contentWindow.localStorage.token = `\"${token}\"`"
+                + "}, 50);"
+                + "setTimeout(() => {"
+                + "location.reload();"
+                + "}, 2500);"
+                + "}"
+                + " login('" + token + "')";
+    }
+}

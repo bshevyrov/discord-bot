@@ -1,24 +1,25 @@
 package ua.com.company;
 
-import com.sun.tools.javac.Main;
-import ua.com.company.selenium.JavaRunCommand;
-import ua.com.company.selenium.MainClass;
+import ua.com.company.selenium.DiscordServerInfo;
 
 public class App {
     //TODO BUMPER UPDATE for Owner and some roles to update bots
 
 
     public static void main(String[] args) throws InterruptedException {
+        //init web driver
+        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+
 //        MainClass mainClass = new MainClass();
 //
 //        mainClass.init();
 //
 
 
-        MainClass curves = new MainClass();
+        DiscordServerInfo curves = new DiscordServerInfo();
         curves.init();
 
-   /* JDA jda = JDABuilder.createDefault(PropertiesReader.getToken())
+   /* JDA jda = JDABuilder.createDefault(PropertiesReader.getBotToken())
                 .enableIntents(GatewayIntent.GUILD_MEMBERS,
                         GatewayIntent.GUILD_MESSAGES,
                         GatewayIntent.MESSAGE_CONTENT,

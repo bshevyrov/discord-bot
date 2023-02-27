@@ -20,8 +20,7 @@ public class PropertiesReader {
      * Method read properties file.
      */
     private static void loadDiscordProperties() {
-        // prod user ubuntu
-        // dev user bohdan
+
         String pathToPropFile;
         ///etc/environment
         if (System.getenv("SERVER_ENVIRONMENT").equals("DEV")) {
@@ -44,9 +43,14 @@ public class PropertiesReader {
         }
     }
 
-    public static String getToken() {
+    public static String getBotToken() {
         loadDiscordProperties();
-        return prop.getProperty("discord.token");
+        return prop.getProperty("discord.bot.token");
+    }
+
+    public static String getUserToken() {
+        loadDiscordProperties();
+        return prop.getProperty("discord.user.token");
     }
 
     public static String getGuild() {
@@ -58,26 +62,52 @@ public class PropertiesReader {
         loadDiscordProperties();
         return prop.getProperty("discord.channel");
     }
+
     public static String getDeleteDelay() {
         loadDiscordProperties();
         return prop.getProperty("discord.delay.in.ms.before.del.message");
     }
+
     public static String getSendDelay() {
         loadDiscordProperties();
         return prop.getProperty("discord.delay.in.ms.before.send.another.dm");
     }
+
     public static String getManualRoundDelay() {
         loadDiscordProperties();
         return prop.getProperty("discord.delay.in.m.before.new.manual.bump.round");
     }
+
     public static String getAutoRoundDelay() {
         loadDiscordProperties();
         return prop.getProperty("discord.delay.in.m.before.new.auto.bump.round");
     }
+    public static String getDisboardUrl() {
+        loadDiscordProperties();
+        return prop.getProperty("discord.site.disboard.url");
+    }
+    public static String getDiscadiaUrl() {
+        loadDiscordProperties();
+        return prop.getProperty("discord.site.discadia.url");
+    }
+
+    public static String getDiscordHomeUrl() {
+        loadDiscordProperties();
+        return prop.getProperty("discord.site.discordhome.url");
+    }
+
+    public static String getDiscordServerInfoUrl() {
+        loadDiscordProperties();
+        return prop.getProperty("discord.site.discordserverinfo.url");
+    }
+
+    public static String getTopGGUrl() {
+        loadDiscordProperties();
+        return prop.getProperty("discord.site.topgg.url");
+    }
 
     private static void loadMyAnimeListProperties() {
-        // prod user ubuntu
-        // dev user bohdan
+
         String pathToPropFile;
         ///etc/environment
         if (System.getenv("SERVER_ENVIRONMENT").equals("DEV")) {
@@ -99,9 +129,12 @@ public class PropertiesReader {
             System.exit(1);
         }
     }
+
     public static String getClientId() {
         loadMyAnimeListProperties();
         return prop.getProperty("mal.client.id");
     }
+
+
 
 }
