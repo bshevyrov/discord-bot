@@ -1,4 +1,4 @@
-package ua.com.company.entity;
+package ua.com.company.model;
 
 import java.util.List;
 
@@ -12,8 +12,8 @@ public class MALResponse {
     private List<String> genres;
     private String type;
     private String status;
-    private String pictures;
-    private int episodeLengthInMillis;
+    private String picture;
+    private int episodeLengthInSec;
     private int episodes;
     private List<String> studios;
 
@@ -81,20 +81,20 @@ public class MALResponse {
         this.status = status;
     }
 
-    public String getPictures() {
-        return pictures;
+    public String getPicture() {
+        return picture;
     }
 
-    public void setPictures(String pictures) {
-        this.pictures = pictures;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
-    public int getEpisodeLengthInMillis() {
-        return episodeLengthInMillis;
+    public int getEpisodeLengthInSec() {
+        return episodeLengthInSec;
     }
 
-    public void setEpisodeLengthInMillis(int episodeLengthInMillis) {
-        this.episodeLengthInMillis = episodeLengthInMillis;
+    public void setEpisodeLengthInSec(int episodeLengthInSec) {
+        this.episodeLengthInSec = episodeLengthInSec;
     }
 
     public int getEpisodes() {

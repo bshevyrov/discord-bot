@@ -1,4 +1,4 @@
-package ua.com.company.entity;
+package ua.com.company.model;
 
 
 import net.dv8tion.jda.api.entities.Member;

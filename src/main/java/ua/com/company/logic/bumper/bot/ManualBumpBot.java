@@ -3,7 +3,7 @@ package ua.com.company.logic.bumper.bot;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.GenericMessageEvent;
-import ua.com.company.entity.Bumper;
+import ua.com.company.model.Bumper;
 import ua.com.company.exception.BumperNotFound;
 import ua.com.company.logic.bumper.message.MessageSender;
 import ua.com.company.logic.bumper.task.ManualBotTimerTask;

@@ -1,12 +1,12 @@
 package ua.com.company;
 
 
-
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
-import ua.com.company.handler.SlashCommandHandler;
+import ua.com.company.button.MalButtonInteraction;
+import ua.com.company.handler.slash.SlashCommandHandler;
 import ua.com.company.logic.bumper.message.MessageReader;
 import ua.com.company.utils.PropertiesReader;
 
@@ -27,12 +27,12 @@ public class App {
                         GatewayIntent.MESSAGE_CONTENT,
                         GatewayIntent.DIRECT_MESSAGES)
                 .addEventListeners(new MessageReader())
+                .addEventListeners(new MalButtonInteraction())
                 .addEventListeners(new ListenerEvents())
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .build();
-        jda.awaitReady().addEventListener(new SlashCommandHandler(jda, jda.getGuildById(PropertiesReader.getGuild())));
-
-
+        jda.awaitReady().addEventListener(
+                new SlashCommandHandler(jda, jda.getGuildById(PropertiesReader.getGuild())));
 
 
     }

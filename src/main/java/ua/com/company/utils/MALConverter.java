@@ -3,7 +3,7 @@ package ua.com.company.utils;
 import dev.katsute.mal4j.anime.Anime;
 import dev.katsute.mal4j.anime.property.Studio;
 import dev.katsute.mal4j.property.Genre;
-import ua.com.company.entity.MALResponse;
+import ua.com.company.model.MALResponse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,9 +41,9 @@ public final class MALConverter {
         response.setStudios(Arrays.stream(anime.getStudios())
                 .map(Studio::getName)
                 .collect(Collectors.toList()));
-        response.setEpisodeLengthInMillis(anime.getAverageEpisodeLength());
-        response.setPictures(anime.getMainPicture().getLargeURL());
-//        response.setPictures(anime.getMainPicture().getMediumURL());
+        response.setEpisodeLengthInSec(anime.getAverageEpisodeLength());
+        response.setPicture(anime.getMainPicture().getLargeURL());
+//        response.setPicture(anime.getMainPicture().getMediumURL());
         return response;
     }
 }

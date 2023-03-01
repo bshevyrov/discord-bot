@@ -1,4 +1,4 @@
-package ua.com.company.handler;
+package ua.com.company.handler.slash;
 
 import io.github.classgraph.ClassGraph;
 import net.dv8tion.jda.api.JDA;
@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
+import ua.com.company.handler.slash.Slash;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;

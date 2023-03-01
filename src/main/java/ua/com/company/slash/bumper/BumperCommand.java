@@ -4,8 +4,8 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import net.dv8tion.jda.internal.interactions.CommandDataImpl;
-import ua.com.company.entity.Bumper;
-import ua.com.company.handler.Slash;
+import ua.com.company.model.Bumper;
+import ua.com.company.handler.slash.Slash;
 
 import java.util.List;
 import java.util.Set;

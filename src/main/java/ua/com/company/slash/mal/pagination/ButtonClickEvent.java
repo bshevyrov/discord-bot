@@ -28,10 +28,10 @@ public class ButtonClickEvent {
             }
 
             // Convert Pagenumber String to Integer
-            int pageNum = Integer.valueOf(args[1]);
+            int pageNum = Integer.parseInt(args[1]);
 
             EmbedBuilder msg = new EmbedBuilder();
-            List<Button> buttons = new ArrayList<Button>();
+            List<Button> buttons = new ArrayList<>();
 
             //Check which page number is used
             switch (pageNum) {

@@ -16,7 +16,7 @@ public class MalRequestHandler {
         List<Anime> search =
                 mal.getAnime()
                         .withQuery(title)
-                        .withLimit(100)
+                        .withLimit(10)
 //                        .withOffset(2)
                         .includeNSFW(true)
                         .search();
