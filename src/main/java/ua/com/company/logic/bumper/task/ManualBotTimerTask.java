@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.message.GenericMessageEvent;
-import ua.com.company.Bumper;
+import ua.com.company.entity.Bumper;
 import ua.com.company.logic.bumper.message.MessageSender;
 import ua.com.company.utils.PropertiesReader;
 

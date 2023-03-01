@@ -1,4 +1,4 @@
-package ua.com.company;
+package ua.com.company.entity;
 
 
 import net.dv8tion.jda.api.entities.Member;
@@ -7,7 +7,6 @@ import ua.com.company.exception.BumperNotFound;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class Bumper {

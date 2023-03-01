@@ -4,19 +4,45 @@ import dev.katsute.mal4j.MyAnimeList;
 import dev.katsute.mal4j.anime.Anime;
 import ua.com.company.utils.PropertiesReader;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class MalRequestHandler {
-    public static void getAnimeListByTitle(String title){
+    //offset відступ від краю
+    // offset 2 lim 5 = 2.3.4.5.6
+    public static List<Anime> getAnimeListByTitle(String title){
         MyAnimeList mal = MyAnimeList.withClientID(PropertiesReader.getClientId());
         List<Anime> search =
                 mal.getAnime()
                         .withQuery(title)
-                        .withLimit(1)
-                        .withOffset(1)
-                        .includeNSFW(false)
+                        .withLimit(10)
+//                        .withOffset(2)
+                        .includeNSFW(true)
                         .search();
 
-        System.out.println(search.get(0).getSynopsis());
+
+        return search;
+
+
+
+
     }
+
+        public static void toStringMaker(Object o) {
+
+            Class<? extends Object> c = o.getClass();
+            Field[] fields = c.getDeclaredFields();
+            for (Field field : fields) {
+                String name = field.getName();
+                field.setAccessible(true);
+                try {
+                    System.out.format("%n%s: %s", name, field.get(o));
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 }
