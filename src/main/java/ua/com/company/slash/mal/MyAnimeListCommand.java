@@ -7,13 +7,15 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import ua.com.company.button.MalButtonInteraction;
 import ua.com.company.handler.slash.Slash;
 import ua.com.company.logic.mal.MalRequestHandler;
 import ua.com.company.model.MALPagination;
+import ua.com.company.model.MALResponse;
+import ua.com.company.utils.MALConverter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MyAnimeListCommand implements Slash {
     @Override
@@ -23,15 +25,25 @@ public class MyAnimeListCommand implements Slash {
 
         event.deferReply().queue();
         List<Anime> search = new ArrayList<>();
-
+        List<MALResponse> responseList = new ArrayList<>();
         if (type.equals("anime")) {
-            search = MalRequestHandler.getAnimeListByTitle(title);
+//            search = MalRequestHandler.getAnimeListByTitle(title);
+            responseList.addAll(MalRequestHandler.getAnimeListByTitle(title).stream()
+                    .map(MALConverter::animeToMALResponse)
+                    .collect(Collectors.toList()));
         }
 
-
-        MALPagination malPagination = new MALPagination(search);
-        event.getHook().sendMessageEmbeds(malPagination.getMessageEmbed())
-                .addActionRow(malPagination.getActiveRowButtons()).queue();
+//excecute work to delete context for 15 min
+//        MALPagination malPagination = new MALPagination(search);
+        MALPagination malPagination = new MALPagination(1);
+        MALPagination.setMessageContext(-1L, responseList);
+//        event.getHook().sendMessageEmbeds(new EmbedBuilder().setFooter("page 1").build())
+        event.getHook().sendMessageEmbeds(malPagination.getMessageEmbed(-1L))
+                .addActionRow(malPagination.getActiveRowButtons(-1L)).queue(message -> {
+                    message.editMessageEmbeds(malPagination.getMessageEmbed(-1L));
+                    List<MALResponse> tempRest = MALPagination.getMessageContext().remove(-1L);
+                    MALPagination.setMessageContext(message.getIdLong(), tempRest);
+                });
     }
 
 

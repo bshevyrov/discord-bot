@@ -22,31 +22,28 @@ private int page;
     public MalButtonInteraction() {
     }
 
+    //
+    //map message id/ list anime;
+    //delete after 15 min
+
+
+
+
+
     @Override
     public void onButtonInteraction(ButtonInteractionEvent event) {
-
+ event.deferEdit().queue();
         if(event.getUser().getIdLong()==event.getMessage().getInteraction().getUser().getIdLong()){
             System.out.println("PRESS");
-            page=Integer.parseInt(event.getMessage().getEmbeds().get(0).getFooter().getText());
-            event.getMessage().editMessageEmbeds(new MALPagination())
+            page=Integer.parseInt(event.getMessage().getEmbeds().get(0).getFooter().getText().substring(5));//PAGE 1. 5 is space
+
+            if(event.getInteraction().getButton().getId().equals("page_next")){
+                event.getMessage().editMessageEmbeds(new MALPagination(page+1).getMessageEmbed(event.getMessageIdLong())).queue();
+            }
+
         } else {
             System.out.println("INTRUDER");
         }
     }
 
-    public Long getUser() {
-        return userId;
-    }
-
-    public Long getMessage() {
-        return interactionId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
-    public void setInteractionId(long interactionId) {
-        this.interactionId = interactionId;
-    }
 }
