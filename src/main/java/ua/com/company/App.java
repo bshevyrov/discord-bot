@@ -1,8 +1,7 @@
 package ua.com.company;
 
 
-import com.freya02.botcommands.api.CommandsBuilder;
-import com.freya02.botcommands.api.components.DefaultComponentManager;
+
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;

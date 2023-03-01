@@ -1,7 +1,15 @@
 package ua.com.company.slash.mal.pagination;
 
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class ButtonClickEvent {
-    public void onButtonClick(ButtonClickEvent e) {
+    public void onButtonClick(ButtonInteractionEvent e) {
         //check if clicking is user
 
         // Split the ID to 2 Strings

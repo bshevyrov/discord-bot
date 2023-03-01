@@ -1,23 +1,32 @@
 package ua.com.company.slash.mal;
 
 
-import com.freya02.botcommands.api.components.InteractionConstraints;
-import com.freya02.botcommands.api.pagination.paginator.Paginator;
-import com.freya02.botcommands.api.pagination.paginator.PaginatorBuilder;
 import dev.katsute.mal4j.anime.Anime;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.MessageReaction;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.interactions.components.ActionRow;
+import net.dv8tion.jda.api.interactions.components.Component;
+import net.dv8tion.jda.api.interactions.components.LayoutComponent;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import net.dv8tion.jda.api.requests.restaction.pagination.ReactionPaginationAction;
+import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
+import net.dv8tion.jda.api.utils.messages.MessageEditData;
+import net.dv8tion.jda.internal.requests.restaction.pagination.ReactionPaginationActionImpl;
 import ua.com.company.entity.MALResponse;
 import ua.com.company.handler.Slash;
 import ua.com.company.logic.mal.MalRequestHandler;
 import ua.com.company.utils.MALConverter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class MyAnimeListCommand implements Slash {
@@ -27,17 +36,35 @@ public class MyAnimeListCommand implements Slash {
         String title = event.getOption("title", OptionMapping::getAsString);
 
         event.deferReply().queue();
-        System.out.println("11");
         List<Anime> search = new ArrayList<>();
 
         if (type.equals("anime")) {
             search = MalRequestHandler.getAnimeListByTitle(title);
         }
 
+
+        List<Button> buttons = new ArrayList<>();
+
+        buttons.add(Button.secondary("page_first", Emoji.fromUnicode("⏮")));
+        buttons.add(Button.secondary("page_1", Emoji.fromUnicode("◀")));
+        buttons.add(Button.secondary("page_cancel", Emoji.fromUnicode("❌")));
+        buttons.add(Button.secondary("page_2", Emoji.fromUnicode("▶")));
+        buttons.add(Button.secondary("page_last", Emoji.fromUnicode("⏭")));
+
+
+
+        event.getHook().sendMessageEmbeds(
+                createEmbeddedPage(MALConverter.animeToMALResponse(search.get(0))))
+                .addActionRow(buttons).queue();
+//
     }
 
-    private EmbedBuilder createEmbeddedPage(MALResponse response) {
+
+    private MessageEmbed createEmbeddedPage(MALResponse response) {
         EmbedBuilder eb = new EmbedBuilder();
+
+        eb.setFooter("Page 1/4");
+        eb.setColor(0x33cc33);
         eb.setTitle(response.getTitle());
         eb.setDescription(response.getSynopsis());
         eb.addField("Status: ", response.getStatus(), false);
@@ -47,7 +74,7 @@ public class MyAnimeListCommand implements Slash {
         eb.addField("Genre: ", response.getGenres().toString(), false);
 
 //        eb.build();
-        return eb;
+        return eb.build();
     }
 
     @Override
