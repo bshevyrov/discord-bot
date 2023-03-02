@@ -76,7 +76,7 @@ public final class MALConverter {
 
 
         response.setGenres(listGenre);
-        response.setAuthors(Arrays.stream(manga.getAuthors())
+        response.setAuthors(manga.getAuthors()==null?List.of(""):Arrays.stream(manga.getAuthors())
                 .map(author -> author.getRole() +": "+ author.getLastName() +" "+ author.getLastName())
                 .collect(Collectors.toList()));
         response.setChapters(manga.getChapters());

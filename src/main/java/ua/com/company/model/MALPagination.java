@@ -77,10 +77,27 @@ public class MALPagination {
 
     public MessageEmbed getMessageEmbed(Long messageLongId) {
         if (messageContext.get(messageLongId).size() - currentPage == 5) {//if there are 5 more anime in list, add new anime from mal
-            setMessageContext(messageLongId,
+            if(messageContext.get(messageLongId).get(0) instanceof MALAnimeResponse){
+                setMessageContext(messageLongId,
+                        MalRequestHandler.getAnimeListByTitle(search, getMessageContext().get(messageLongId).size()).stream()
+                                //ANIME&
+                                .map(MALConverter::animeToMALResponse)
+                                .collect(Collectors.toList()));
+            }
+
+            if(messageContext.get(messageLongId).get(0) instanceof MALMangaResponse){
+                setMessageContext(messageLongId,
+                        MalRequestHandler.getMangaListByTitle(search, getMessageContext().get(messageLongId).size()).stream()
+                                //ANIME&
+                                .map(MALConverter::mangaToMALResponse)
+                                .collect(Collectors.toList()));
+            }
+
+           /* setMessageContext(messageLongId,
                     MalRequestHandler.getAnimeListByTitle(search, getMessageContext().get(messageLongId).size()).stream()
+                           //ANIME&
                             .map(MALConverter::animeToMALResponse)
-                            .collect(Collectors.toList()));
+                            .collect(Collectors.toList()));*/
         }
         return createEmbeddedPage(messageLongId, currentPage);
     }
