@@ -13,9 +13,7 @@ public class MALResponse {
     private String type;
     private String status;
     private String picture;
-    private int episodeLengthInSec;
-    private int episodes;
-    private List<String> studios;
+
 
     public String getTitle() {
         return title;
@@ -89,29 +87,6 @@ public class MALResponse {
         this.picture = picture;
     }
 
-    public int getEpisodeLengthInSec() {
-        return episodeLengthInSec;
-    }
-
-    public void setEpisodeLengthInSec(int episodeLengthInSec) {
-        this.episodeLengthInSec = episodeLengthInSec;
-    }
-
-    public int getEpisodes() {
-        return episodes;
-    }
-
-    public void setEpisodes(int episodes) {
-        this.episodes = episodes;
-    }
-
-    public List<String> getStudios() {
-        return studios;
-    }
-
-    public void setStudios(List<String> studios) {
-        this.studios = studios;
-    }
 
     public MALResponse() {
     }

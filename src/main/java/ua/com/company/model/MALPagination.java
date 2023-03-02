@@ -1,11 +1,9 @@
 package ua.com.company.model;
 
-import dev.katsute.mal4j.anime.Anime;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
-import ua.com.company.button.MalButtonInteraction;
 import ua.com.company.logic.mal.MalRequestHandler;
 import ua.com.company.utils.MALConverter;
 
@@ -13,10 +11,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class MALPagination {
-    private static Map<Long,List<MALResponse>> messageContext = new HashMap<>();
+    private static Map<Long, List<MALResponse>> messageContext = new HashMap<>();
     private int currentPage;
     private String search;
-//    private List<MALResponse> malResponses = new ArrayList<>();
     private List<Button> buttons = new ArrayList<>();
 
     public static Map<Long, List<MALResponse>> getMessageContext() {
@@ -25,48 +22,48 @@ public class MALPagination {
 
     public static void setMessageContext(Long messageLongId, List<MALResponse> responseList) {
         //HOW TO ADD NEW TO LIST/ NOT REWRITE
-        if(messageContext.get(messageLongId)==null){
-            messageContext.put(messageLongId,responseList);
+        if (messageContext.get(messageLongId) == null) {
+            messageContext.put(messageLongId, responseList);
         } else {
             messageContext.get(messageLongId).addAll(responseList);
         }
     }
 
-    private MalButtonInteraction buttonPress;
-//    public MALPagination(int currentPage, List<Anime> animeList) {
-//        this.currentPage = currentPage;
-//        malResponses.addAll(animeList.stream()
-//                .map(MALConverter::animeToMALResponse)
-//                .collect(Collectors.toList()));
-//    }
 
-    public MALPagination(int page,String search) {
+    public MALPagination(int page, String search) {
         this.search = search;
-        this.currentPage=page;
+        this.currentPage = page;
     }
-
-
-//    public MALPagination(List<Anime> animeList) {
-//        this.currentPage = 1;
-//        malResponses.addAll(animeList.stream()
-//                .map(MALConverter::animeToMALResponse)
-//                .collect(Collectors.toList()));
-//    }
 
 
     private MessageEmbed createEmbeddedPage(Long messageLongId, int currentPage) {
         EmbedBuilder eb = new EmbedBuilder();
-        MALResponse response = getMessageContext().get(messageLongId).get(currentPage-1);
+        MALResponse response = getMessageContext().get(messageLongId).get(currentPage - 1);
 
         eb.setAuthor(search);
         eb.setFooter("Page " + currentPage);
-        eb.setColor(0x33cc33);
+        eb.setColor(new Random().nextInt(Integer.MAX_VALUE));
         eb.setTitle(response.getTitle());
         eb.addField("Type: ", response.getType(), true);
         eb.addField("Status: ", response.getStatus(), true);
-        eb.addField("Duration: ", response.getEpisodeLengthInSec() / 60 + "min", true);
+        eb.addField("\u200b", "\u200b",true);//empty field
+        if (response instanceof MALAnimeResponse) {
+            eb.addField("Episodes: ", String.valueOf(((MALAnimeResponse) response).getEpisodes()), true);
+            eb.addField("Duration: ", ((MALAnimeResponse) response).getEpisodeLengthInSec() / 60 + "min", true);
+        }
+        if (response instanceof MALMangaResponse) {
+            eb.addField("Volumes: ", String.valueOf(((MALMangaResponse) response).getVolumes()), true);
+            eb.addField("Chapters: ", String.valueOf(((MALMangaResponse) response).getChapters()), true);
+        }
+        eb.addField("\u200b", "\u200b",true);//empty field
         eb.addField("Genre: ", response.getGenres().toString(), false);
-        eb.addField("Studio: ", response.getStudios().toString(), false);
+        if (response instanceof MALAnimeResponse) {
+            eb.addField("Studio: ", ((MALAnimeResponse) response).getStudios().toString(), false);
+        }
+        if (response instanceof MALMangaResponse) {
+            eb.addField("Author: ", ((MALMangaResponse) response).getAuthors().toString(), false);
+
+        }
         eb.addField("Synonyms: ", Arrays.toString(response.getTitleSynonyms()), false);
         eb.addField("English: ", response.getTitleEnglish(), false);
         eb.addField("Japanese: ", response.getTitleJapanese(), false);
@@ -79,11 +76,11 @@ public class MALPagination {
     }
 
     public MessageEmbed getMessageEmbed(Long messageLongId) {
-        if(messageContext.get(messageLongId).size()-currentPage==5){//if there are 5 more anime in list, add new anime from mal
-           setMessageContext(messageLongId,
-           MalRequestHandler.getAnimeListByTitle(search,getMessageContext().get(messageLongId).size()).stream()
-                   .map(MALConverter::animeToMALResponse)
-                   .collect(Collectors.toList()));
+        if (messageContext.get(messageLongId).size() - currentPage == 5) {//if there are 5 more anime in list, add new anime from mal
+            setMessageContext(messageLongId,
+                    MalRequestHandler.getAnimeListByTitle(search, getMessageContext().get(messageLongId).size()).stream()
+                            .map(MALConverter::animeToMALResponse)
+                            .collect(Collectors.toList()));
         }
         return createEmbeddedPage(messageLongId, currentPage);
     }

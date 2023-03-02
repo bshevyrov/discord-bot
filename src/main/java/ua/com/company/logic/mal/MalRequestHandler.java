@@ -2,6 +2,7 @@ package ua.com.company.logic.mal;
 
 import dev.katsute.mal4j.MyAnimeList;
 import dev.katsute.mal4j.anime.Anime;
+import dev.katsute.mal4j.manga.Manga;
 import ua.com.company.utils.PropertiesReader;
 
 import java.lang.reflect.Field;
@@ -21,6 +22,23 @@ public class MalRequestHandler {
                         .search();
 
 
+        return search;
+
+
+    }
+
+    public static List<Manga> getMangaListByTitle(String title, int offset) {
+        MyAnimeList mal = MyAnimeList.withClientID(PropertiesReader.getClientId());
+        List<Manga> search =
+
+                mal.getManga()
+                        .withQuery(title)
+                        .withLimit(10)
+                        .withOffset(offset)
+                        .includeNSFW(true)
+                        .search();
+
+        search.forEach(MalRequestHandler::toStringMaker);
         return search;
 
 

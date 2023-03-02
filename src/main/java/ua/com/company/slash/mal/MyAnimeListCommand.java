@@ -32,6 +32,10 @@ public class MyAnimeListCommand implements Slash {
                     .map(MALConverter::animeToMALResponse)
                     .collect(Collectors.toList()));
         }
+        if(type.equals("manga")){
+            responseList.addAll(MalRequestHandler.getMangaListByTitle(title,0).stream()
+                    .map(MALConverter::mangaToMALResponse)
+                    .collect(Collectors.toList()));        }
 
 
 //excecute work to delete context for 15 min
