@@ -28,14 +28,15 @@ public class MyAnimeListCommand implements Slash {
         List<MALResponse> responseList = new ArrayList<>();
         if (type.equals("anime")) {
 //            search = MalRequestHandler.getAnimeListByTitle(title);
-            responseList.addAll(MalRequestHandler.getAnimeListByTitle(title).stream()
+            responseList.addAll(MalRequestHandler.getAnimeListByTitle(title,0).stream()
                     .map(MALConverter::animeToMALResponse)
                     .collect(Collectors.toList()));
         }
 
+
 //excecute work to delete context for 15 min
 //        MALPagination malPagination = new MALPagination(search);
-        MALPagination malPagination = new MALPagination(1);
+        MALPagination malPagination = new MALPagination(1,title);
         MALPagination.setMessageContext(-1L, responseList);
 //        event.getHook().sendMessageEmbeds(new EmbedBuilder().setFooter("page 1").build())
         event.getHook().sendMessageEmbeds(malPagination.getMessageEmbed(-1L))

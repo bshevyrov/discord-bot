@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import ua.com.company.button.MalButtonInteraction;
+import ua.com.company.logic.mal.MalRequestHandler;
 import ua.com.company.utils.MALConverter;
 
 import java.util.*;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 public class MALPagination {
     private static Map<Long,List<MALResponse>> messageContext = new HashMap<>();
     private int currentPage;
+    private String search;
 //    private List<MALResponse> malResponses = new ArrayList<>();
     private List<Button> buttons = new ArrayList<>();
 
@@ -38,7 +40,8 @@ public class MALPagination {
 //                .collect(Collectors.toList()));
 //    }
 
-    public MALPagination(int page) {
+    public MALPagination(int page,String search) {
+        this.search = search;
         this.currentPage=page;
     }
 
@@ -55,17 +58,19 @@ public class MALPagination {
         EmbedBuilder eb = new EmbedBuilder();
         MALResponse response = getMessageContext().get(messageLongId).get(currentPage-1);
 
+        eb.setAuthor(search);
         eb.setFooter("Page " + currentPage);
         eb.setColor(0x33cc33);
         eb.setTitle(response.getTitle());
         eb.addField("Type: ", response.getType(), true);
         eb.addField("Status: ", response.getStatus(), true);
         eb.addField("Duration: ", response.getEpisodeLengthInSec() / 60 + "min", true);
-        eb.addField("Studio: ", response.getStudios().toString(), true);
         eb.addField("Genre: ", response.getGenres().toString(), false);
-        eb.addField("Synonyms: ", Arrays.toString(response.getTitleSynonyms()), true);
-        eb.addField("English: ", response.getTitleEnglish(), true);
-        eb.addField("Japanese: ", response.getTitleJapanese(), true);
+        eb.addField("Studio: ", response.getStudios().toString(), false);
+        eb.addField("Synonyms: ", Arrays.toString(response.getTitleSynonyms()), false);
+        eb.addField("English: ", response.getTitleEnglish(), false);
+        eb.addField("Japanese: ", response.getTitleJapanese(), false);
+        //TODO AIRING DATA
         eb.setDescription(response.getSynopsis());
         eb.setThumbnail(response.getPicture());
 
@@ -74,6 +79,12 @@ public class MALPagination {
     }
 
     public MessageEmbed getMessageEmbed(Long messageLongId) {
+        if(messageContext.get(messageLongId).size()-currentPage==5){//if there are 5 more anime in list, add new anime from mal
+           setMessageContext(messageLongId,
+           MalRequestHandler.getAnimeListByTitle(search,getMessageContext().get(messageLongId).size()).stream()
+                   .map(MALConverter::animeToMALResponse)
+                   .collect(Collectors.toList()));
+        }
         return createEmbeddedPage(messageLongId, currentPage);
     }
 
