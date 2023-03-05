@@ -1,3 +1,4 @@
+/*
 package ua.com.company.logic.bumper.bot.impl;
 
 import ua.com.company.logic.bumper.bot.AutoBumpBot;
@@ -18,10 +19,13 @@ public class DHBumpBot extends AutoBumpBot {
         return "Command slash";
     }
 
+*/
 /*    @Override
     public void execute(GenericMessageEvent event) {
 
-    *//*    MessageChannel channel = event.getGuild().getTextChannelById(CHANNEL_ID);
+    *//*
+*/
+/*    MessageChannel channel = event.getGuild().getTextChannelById(CHANNEL_ID);
 //           channel.retrieveMessageById("1074671286938251304")
         channel.retrieveMessageById(event.getMessageId())
                 .queue(message -> {
@@ -53,8 +57,11 @@ public class DHBumpBot extends AutoBumpBot {
 
         Ma
 *//*
+*/
+/*
 
-    }*/
+    }*//*
+
 }
 
 //    public static void startSchedule(Event event) {
@@ -62,4 +69,4 @@ public class DHBumpBot extends AutoBumpBot {
 //        executor = Executors.newSingleThreadScheduledExecutor();
 //        executor.scheduleWithFixedDelay(timerTask, BumperConstants.PAUSE_BETWEEN_NEW_TASK,
 //                BumperConstants.PAUSE_BETWEEN_NEW_TASK, TimeUnit.MINUTES);
-//    }
+//    }*/

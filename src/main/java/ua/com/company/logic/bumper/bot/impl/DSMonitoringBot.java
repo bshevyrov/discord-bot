@@ -1,3 +1,4 @@
+/*
 package ua.com.company.logic.bumper.bot.impl;
 
 import ua.com.company.logic.bumper.bot.AutoBumpBot;
@@ -17,10 +18,13 @@ public class DSMonitoringBot extends AutoBumpBot {
         return "/like";
     }
 
+*/
 /*    @Override
     public void execute(GenericMessageEvent event) {
 
-    *//*    MessageChannel channel = event.getGuild().getTextChannelById(CHANNEL_ID);
+    *//*
+*/
+/*    MessageChannel channel = event.getGuild().getTextChannelById(CHANNEL_ID);
 //           channel.retrieveMessageById("1074671286938251304")
         channel.retrieveMessageById(event.getMessageId())
                 .queue(message -> {
@@ -52,8 +56,11 @@ public class DSMonitoringBot extends AutoBumpBot {
 
         Ma
 *//*
+*/
+/*
 
-    }*/
+    }*//*
+
 }
 
 //    public static void startSchedule(Event event) {
@@ -61,4 +68,4 @@ public class DSMonitoringBot extends AutoBumpBot {
 //        executor = Executors.newSingleThreadScheduledExecutor();
 //        executor.scheduleWithFixedDelay(timerTask, BumperConstants.PAUSE_BETWEEN_NEW_TASK,
 //                BumperConstants.PAUSE_BETWEEN_NEW_TASK, TimeUnit.MINUTES);
-//    }
+//    }*/

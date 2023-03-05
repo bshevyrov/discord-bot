@@ -22,6 +22,14 @@ public class TimerScheduleExecute {
         executor = Executors.newSingleThreadScheduledExecutor();
         executor.scheduleWithFixedDelay(timerTask, delay, delay, TimeUnit.MINUTES);
     }
+    public void startSchedule(boolean firstDelay) {
+        executor = Executors.newSingleThreadScheduledExecutor();
+        if (!firstDelay) {
+            executor.scheduleWithFixedDelay(timerTask, 0, delay, TimeUnit.MINUTES);
+        } else {
+            startSchedule();
+        }
+    }
 
     public TimerScheduleExecute(TimerTask timerTask, Long delayInMin) {
         this.timerTask = timerTask;

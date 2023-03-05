@@ -9,9 +9,22 @@ import org.openqa.selenium.interactions.Actions;
 import ua.com.company.utils.PropertiesReader;
 
 import java.util.Random;
+import java.util.TimerTask;
 
-public class SiteBot {
-  private   Actions actions = null;
+public abstract class SiteBot extends TimerTask {
+    private long TimeInMinToNextExecution;
+
+    public long getTimeInMinToNextExecution() {
+        return TimeInMinToNextExecution;
+    }
+
+    public void setTimeInMinToNextExecution(long timeInMinToNextExecution) {
+        TimeInMinToNextExecution = timeInMinToNextExecution
+                +new Random().nextInt(10)+1;
+    }
+
+    private   Actions actions = null;
+
     public Actions getActions(){
         return  actions;
     }

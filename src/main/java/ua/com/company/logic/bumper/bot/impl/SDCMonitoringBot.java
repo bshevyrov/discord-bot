@@ -7,11 +7,11 @@ public class SDCMonitoringBot extends ManualBumpBot {
     private Bumper.Entity bumper;*/
 
     @Override
-    public String getTag() {
-        return "aleXXL#6352";
-    }
 //    public String getTag() {
-//        return "SD.C Monitoring#9896";
+//        return "aleXXL#6352";
+//    }
+    public String getTag() {
+        return "SD.C Monitoring#9896";
 //    }
 
     /*@Override
@@ -62,4 +62,5 @@ public class SDCMonitoringBot extends ManualBumpBot {
         return embeddedMessageDescription.substring(embeddedMessageDescription.indexOf('@') + 1, embeddedMessageDescription.indexOf('>'));
     }*/
 
+    }
 }

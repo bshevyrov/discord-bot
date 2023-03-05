@@ -1,3 +1,4 @@
+/*
 package ua.com.company.selenium;
 
 import org.apache.commons.collections4.ListUtils;
@@ -36,9 +37,11 @@ public class JavaRunCommand {
             // read the output from the command
             System.out.println("Here is the standard output of the command:\n");
             bufferedReader = stdInput.lines().collect(Collectors.toList());
-            /*while ((s = stdInput.readLine()) != null) {
+            */
+/*while ((s = stdInput.readLine()) != null) {
                 System.out.println(s);
-            }*/
+            }*//*
+
 
             // read any errors from the attempted command
             System.out.println("Here is the standard error of the command (if any):\n");
@@ -72,3 +75,4 @@ public class JavaRunCommand {
 }
 
 
+*/

@@ -1,3 +1,4 @@
+/*
 package ua.com.company.logic.bumper.task;
 
 import net.dv8tion.jda.api.entities.Message;
@@ -47,12 +48,14 @@ public class AutoBotTimerTask extends TimerTask {
       sendChannelMessage(textChannel,slashCommand);
     }
 
-    /**
+    */
+/**
      * This Method message send Private Message
      *
      * @param bumper  bumper Entity to whom send message
      * @param message message String text that send
-     */
+     *//*
+
     static void sendPrivateMessage(Bumper.Entity bumper, TextChannel context, String message) {
         // Send message and delete 30 seconds later
         event.getJDA().retrieveUserById(bumper.getId()).complete()
@@ -72,12 +75,14 @@ public class AutoBotTimerTask extends TimerTask {
         //Error handling
     }
 
-    /**
+    */
+/**
      * This method send message to channel
      *
      * @param context TextChannel where send message
      * @param message String message
-     */
+     *//*
+
     static void sendChannelMessage(TextChannel context, String message) {
         context.sendMessage(message)
                 .queue();
@@ -89,3 +94,4 @@ public class AutoBotTimerTask extends TimerTask {
     }
 
 }
+*/

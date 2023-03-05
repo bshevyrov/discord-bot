@@ -1,3 +1,4 @@
+/*
 package ua.com.company.logic.bumper.bot.impl;
 
 import net.dv8tion.jda.api.events.message.GenericMessageEvent;
@@ -11,3 +12,4 @@ public class DisboardBot extends ManualBumpBot {
     }
 
 }
+*/

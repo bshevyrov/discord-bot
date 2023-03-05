@@ -52,7 +52,7 @@ public class MALResponse {
     }
 
     public void setSynopsis(String synopsis) {
-        synopsis=synopsis.replace("\\n","\n");
+      //  synopsis=synopsis.replace("\\n","\n");
         this.synopsis = synopsis;
     }
 

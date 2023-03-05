@@ -19,7 +19,7 @@
         <mal4j.version>3.0.1</mal4j.version>
         <selenium-java.version>4.8.1</selenium-java.version>
         <commons-math3.version>3.6.1</commons-math3.version>
-        <yandex-translate-api.version>cb8f63fe09</yandex-translate-api.version>
+        <language-translator.version>10.1.0</language-translator.version>
     </properties>
 
 
@@ -127,10 +127,11 @@
         </dependency>
         <!--        BROWSER EMULATOR-->
         <!--        TRANSLATOR-->
+        <!-- https://mvnrepository.com/artifact/com.ibm.watson/language-translator -->
         <dependency>
-            <groupId>com.github.huymluu</groupId>
-            <artifactId>yandex-translate-api</artifactId>
-            <version>${yandex-translate-api.version}</version>
+            <groupId>com.ibm.watson</groupId>
+            <artifactId>language-translator</artifactId>
+            <version>${language-translator.version}</version>
         </dependency>
         <!--        TRANSLATOR-->
 
