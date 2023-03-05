@@ -2,6 +2,7 @@ package ua.com.company.selenium;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import ua.com.company.logic.bumper.task.SiteScheduleExecute;
 import ua.com.company.utils.PropertiesReader;
 
 import java.util.Arrays;
@@ -34,10 +35,12 @@ public class DiscordServerInfo extends SiteBot {
             System.out.println("Not time" + getTimeInMinToNextExecution());
         }
 //4 hour
+        createNewScheduleTask(new SiteScheduleExecute().getExecutorService());
 
         driver.quit();
 
     }
+
 
 
 }

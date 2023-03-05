@@ -1,17 +1,21 @@
-/*
-package ua.com.company;
+package ua.com.company.logic.bumper.task;
 
 import io.github.classgraph.ClassGraph;
-import ua.com.company.logic.bumper.task.SingleScheduleExecute;
 import ua.com.company.selenium.SiteBot;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.*;
 
-public class SiteJob {
+public class SiteScheduleExecute {
+   private static ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
-    private   List<SiteBot>  getListSiteBots() {
+    public ScheduledExecutorService getExecutorService() {
+        return executorService;
+    }
+
+    private List<SiteBot> getListSiteBots() {
         List<SiteBot> list = new ArrayList<>();
 
         ClassGraph classGraph = new ClassGraph();
@@ -31,9 +35,9 @@ public class SiteJob {
                 });
         return list;
     }
-    public void start(){
-        getListSiteBots().forEach(siteBot ->
-                new SingleScheduleExecute(siteBot,siteBot.getTimeInMinToNextExecution()).startSchedule(false));
+
+    public void init(){
+      getListSiteBots().forEach(siteBot -> executorService.schedule(siteBot,siteBot.getTimeInMinToNextExecution(),TimeUnit.MINUTES));
     }
 }
-*/
+

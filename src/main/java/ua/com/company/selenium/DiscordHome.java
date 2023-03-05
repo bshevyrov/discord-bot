@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import ua.com.company.logic.bumper.task.SiteScheduleExecute;
 import ua.com.company.utils.PropertiesReader;
 
 import java.util.Random;
@@ -41,8 +42,11 @@ public class DiscordHome extends SiteBot {
         }
         //   ONLY ADMIN BUMP
 //3 hour
+        createNewScheduleTask(new SiteScheduleExecute().getExecutorService());
+
         driver.quit();
 
     }
+
 
 }

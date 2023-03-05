@@ -7,7 +7,7 @@ import ua.com.company.model.Bumper;
 import ua.com.company.exception.BumperNotFound;
 import ua.com.company.logic.bumper.message.MessageSender;
 import ua.com.company.logic.bumper.task.ManualBotTimerTask;
-import ua.com.company.logic.bumper.task.TimerScheduleExecute;
+import ua.com.company.logic.bumper.task.SingleScheduleExecute;
 import ua.com.company.utils.BumperConstants;
 import ua.com.company.utils.PropertiesReader;
 
@@ -15,7 +15,7 @@ import java.time.ZoneId;
 
 public abstract class ManualBumpBot implements IBot {
     private Bumper.Entity bumper;
-    private static TimerScheduleExecute timerScheduleExecute;
+    private static SingleScheduleExecute singleScheduleExecute;
     private MessageSender messageSender;
 
     @Override
@@ -23,8 +23,8 @@ public abstract class ManualBumpBot implements IBot {
 
     @Override
     public void execute(GenericMessageEvent event) {
-        if (timerScheduleExecute == null) {
-            timerScheduleExecute = new TimerScheduleExecute(new ManualBotTimerTask(event), BumperConstants.PAUSE_BETWEEN_MANUAL_NEW_TASK);
+        if (singleScheduleExecute == null) {
+            singleScheduleExecute = new SingleScheduleExecute(new ManualBotTimerTask(event), BumperConstants.PAUSE_BETWEEN_MANUAL_NEW_TASK);
         }
         TextChannel channel = event.getGuild().getTextChannelById(PropertiesReader.getChannel());
 //           channel.retrieveMessageById("1074671286938251304")
@@ -45,21 +45,21 @@ public abstract class ManualBumpBot implements IBot {
                         bumper.
                                 setBumpTime(message.getTimeCreated()
                                         .atZoneSameInstant(ZoneId.of("Europe/Kiev")));
-                        ((ManualBotTimerTask) timerScheduleExecute.getTimerTask()).setMessageSenderInterrupted(true);
+                        ((ManualBotTimerTask) singleScheduleExecute.getTimerTask()).setMessageSenderInterrupted(true);
                     } catch (BumperNotFound e) {
 //       log.error(e.getMessage());
                     }
-                    if (timerScheduleExecute.getExecutor() == null) {
-                        timerScheduleExecute.startSchedule();
+                    if (singleScheduleExecute.getExecutor() == null) {
+                        singleScheduleExecute.startSchedule();
                     } else {
                         //this equivalent to executor.shutdownNow(); because close all
 //                                NewCircleTimerTask.setBumped(true);
 //                                NewCircleTimerTask.getThread().interrupt();
                         new MessageSender(channel,message.getAuthor()).sendBumped();
-                        ((ManualBotTimerTask) timerScheduleExecute.getTimerTask()).getMessageSenderThread().stop();
+                        ((ManualBotTimerTask) singleScheduleExecute.getTimerTask()).getMessageSenderThread().stop();
 
-                        timerScheduleExecute.getExecutor().shutdownNow();
-                        timerScheduleExecute.startSchedule();
+                        singleScheduleExecute.getExecutor().shutdownNow();
+                        singleScheduleExecute.startSchedule();
                     }
 
                 });

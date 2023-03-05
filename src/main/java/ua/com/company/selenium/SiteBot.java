@@ -6,12 +6,16 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
+import ua.com.company.logic.bumper.task.SiteScheduleExecute;
 import ua.com.company.utils.PropertiesReader;
 
 import java.util.Random;
 import java.util.TimerTask;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-public abstract class SiteBot extends TimerTask {
+public abstract class SiteBot implements Runnable {
     private long TimeInMinToNextExecution;
 
     public long getTimeInMinToNextExecution() {
@@ -22,7 +26,9 @@ public abstract class SiteBot extends TimerTask {
         TimeInMinToNextExecution = timeInMinToNextExecution
                 +new Random().nextInt(10)+1;
     }
-
+    public void createNewScheduleTask(ScheduledExecutorService executor){
+     executor.schedule(this,this.getTimeInMinToNextExecution(), TimeUnit.MINUTES);
+    }
     private   Actions actions = null;
 
     public Actions getActions(){
@@ -30,7 +36,6 @@ public abstract class SiteBot extends TimerTask {
     }
 
     public WebDriver getLoggedConfiguredChromeDriver(String url) {
-
         // Instantiate a ChromeDriver class.
         WebDriver driver = new ChromeDriver(getChromeOptions());
 
