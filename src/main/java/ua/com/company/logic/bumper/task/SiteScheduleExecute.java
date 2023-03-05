@@ -22,7 +22,7 @@ public class SiteScheduleExecute {
 
         classGraph.enableClassInfo()
                 .scan()
-                .getClassesImplementing(SiteBot.class)
+                .getSubclasses(SiteBot.class)
                 .forEach(classInfo -> {
                     try {
                         SiteBot siteBot = (SiteBot) classInfo.loadClass().getDeclaredConstructor().newInstance();
