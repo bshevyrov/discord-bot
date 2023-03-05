@@ -21,19 +21,12 @@ public class SingleScheduleExecute {
 
     public void startSchedule() {
         executor = Executors.newSingleThreadScheduledExecutor();
-        executor.scheduleWithFixedDelay(timerTask, delay, delay, TimeUnit.MINUTES);
+//        executor.scheduleWithFixedDelay(timerTask, delay, delay, TimeUnit.MINUTES);
         //TODO rework for single execution
-//        executor.schedule(timerTask,  delay, TimeUnit.MINUTES);
+        executor.schedule(timerTask,  delay, TimeUnit.MINUTES);
 
     }
-    public void startSchedule(boolean firstDelay) {
-        executor = Executors.newSingleThreadScheduledExecutor();
-        if (!firstDelay) {
-            executor.scheduleWithFixedDelay(timerTask, 0, delay, TimeUnit.MINUTES);
-        } else {
-            startSchedule();
-        }
-    }
+
 
     public SingleScheduleExecute(TimerTask timerTask, Long delayInMin) {
         this.timerTask = timerTask;

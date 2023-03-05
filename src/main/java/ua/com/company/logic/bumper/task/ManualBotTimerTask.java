@@ -4,11 +4,13 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.message.GenericMessageEvent;
-import ua.com.company.model.Bumper;
 import ua.com.company.logic.bumper.message.MessageSender;
+import ua.com.company.model.Bumper;
 import ua.com.company.utils.PropertiesReader;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TimerTask;
 
 public class ManualBotTimerTask extends TimerTask {
     private static Event event = null;
@@ -17,15 +19,16 @@ public class ManualBotTimerTask extends TimerTask {
 
     private static MessageSender thread;
 
-    public  MessageSender getMessageSenderThread() {
+    public MessageSender getMessageSenderThread() {
         return thread;
     }
 
     static boolean isMessageSenderInterrupted = false;
 
-    public  void setMessageSenderInterrupted(boolean messageSenderInterrupted) {
+    public void setMessageSenderInterrupted(boolean messageSenderInterrupted) {
         isMessageSenderInterrupted = messageSenderInterrupted;
     }
+
     private static boolean bumped = false;
 
     public static void setBumped(boolean bumped) {
@@ -34,8 +37,8 @@ public class ManualBotTimerTask extends TimerTask {
 
     public ManualBotTimerTask(Event event) {
         this.event = event;
-       this.author = ((GenericMessageEvent)event).getChannel().retrieveMessageById(
-                ((GenericMessageEvent)event).getMessageId()).complete().getAuthor();
+//        this.author = ((GenericMessageEvent) event).getChannel().retrieveMessageById(
+//                ((GenericMessageEvent) event).getMessageId()).complete().getAuthor();
     }
 
     @Override
@@ -46,7 +49,9 @@ public class ManualBotTimerTask extends TimerTask {
         while (!bumped) {
 
             for (Bumper.Entity bumper : bumpers) {
-                thread = new MessageSender(textChannel, author, this);
+                User user = event.getJDA().getUserById(bumper.getId());
+//                thread = new MessageSender(textChannel, author, this);
+                thread = new MessageSender(textChannel, user, this);
                 thread.start();
                 try {
                     thread.join();
@@ -58,9 +63,9 @@ public class ManualBotTimerTask extends TimerTask {
                 }
             }
             if (!isMessageSenderInterrupted) {
-              new MessageSender(textChannel).sendChannelMessage("All bumpers ignore. Start again!");
+                new MessageSender(textChannel).sendChannelMessage("All bumpers ignore. Start again!");
             } else {
-                bumped=false;
+                bumped = false;
                 return;
 //                continue;
             }
@@ -68,15 +73,15 @@ public class ManualBotTimerTask extends TimerTask {
 
         bumped = false;
     }
-/*
+    /*
 
-    */
+     */
 /**
-     * This Method message send Private Message
-     *
-     * @param bumper  bumper Entity to whom send message
-     * @param message message String text that send
-     *//*
+ * This Method message send Private Message
+ *
+ * @param bumper  bumper Entity to whom send message
+ * @param message message String text that send
+ *//*
 
     static void sendPrivateMessage(Bumper.Entity bumper, TextChannel context, String message) {
         // Send message and delete 30 seconds later
@@ -99,11 +104,11 @@ public class ManualBotTimerTask extends TimerTask {
 
     */
 /**
-     * This method send message to channel
-     *
-     * @param context TextChannel where send message
-     * @param message String message
-     *//*
+ * This method send message to channel
+ *
+ * @param context TextChannel where send message
+ * @param message String message
+ *//*
 
     static void sendChannelMessage(TextChannel context, String message) {
         context.sendMessage(message)

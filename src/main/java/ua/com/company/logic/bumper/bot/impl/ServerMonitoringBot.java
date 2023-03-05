@@ -9,6 +9,11 @@ public class ServerMonitoringBot extends ManualBumpBot {
     public String getTag() {
         return "Server Monitoring#8312";
     }
+
+    @Override
+    public String getSuccessMessage() {
+        return "bumped";
+    }
 //    public String getTag() {
 //        return "Журбака#8713";
 //    }

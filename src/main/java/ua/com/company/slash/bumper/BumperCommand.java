@@ -19,7 +19,7 @@ public class BumperCommand implements Slash {
         String rsl = "";
 
         if (event.getFullCommandName().equals("bumper add")) {
-            rsl = new Bumper().add(event.getMember());
+            rsl = new Bumper().add(event.getUser());
             event.reply(rsl)
                     .setEphemeral(true)
                     .queue(); // reply immediately
@@ -34,7 +34,7 @@ public class BumperCommand implements Slash {
             return;
         }
         if (event.getFullCommandName().equals("bumper remove")) {
-            rsl = new Bumper().remove(event.getMember());
+            rsl = new Bumper().remove(event.getUser());
             event.reply(rsl)
                     .setEphemeral(true)
                     .queue(); // reply immediately

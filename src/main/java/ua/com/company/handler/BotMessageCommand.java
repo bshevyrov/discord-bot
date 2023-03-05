@@ -26,9 +26,7 @@ public class BotMessageCommand {
                             throw new RuntimeException("Unable to add IBot with the reason " + e);
                         }
                     }
-
                 });
-
         return botMap;
     }
 }

@@ -5,14 +5,13 @@ import dev.katsute.mal4j.anime.Anime;
 import dev.katsute.mal4j.manga.Manga;
 import ua.com.company.utils.PropertiesReader;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 public class MalRequestHandler {
     //offset відступ від краю
     // offset 2 lim 5 = 2.3.4.5.6
     public static List<Anime> getAnimeListByTitle(String title, int offset) {
-        MyAnimeList mal = MyAnimeList.withClientID(PropertiesReader.getClientId());
+        MyAnimeList mal = MyAnimeList.withClientID(PropertiesReader.getMALClientId());
         List<Anime> search =
                 mal.getAnime()
                         .withQuery(title)
@@ -28,7 +27,7 @@ public class MalRequestHandler {
     }
 
     public static List<Manga> getMangaListByTitle(String title, int offset) {
-        MyAnimeList mal = MyAnimeList.withClientID(PropertiesReader.getClientId());
+        MyAnimeList mal = MyAnimeList.withClientID(PropertiesReader.getMALClientId());
         List<Manga> search =
 
                 mal.getManga()
@@ -38,13 +37,13 @@ public class MalRequestHandler {
                         .includeNSFW(true)
                         .search();
 
-        search.forEach(MalRequestHandler::toStringMaker);
+//        search.forEach(MalRequestHandler::toStringMaker);
         return search;
 
 
     }
 
-    public static void toStringMaker(Object o) {
+  /*  public static void toStringMaker(Object o) {
 
         Class<? extends Object> c = o.getClass();
         Field[] fields = c.getDeclaredFields();
@@ -59,5 +58,5 @@ public class MalRequestHandler {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 }

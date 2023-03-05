@@ -130,7 +130,7 @@ public class PropertiesReader {
         }
     }
 
-    public static String getClientId() {
+    public static String getMALClientId() {
         loadMyAnimeListProperties();
         return prop.getProperty("mal.client.id");
     }

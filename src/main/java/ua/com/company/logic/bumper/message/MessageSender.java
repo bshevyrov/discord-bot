@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import ua.com.company.logic.bumper.task.ManualBotTimerTask;
+import ua.com.company.model.Bumper;
 import ua.com.company.utils.BumperConstants;
 
 import java.util.Calendar;
@@ -15,18 +16,19 @@ import java.util.concurrent.TimeUnit;
 
 public class MessageSender extends Thread {
     private final TextChannel textChannel;
-    private User bumper;
+    private User user;
     private ManualBotTimerTask timerTask;
 
-    public MessageSender(TextChannel textChannel, User bumper, TimerTask timerTask) {
-        this.textChannel = textChannel;
-        this.bumper = bumper;
+    public MessageSender(TextChannel textChannel, User user , TimerTask timerTask) {
+//        this.textChannel = textChannel;
+//        this.bumper = bumper;
+        this(textChannel,user);
         this.timerTask = (ManualBotTimerTask) timerTask;
     }
 
-    public MessageSender(TextChannel textChannel, User bumper) {
+    public MessageSender(TextChannel textChannel, User user) {
         this.textChannel = textChannel;
-        this.bumper = bumper;
+        this.user = user;
     }
 
     public MessageSender(TextChannel textChannel) {
@@ -41,8 +43,8 @@ public class MessageSender extends Thread {
             return;
         }
 
-        sendChannelMessage("Send PM to " + bumper.getName());
-        sendPrivateMessage(bumper, textChannel, BumperConstants.PRIVATE_MESSAGE);
+        sendChannelMessage("Send PM to " + user.getAsTag());
+        sendPrivateMessage(user, textChannel, BumperConstants.PRIVATE_MESSAGE);
         try {
             sleep(BumperConstants.DELAY_BEFORE_SEND_ANOTHER_MESSAGE);
         } catch (InterruptedException ex) {
@@ -50,7 +52,7 @@ public class MessageSender extends Thread {
         }
         if (isAlive()) {
             timerTask.setMessageSenderInterrupted(false);
-            sendChannelMessage(bumper.getName() + " dont answer(\nChoose another Member.");
+            sendChannelMessage(user.getAsTag() + " dont answer(\nChoose another Member.");
         }
     }
 
@@ -97,7 +99,7 @@ public class MessageSender extends Thread {
 
 
     public void sendBumped() {
-        sendChannelMessage(bumper.getName() + " bumped. GREAT JOB");
+        sendChannelMessage(user.getAsTag() + " bumped. GREAT JOB");
     }
 
 }

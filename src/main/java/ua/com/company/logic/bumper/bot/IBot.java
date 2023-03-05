@@ -6,4 +6,5 @@ import net.dv8tion.jda.api.events.message.GenericMessageEvent;
 public interface IBot {
     String getTag();
     void execute(GenericMessageEvent event);
+    String getSuccessMessage();
 }

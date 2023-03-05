@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import ua.com.company.button.MalButtonInteraction;
 import ua.com.company.handler.slash.SlashCommandHandler;
 import ua.com.company.logic.bumper.message.MessageReader;
+import ua.com.company.logic.bumper.task.SiteScheduleExecute;
 import ua.com.company.utils.PropertiesReader;
 
 import java.io.IOException;
@@ -34,6 +35,6 @@ public class App {
         jda.awaitReady().addEventListener(
                 new SlashCommandHandler(jda, jda.getGuildById(PropertiesReader.getGuild())));
 
-//           new SiteJob().start();
+          new SiteScheduleExecute().init();
     }
 }

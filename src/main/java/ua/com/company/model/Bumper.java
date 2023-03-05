@@ -2,6 +2,7 @@ package ua.com.company.model;
 
 
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 import ua.com.company.exception.BumperNotFound;
 
 import java.time.ZoneId;
@@ -16,17 +17,13 @@ public class Bumper {
 
     public static Set<Entity> bumpers = new LinkedHashSet<>();
 
-    /**
-     * This method add Member as Entity to LinkedHashSet of Bumpers
-     *
-     * @param member Discord Member
-     * @return Answer add member or already added member
-     */
-    public static String add(Member member) {
+
+    public static String add(User user) {
         boolean rsl;
-        rsl = bumpers.add(new Entity(member.getId(), member.getUser().getName(), getHigherRolePosition(member)));
-        sort(bumpers);
-        return rsl ? "Add member " + member.getUser().getName() : "Member " + member.getUser().getName() + " already added";
+        rsl = bumpers.add(new Entity(user.getId(), user.getAsTag()));
+//        sort(bumpers);
+//        return rsl ? "Add member " + member.getUser().getName() : "Member " + member.getUser().getName() + " already added";
+        return user.getAsTag() + " moved to end of the queue.";
     }
 
     /**
@@ -34,7 +31,7 @@ public class Bumper {
      */
     public static Set<Entity> findAll() {
         List<String> list = bumpers.stream()
-                .map(bumper -> bumper.getUsername() + " " + bumper.getBumpTime())
+                .map(Entity::getUsername /*+ " " + bumper.getBumpTime()*/)
                 .collect(Collectors.toList());
 //        if (list.size() == 0) {
 //            return "There is no bumpers in the list.";
@@ -80,45 +77,40 @@ public class Bumper {
         return current.isPresent();
     }
 
-    /**
-     * This method remove Entity from bumpers list/
-     *
-     * @param member Guild Member
-     * @return String representation of result
-     */
-    public static String remove(Member member) {
+
+    public static String remove(User user) {
         boolean rsl;
-        rsl = bumpers.remove(new Entity(member.getId()));
-        return rsl ? "Member " + member.getUser().getName() + " removed" : member.getUser().getName() + " not added to list.";
+        rsl = bumpers.remove(new Entity(user.getId()));
+        return rsl ? "Member " + user.getAsTag() + " removed" : user.getAsTag() + " not added to list.";
     }
 
 
-    /**
-     * This method sort set by desc role position.
-     *
-     * @param bumpers Set of Entity.
-     */
-    private static void sort(Set<Entity> bumpers) {
-        Bumper.bumpers = bumpers.stream()
-                .sorted(Comparator.comparingInt(Entity::getHigherRoleId).reversed())
-                .collect(Collectors.toCollection(LinkedHashSet::new));
-    }
-
-    /**
-     * This method return position of the highest role of member.
-     *
-     * @param member Discord member
-     * @return Position of higher Role
-     */
-    private static int getHigherRolePosition(Member member) {
-        final int[] roleId = {0};
-        member.getRoles().forEach(role -> {
-            if (role.getPosition() > roleId[0]) {
-                roleId[0] = role.getPosition();
-            }
-        });
-        return roleId[0];
-    }
+//    /**
+//     * This method sort set by desc role position.
+//     *
+//     * @param bumpers Set of Entity.
+//     */
+//    private static void sort(Set<Entity> bumpers) {
+//        Bumper.bumpers = bumpers.stream()
+//                .sorted(Comparator.comparingInt(Entity::getHigherRoleId).reversed())
+//                .collect(Collectors.toCollection(LinkedHashSet::new));
+//    }
+//
+//    /**
+//     * This method return position of the highest role of member.
+//     *
+//     * @param member Discord member
+//     * @return Position of higher Role
+//     */
+//    private static int getHigherRolePosition(Member member) {
+//        final int[] roleId = {0};
+//        member.getRoles().forEach(role -> {
+//            if (role.getPosition() > roleId[0]) {
+//                roleId[0] = role.getPosition();
+//            }
+//        });
+//        return roleId[0];
+//    }
 
 
     public static class Entity {
@@ -165,11 +157,11 @@ public class Bumper {
             this.bumpTime = bumpTime;
         }
 
-        public Entity(String id, String username, int higherRoleId) {
+        public Entity(String id, String username) {
             this.id = id;
             this.username = username;
-            this.higherRoleId = higherRoleId;
-            this.bumpTime = ZonedDateTime.now(ZoneId.of("Europe/Kiev")).minusYears(100);//Initial date 19XX year
+//            this.higherRoleId = higherRoleId;
+//            this.bumpTime = ZonedDateTime.now(ZoneId.of("Europe/Kiev")).minusYears(100);//Initial date 19XX year
 
         }
 

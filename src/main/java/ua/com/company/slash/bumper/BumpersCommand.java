@@ -22,7 +22,7 @@ public class BumpersCommand implements Slash {
 
         if (event.getFullCommandName().equals("bumpers add") && event.getOption("name") != null) {
             if(!event.getOption("name").getAsUser().isBot()){
-            rsl = new Bumper().add((event.getOption("name").getAsMember()));
+            rsl = new Bumper().add((event.getOption("name").getAsUser()));
             event.reply(rsl)
                     .setEphemeral(true)
                     .queue(); // reply immediately
@@ -31,7 +31,7 @@ public class BumpersCommand implements Slash {
         }
 
         if (event.getFullCommandName().equals("bumpers remove") && event.getOption("name") != null) {
-            rsl = new Bumper().remove((event.getOption("name").getAsMember()));
+            rsl = new Bumper().remove((event.getOption("name").getAsUser()));
             event.reply(rsl)
                     .setEphemeral(true)
                     .queue(); // reply immediately
