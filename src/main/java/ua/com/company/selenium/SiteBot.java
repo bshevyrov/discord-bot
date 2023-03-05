@@ -6,12 +6,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
-import ua.com.company.logic.bumper.task.SiteScheduleExecute;
 import ua.com.company.utils.PropertiesReader;
 
 import java.util.Random;
-import java.util.TimerTask;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -24,15 +21,17 @@ public abstract class SiteBot implements Runnable {
 
     public void setTimeInMinToNextExecution(long timeInMinToNextExecution) {
         TimeInMinToNextExecution = timeInMinToNextExecution
-                +new Random().nextInt(10)+1;
+                + new Random().nextInt(10) + 1;
     }
-    public void createNewScheduleTask(ScheduledExecutorService executor){
-     executor.schedule(this,this.getTimeInMinToNextExecution(), TimeUnit.MINUTES);
-    }
-    private   Actions actions = null;
 
-    public Actions getActions(){
-        return  actions;
+    public void createNewScheduleTask(ScheduledExecutorService executor) {
+        executor.schedule(this, this.getTimeInMinToNextExecution(), TimeUnit.MINUTES);
+    }
+
+    private Actions actions = null;
+
+    public Actions getActions() {
+        return actions;
     }
 
     public WebDriver getLoggedConfiguredChromeDriver(String url) {
@@ -41,7 +40,7 @@ public abstract class SiteBot implements Runnable {
 
         //Creating the JavascriptExecutor interface object by Type casting
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        actions= new Actions(driver);
+        actions = new Actions(driver);
         driver.get(url);
 
         try {
@@ -81,8 +80,8 @@ public abstract class SiteBot implements Runnable {
         chrome.addArguments("--disable-blink-features");
         chrome.addArguments("--disable-blink-features=AutomationControlled");
         chrome.addArguments("--start-maximized");
+        chrome.addArguments("--headless");
 
-//chrome.addArguments("--headless");
         return chrome;
     }
 
