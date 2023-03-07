@@ -1,7 +1,9 @@
 package ua.com.company;
 
 
+import com.github.mkstayalive.randomuseragent.RandomUserAgent;
 import okhttp3.Call;
+import ua.com.company.utils.UA;
 
 import java.io.IOException;
 import java.net.URI;
@@ -23,39 +25,9 @@ public class TESTAPP {
             .build();
 
     public static void main(String[] args) throws InterruptedException, ExecutionException {
-        ExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        List<Callable<Integer>> list = new ArrayList<>();
-        list.add(() -> 5);
-        list.add(() -> 4);
-        list.add(() -> 3);
-        list.add(() -> 2);
-        list.add(() -> 1);
-
-//        List<Future<Integer>> ans= executorService.invokeAll(list);
-
-       Map<String,Future<Integer>> map= new Hashtable<>();
-       map.put("five", executorService.submit(list.get(0)));
-       map.put("four", executorService.submit(list.get(1)));
-       map.put("three", executorService.submit(list.get(2)));
-       map.put("two", executorService.submit(list.get(3)));
-       map.put("one", executorService.submit(list.get(4)));
+        System.out.println(new UA().getUA());
 
 
-//       ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
-       ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-       scheduledExecutorService.schedule(() -> {
-           scheduledExecutorService.schedule(()-> System.out.println("NEW SCHEDULE"),10,TimeUnit.SECONDS);
-           System.out.println("create new schedule");
-       }, 1, TimeUnit.SECONDS);
-int time=2;
-       scheduledExecutorService.schedule(() -> System.out.println("change to 15 secsec"),time,TimeUnit.SECONDS);
-       scheduledExecutorService.schedule(() -> System.out.println("5 sec"),1,TimeUnit.SECONDS);
-       scheduledExecutorService.schedule(() -> System.out.println("4 sec"),1,TimeUnit.SECONDS);
-       scheduledExecutorService.schedule(() -> System.out.println("3 sec"),3,TimeUnit.SECONDS);
-       scheduledExecutorService.schedule(() -> System.out.println("2 sec"),1,TimeUnit.SECONDS);
-       scheduledExecutorService.schedule(() -> System.out.println("1 sec"),1,TimeUnit.SECONDS);
-        System.out.println("end");
-        time=15;
     }
 //    public static void main(String[] args) throws IOException, InterruptedException {
 //

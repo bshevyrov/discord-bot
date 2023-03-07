@@ -33,11 +33,14 @@ public class SiteScheduleExecute {
                         throw new RuntimeException("Unable to add Slash with the reason " + e);
                     }
                 });
+        System.out.println(list.size()+ " size list");
         return list;
     }
 
     public void init(){
-      getListSiteBots().forEach(siteBot -> executorService.schedule(siteBot,siteBot.getTimeInMinToNextExecution(),TimeUnit.MINUTES));
+        System.out.println("start init");
+        executorService.schedule(getListSiteBots().get(0),getListSiteBots().get(0).getTimeToNextExecution(),TimeUnit.MINUTES );
+//      getListSiteBots().forEach(siteBot -> executorService.schedule(siteBot,siteBot.getTimeInMinToNextExecution(),TimeUnit.MINUTES));
     }
 }
 
