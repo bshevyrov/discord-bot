@@ -6,15 +6,13 @@ public class SDCMonitoringBot extends ManualBumpBot {
   /*  private final String CHANNEL_ID = PropertiesReader.getChannel(); //HARD CODED CHANEL IS
     private Bumper.Entity bumper;*/
 
-//    @Override
-    public String getTag() {
-        return "Misato-San#6564";
+    @Override
+//    public String getTag() {
+//        return "Misato-San#6564";
 //    }
-/*
     public String getTag() {
         return "SD.C Monitoring#9896";
 //    }
-*/
 
     /*@Override
     public void execute(GenericMessageEvent event) {
@@ -66,12 +64,12 @@ public class SDCMonitoringBot extends ManualBumpBot {
 
     }
 
-//    @Override
-//    public String getSuccessMessage() {
-//        return "Успешный";
-//    }
     @Override
     public String getSuccessMessage() {
-        return "pioneer";
+        return "Успешный";
     }
+//    @Override
+//    public String getSuccessMessage() {
+//        return "pioneer";
+//    }
 }
