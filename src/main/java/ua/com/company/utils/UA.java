@@ -12,8 +12,15 @@ public class UA
 
     public String getUA(){
         Scanner scanner = null;
+        String path;
+        if (System.getenv("SERVER_ENVIRONMENT").equals("DEV")) {
+            path = "src/main/resources/ua.txt";
+
+        } else {//System.getenv("SERVER_ENVIRONMENT").equals("PROD")
+            path = "ua.txt";
+        }
         try {
-           scanner = new Scanner(new File("src/main/java/ua/com/company/utils/ua.txt"));
+           scanner = new Scanner(new File(path));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
