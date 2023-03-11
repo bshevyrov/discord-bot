@@ -35,6 +35,6 @@ public class App {
         jda.awaitReady().addEventListener(
                 new SlashCommandHandler(jda, jda.getGuildById(PropertiesReader.getGuild())));
 
-          new SiteScheduleExecute().init();
+//          new SiteScheduleExecute().init();
     }
 }
