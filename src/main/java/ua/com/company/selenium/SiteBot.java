@@ -67,7 +67,7 @@ public abstract class SiteBot implements Runnable {
         js.executeScript(loginWithTokenScript(PropertiesReader.getUserToken()));
 
         try {
-            Thread.sleep(5000 + new Random().nextInt(5000));
+            Thread.sleep(1000 + new Random().nextInt(2000));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -112,15 +112,25 @@ public abstract class SiteBot implements Runnable {
         chrome.addArguments("--disable-plugins-discovery");
         chrome.addArguments("--disable-blink-features");
         chrome.addArguments("--disable-blink-features=AutomationControlled");
+//        chrome.addArguments("--proxy-server=http://ba142abdba3f9d0b57b88170e424e7b263bc4858:js_render=true&antibot=true&window_height=1024&premium_proxy=true&autoparse=true@proxy.zenrows.com:8001");
         chrome.addArguments("--start-maximized");
         chrome.setPageLoadStrategy(PageLoadStrategy.EAGER);
 //        chrome.addArguments("--disable-extensions");
-        chrome.addExtensions(new File("src/main/resources/extension_1_47_4_0.crx"));
+/*        chrome.addExtensions(new File("src/main/resources/extension_1_47_4_0.crx"));
         chrome.addExtensions(new File("src/main/resources/extension_3_7_21_0.crx"));
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability(ChromeOptions.CAPABILITY, chrome);
-        chrome.merge(capabilities);
-//        chrome.addArguments("--headless");
+        chrome.addExtensions(new File("src/main/resources/ZenMate VPN .crx"));*/
+//        DesiredCapabilities capabilities = new DesiredCapabilities();
+//        Proxy proxy = new Proxy();
+//        proxy.setHttpProxy("http://ba142abdba3f9d0b57b88170e424e7b263bc4858:js_render=true&antibot=true&window_height=1024&premium_proxy=true&autoparse=true@proxy.zenrows.com:8001");
+//        proxy.setSslProxy("http://ba142abdba3f9d0b57b88170e424e7b263bc4858:js_render=true&antibot=true&window_height=1024&premium_proxy=true&autoparse=true@proxy.zenrows.com:8001");
+
+//        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+
+
+//        capabilities.setCapability(ChromeOptions.CAPABILITY, chrome);
+//        capabilities.setCapability("proxy", proxy);
+//        chrome.merge(capabilities);
+        chrome.addArguments("--headless");
 
         return chrome;
     }

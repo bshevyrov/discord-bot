@@ -1,3 +1,4 @@
+/*
 package ua.com.company.selenium;
 
 import org.openqa.selenium.By;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-public class Disboard extends SiteBot {
+public class Disboard extends SiteBotBAK {
 
 //FINISH
 
@@ -50,15 +51,17 @@ public class Disboard extends SiteBot {
                 //url bump button url=https://disboard.org/ru/server/bump/967764101256331304
 //        actions.moveToElement(webElement).contextClick().perform();
                 try {
-                    Thread.sleep(5000 + new Random().nextInt(5000));
+                    Thread.sleep(10000 + new Random().nextInt(5000));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                try {
+              */
+/*  try {
                     Thread.sleep(10 * 60 * 1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
+                }*//*
+
                 if (!webElement.getText().trim().contains("ПОВЫСИТЬ")) {
 
                     setTimeToNextExecution(Duration.ofHours(2));
@@ -94,4 +97,4 @@ public class Disboard extends SiteBot {
             driver.quit();
         }
     }
-}
+}*/

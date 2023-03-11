@@ -1,7 +1,6 @@
 package ua.com.company;
 
 
-import com.github.mkstayalive.randomuseragent.RandomUserAgent;
 import okhttp3.Call;
 import ua.com.company.utils.UA;
 

@@ -22,7 +22,6 @@ public class TopGG extends SiteBot {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            Actions actions = getActions();
 
 //        String loginToVoteButtonXpath = "/html/body/div[9]/div[4]/div/section/div[2]/a[1]";
 //        actions.moveToElement(driver.findElement(By.xpath(loginToVoteButtonXpath))).contextClick().perform();
@@ -70,10 +69,11 @@ public class TopGG extends SiteBot {
         } finally {
             setError(false);
             setTimeToNextExecution(Duration.ofMinutes(30));
-            createNewScheduleTask(new SiteScheduleExecute().getExecutorService());
-            driver.quit();
+
 
         }
+        createNewScheduleTask(new SiteScheduleExecute().getExecutorService());
+        driver.quit();
 
     }
 

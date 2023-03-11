@@ -106,6 +106,11 @@ public class PropertiesReader {
         return prop.getProperty("discord.site.topgg.url");
     }
 
+    public static String getMyserverGGUrl() {
+        loadDiscordProperties();
+        return prop.getProperty("discord.site.myservergg.url");
+    }
+
     private static void loadMyAnimeListProperties() {
 
         String pathToPropFile;

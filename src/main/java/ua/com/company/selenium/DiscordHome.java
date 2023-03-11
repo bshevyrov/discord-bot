@@ -51,12 +51,10 @@ public class DiscordHome extends SiteBot {
         } finally {
             if (isError()) {
                 setError(false);
-
                 setTimeToNextExecution(Duration.ofMinutes(30));
-                createNewScheduleTask(new SiteScheduleExecute().getExecutorService());
-                driver.quit();
-
             }
+            createNewScheduleTask(new SiteScheduleExecute().getExecutorService());
+            driver.quit();
         }
     }
 

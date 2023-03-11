@@ -124,13 +124,6 @@
             <version>${selenium-java.version}</version>
         </dependency>
         <!--        BROWSER EMULATOR-->
-<!--RANDOM USERAGENT
-        <dependency>
-            <groupId>com.github.edgedalmacio</groupId>
-            <artifactId>random-user-agent-java</artifactId>
-            <version>${random-user-agent.version}</version>
-        </dependency>
-RANDOM USERAGENT-->
 
 
     </dependencies>

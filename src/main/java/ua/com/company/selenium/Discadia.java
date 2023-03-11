@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import ua.com.company.utils.PropertiesReader;
 
-public class Discadia extends SiteBot {
+public class Discadia extends SiteBotBAK {
 
     public void init() {
         // Maximize the browser
