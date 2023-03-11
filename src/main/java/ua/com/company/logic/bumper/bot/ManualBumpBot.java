@@ -45,7 +45,7 @@ public abstract class ManualBumpBot implements IBot {
 //                                        .atZoneSameInstant(ZoneId.of("Europe/Kiev")));
 //                        ((ManualBotTimerTask) singleScheduleExecute.getTimerTask()).setMessageSenderInterrupted(true);
 
-                        }
+
                         if (singleScheduleExecute.getExecutor() == null) {
                             singleScheduleExecute.startSchedule();
                         } else {
@@ -59,7 +59,7 @@ public abstract class ManualBumpBot implements IBot {
                             singleScheduleExecute.startSchedule();
                         }
 
-
+                    }
 
 
                     /*
