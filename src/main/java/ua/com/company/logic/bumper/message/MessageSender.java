@@ -43,7 +43,10 @@ public class MessageSender extends Thread {
             return;
         }
 
+
         sendChannelMessage("Send PM to " + user.getAsTag());
+        //TODO make         sendChannelMessage("Send PM to " + "<@"+user.getId()+">"); AND DELETE THEM MESSAGE
+
         sendPrivateMessage(user, textChannel, BumperConstants.PRIVATE_MESSAGE);
         try {
             sleep(BumperConstants.DELAY_BEFORE_SEND_ANOTHER_MESSAGE);

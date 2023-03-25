@@ -17,6 +17,7 @@ import java.time.ZoneId;
 
 public abstract class ManualBumpBot implements IBot {
     private Bumper.Entity bumper;
+    //??STATIC??
     private static SingleScheduleExecute singleScheduleExecute;
     private MessageSender messageSender;
 
@@ -25,8 +26,12 @@ public abstract class ManualBumpBot implements IBot {
 
     @Override
     public void execute(GenericMessageEvent event) {
+//        ManualBotTimerTask timerTask = new ManualBotTimerTask(event);
         if (singleScheduleExecute == null) {
+            System.out.println( " static SingleSch nul");
             singleScheduleExecute = new SingleScheduleExecute(new ManualBotTimerTask(event), BumperConstants.PAUSE_BETWEEN_MANUAL_NEW_TASK);
+        } else {
+            System.out.println("NOT NULL");
         }
         TextChannel channel = event.getGuild().getTextChannelById(PropertiesReader.getChannel());
 //           channel.retrieveMessageById("1074671286938251304")
@@ -52,7 +57,7 @@ public abstract class ManualBumpBot implements IBot {
                             //this equivalent to executor.shutdownNow(); because close all
 //                                NewCircleTimerTask.setBumped(true);
 //                                NewCircleTimerTask.getThread().interrupt();
-                            new MessageSender(channel,message.getAuthor()).sendBumped();
+                            new MessageSender(channel,message.getInteraction().getUser()).sendBumped();
                             ((ManualBotTimerTask) singleScheduleExecute.getTimerTask()).getMessageSenderThread().stop();
 
                             singleScheduleExecute.getExecutor().shutdownNow();

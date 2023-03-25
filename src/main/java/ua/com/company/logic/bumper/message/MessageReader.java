@@ -21,8 +21,8 @@ public class MessageReader extends ListenerAdapter {
     public void onGenericMessage(GenericMessageEvent event) { //for Server Monitoring
 
         if (event.getChannel().getId().equals(CHANNEL_ID)
-                && !event.getGuild().getSelfMember().getUser().equals(
-                        event.getChannel().retrieveMessageById(event.getMessageId()).complete().getAuthor())
+//                && !event.getGuild().getSelfMember().getUser().equals(
+//                        event.getChannel().retrieveMessageById(event.getMessageId()).complete().getAuthor())
         && event.getChannel().retrieveMessageById(event.getMessageId()).complete().getAuthor().isBot()
         ) {
             BotMessageCommand botMessageCommand = new BotMessageCommand();

@@ -21,9 +21,9 @@ public class SingleScheduleExecute {
 
     public void startSchedule() {
         executor = Executors.newSingleThreadScheduledExecutor();
-//        executor.scheduleWithFixedDelay(timerTask, delay, delay, TimeUnit.MINUTES);
-        //TODO rework for single execution
-        executor.schedule(timerTask,  delay, TimeUnit.MINUTES);
+        executor.scheduleWithFixedDelay(timerTask, delay, delay, TimeUnit.MINUTES);
+//        //TODO rework for single execution
+//        executor.schedule(timerTask,  delay, TimeUnit.MINUTES);
 
     }
 

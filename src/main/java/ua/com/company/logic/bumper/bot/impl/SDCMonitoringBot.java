@@ -7,11 +7,11 @@ public class SDCMonitoringBot extends ManualBumpBot {
     private Bumper.Entity bumper;*/
 
     @Override
-//    public String getTag() {
-//        return "Misato-San#6564";
-//    }
     public String getTag() {
-        return "SD.C Monitoring#9896";
+        return "Misato-San#6564";
+    }
+//    public String getTag() {
+//        return "SD.C Monitoring#9896";
 //    }
 
     /*@Override
@@ -62,14 +62,14 @@ public class SDCMonitoringBot extends ManualBumpBot {
         return embeddedMessageDescription.substring(embeddedMessageDescription.indexOf('@') + 1, embeddedMessageDescription.indexOf('>'));
     }*/
 
-    }
-
-    @Override
-    public String getSuccessMessage() {
-        return "Успешный";
-    }
-//    @Override
-//    public String getSuccessMessage() {
-//        return "pioneer";
 //    }
+//
+    @Override
+//    public String getSuccessMessage() {
+//        return "Успешный";
+//    }
+//    @Override
+    public String getSuccessMessage() {
+        return "Asuka";
+    }
 }
