@@ -1,7 +1,9 @@
+/*
 package ua.com.company.logic.bumper.bot.impl;
 
 import ua.com.company.logic.bumper.bot.ManualBumpBot;
-
+//DON'T WORK BECAUSE HAVE ANOTHER MECHANISM
+//REFERERENCED FOR HIM SELF, BUMPER IN MESSAGE
 public class ServerMonitoringBot extends ManualBumpBot {
 
 
@@ -18,6 +20,7 @@ public class ServerMonitoringBot extends ManualBumpBot {
 //        return "Журбака#8713";
 //    }
 
+*/
 /*
     @Override
     public void execute(GenericMessageEvent event) {
@@ -25,6 +28,8 @@ public class ServerMonitoringBot extends ManualBumpBot {
 //           channel.retrieveMessageById("1074671286938251304")
         channel.retrieveMessageById(event.getMessageId())
                 .queue(message -> {
+*//*
+
 */
 /*
                         if (isNewBumper(message)) {
@@ -32,13 +37,23 @@ public class ServerMonitoringBot extends ManualBumpBot {
                                     .queue(Bumper::add);
 
                              *//*
-     */
+*/
+/*
+     *//*
+
+*/
 /*   Bumper.add(event.getGuild()
                                         .getMemberById(
                                                 getMemberFromEmbeddedDescription(message)));*//*
-     */
+*/
+/*
+     *//*
+
+*/
 /*
                         }*//*
+*/
+/*
 
                     try {
 //                        bumper = Bumper.findById(getMemberFromEmbeddedDescription(message));
@@ -66,11 +81,15 @@ public class ServerMonitoringBot extends ManualBumpBot {
                 });
 
     }
-*/
+*//*
 
-   /* private String getMemberFromEmbeddedDescription(Message message) {
+
+   */
+/* private String getMemberFromEmbeddedDescription(Message message) {
         String embeddedMessageDescription = message.getEmbeds().get(0).getDescription();
         return embeddedMessageDescription.substring(embeddedMessageDescription.indexOf('@') + 1, embeddedMessageDescription.indexOf('>'));
-    }*/
+    }*//*
+
 
 }
+*/
