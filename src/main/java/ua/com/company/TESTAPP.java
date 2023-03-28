@@ -2,6 +2,8 @@ package ua.com.company;
 
 
 import okhttp3.Call;
+import ua.com.company.logic.bumper.bot.AutoBumper;
+import ua.com.company.logic.bumper.selfbot.wss.Heartbeat;
 import ua.com.company.utils.UA;
 
 import java.io.IOException;
@@ -18,15 +20,12 @@ import java.util.concurrent.*;
 public class TESTAPP {
 
 
-    private static final HttpClient httpClient = HttpClient.newBuilder()
-            .version(HttpClient.Version.HTTP_2)
-            .connectTimeout(Duration.ofSeconds(10))
-            .build();
 
-    public static void main(String[] args) throws InterruptedException, ExecutionException {
-        System.out.println(new UA().getUA());
+    public static void main(String[] args) throws InterruptedException, ExecutionException, IOException {
+//        System.out.println(new UA().getUA());
 
-
+       Heartbeat heartbeat = new Heartbeat();
+       heartbeat.init();
     }
 //    public static void main(String[] args) throws IOException, InterruptedException {
 //

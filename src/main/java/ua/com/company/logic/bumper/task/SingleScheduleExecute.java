@@ -20,6 +20,7 @@ public class SingleScheduleExecute {
     }
 
     public void startSchedule() {
+        //TODO CHECK TIMING FROM MESSAGE
         executor = Executors.newSingleThreadScheduledExecutor();
         executor.scheduleWithFixedDelay(timerTask, delay, delay, TimeUnit.MINUTES);
 //        //TODO rework for single execution
