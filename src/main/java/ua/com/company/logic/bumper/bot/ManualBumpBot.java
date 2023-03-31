@@ -1,25 +1,18 @@
 package ua.com.company.logic.bumper.bot;
 
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.GenericMessageEvent;
-import ua.com.company.model.Bumper;
-import ua.com.company.exception.BumperNotFound;
 import ua.com.company.logic.bumper.message.MessageSender;
 import ua.com.company.logic.bumper.task.ManualBotTimerTask;
 import ua.com.company.logic.bumper.task.SingleScheduleExecute;
+import ua.com.company.model.Bumper;
 import ua.com.company.utils.BumperConstants;
 import ua.com.company.utils.PropertiesReader;
 
-import java.time.ZoneId;
-
 public abstract class ManualBumpBot implements IBot {
-    private Bumper.Entity bumper;
     //??STATIC??
     private static SingleScheduleExecute singleScheduleExecute;
-    private MessageSender messageSender;
 
     @Override
     public abstract String getTag();
@@ -27,37 +20,24 @@ public abstract class ManualBumpBot implements IBot {
     @Override
     public void execute(GenericMessageEvent event) {
 //        ManualBotTimerTask timerTask = new ManualBotTimerTask(event);
-        if (singleScheduleExecute == null) {
-            System.out.println( " static SingleSch nul");
-            singleScheduleExecute = new SingleScheduleExecute(new ManualBotTimerTask(event), BumperConstants.PAUSE_BETWEEN_MANUAL_NEW_TASK);
-        } else {
-            System.out.println("NOT NULL");
-        }
+
         TextChannel channel = event.getGuild().getTextChannelById(PropertiesReader.getChannel());
-//           channel.retrieveMessageById("1074671286938251304")
         channel.retrieveMessageById(event.getMessageId())
                 .queue(message -> {
+                    if (message.getEmbeds().get(0).getDescription().contains(getSuccessMessage())) {
+                        User user = message.getInteraction().getUser();
+                        Bumper.remove(user);
+                        Bumper.add(user);
 
-                    if(message.getEmbeds().get(0).getDescription().contains(getSuccessMessage())){
-
-
-                            User user = message.getInteraction().getUser();
-
-                            Bumper.remove(user);
-                            Bumper.add(user);
-//                        bumper.
-//                                setBumpTime(message.getTimeCreated()
-//                                        .atZoneSameInstant(ZoneId.of("Europe/Kiev")));
-//                        ((ManualBotTimerTask) singleScheduleExecute.getTimerTask()).setMessageSenderInterrupted(true);
-
-
-                        if (singleScheduleExecute.getExecutor() == null) {
+                        if (singleScheduleExecute == null) {
+                            singleScheduleExecute = new SingleScheduleExecute(new ManualBotTimerTask(event), BumperConstants.PAUSE_BETWEEN_MANUAL_NEW_TASK);
                             singleScheduleExecute.startSchedule();
                         } else {
                             //this equivalent to executor.shutdownNow(); because close all
 //                                NewCircleTimerTask.setBumped(true);
 //                                NewCircleTimerTask.getThread().interrupt();
-                            new MessageSender(channel,message.getInteraction().getUser()).sendBumped();
+                            System.out.println("message id = "+message.getId());
+                            new MessageSender(channel, message.getInteraction().getUser()).sendBumped();
                             ((ManualBotTimerTask) singleScheduleExecute.getTimerTask()).getMessageSenderThread().stop();
 
                             singleScheduleExecute.getExecutor().shutdownNow();
@@ -67,28 +47,8 @@ public abstract class ManualBumpBot implements IBot {
                     }
 
 
-                    /*
-
-
-                        if (isNewBumper(message)) {
-                            event.getGuild().retrieveMemberById(getMemberFromEmbeddedDescription(message))
-                                    .queue(Bumper::add);*/
-/*
-                               Bumper.add(event.getGuild()
-                                        .getMemberById(
-                                                getMemberFromEmbeddedDescription(message)));
-                        }*/
-
                 });
 
     }
 
-
-//
-//    private String getMemberFromEmbeddedDescription(Message message) {
-//        System.out.println(  message.getInteraction().getUser().getAsTag());
-//
-//        String embeddedMessageDescription = message.getEmbeds().get(0).getDescription();
-//        return embeddedMessageDescription.substring(embeddedMessageDescription.indexOf('@') + 1, embeddedMessageDescription.indexOf('>'));
-//    }
 }

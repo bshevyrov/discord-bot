@@ -1,3 +1,4 @@
+/*
 package ua.com.company.logic.bumper.task;
 
 import io.github.classgraph.ClassGraph;
@@ -37,10 +38,13 @@ public class SiteScheduleExecute {
         return list;
     }
 
-    public void init(){
+   */
+/* public void init(){
         System.out.println("start init");
 //        executorService.schedule(getListSiteBots().get(0),getListSiteBots().get(0).getTimeToNextExecution(),TimeUnit.MINUTES );
       getListSiteBots().forEach(siteBot -> executorService.schedule(siteBot,siteBot.getTimeToNextExecution(),TimeUnit.MINUTES));
-    }
+    }*//*
+
 }
 
+*/
