@@ -8,7 +8,6 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import ua.com.company.button.MalButtonInteraction;
 import ua.com.company.handler.slash.SlashCommandHandler;
 import ua.com.company.logic.bumper.message.MessageReader;
-import ua.com.company.logic.bumper.task.SiteScheduleExecute;
 import ua.com.company.utils.PropertiesReader;
 
 import java.io.IOException;
@@ -18,9 +17,7 @@ public class App {
 
 
     public static void main(String[] args) throws InterruptedException, IOException {
-        //init web driver
-        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
-        //init bot
+                //init bot
         JDA jda = JDABuilder.createDefault(PropertiesReader.getBotToken())
                 .enableIntents(GatewayIntent.GUILD_MEMBERS,
                         GatewayIntent.GUILD_MESSAGES,
