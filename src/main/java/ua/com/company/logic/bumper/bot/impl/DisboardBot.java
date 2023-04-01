@@ -1,4 +1,4 @@
-package ua.com.company.logic.bumper.bot.impl;
+/*package ua.com.company.logic.bumper.bot.impl;
 
 import net.dv8tion.jda.api.events.message.GenericMessageEvent;
 import ua.com.company.logic.bumper.bot.BumpCommand;
@@ -38,7 +38,7 @@ public class DisboardBot implements IBot, BumpCommand {
 //POST /api/v9/interactions HTTP/3
  //       Host: discord.com
    //     User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/111.0
-    //    Accept: */*
+    //    Accept: *//*
 /*Accept-Language: en-US,en;q=0.5
 Accept-Encoding: gzip, deflate, br
 Authorization: MTA2NTI2Nzk3NTA5Mjk2OTYxMw.G9Z58A.nb_Wd_fPKV2D_Es9otDXngbuqfVPWbLoVWS2DU
