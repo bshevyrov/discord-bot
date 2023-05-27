@@ -23,7 +23,7 @@ public class PropertiesReader {
 
         String pathToPropFile = "discord.properties";
         ///etc/environment
-        if (System.getenv("SERVER_ENVIRONMENT")!= null  && System.getenv("SERVER_ENVIRONMENT").equals("DEV")) {
+        if (System.getenv("SERVER_ENVIRONMENT") != null && System.getenv("SERVER_ENVIRONMENT").equals("DEV")) {
             pathToPropFile = "src/main/resources/discord.properties";
         }
         try (InputStream inputStream = new FileInputStream(pathToPropFile)) {
@@ -112,13 +112,10 @@ public class PropertiesReader {
 
     private static void loadMyAnimeListProperties() {
 
-        String pathToPropFile;
+        String pathToPropFile = "mal.properties";
         ///etc/environment
-        if (System.getenv("SERVER_ENVIRONMENT").equals("DEV")) {
+        if (System.getenv("SERVER_ENVIRONMENT") != null && System.getenv("SERVER_ENVIRONMENT").equals("DEV")) {
             pathToPropFile = "src/main/resources/mal.properties";
-
-        } else {//System.getenv("SERVER_ENVIRONMENT").equals("PROD")
-            pathToPropFile = "mal.properties";
         }
         try (InputStream inputStream = new FileInputStream(pathToPropFile)) {
             prop = new Properties();
