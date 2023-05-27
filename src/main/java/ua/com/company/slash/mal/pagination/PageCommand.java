@@ -20,12 +20,12 @@ public class PageCommand {
         msg.setFooter("Page 1/4");
         msg.setColor(0x33cc33);
         List<Button> buttons = new ArrayList<>();
-        buttons.add(Button.primary("page_1", Emoji.fromUnicode("⏪")));
-        buttons.add(Button.primary("page_1", Emoji.fromUnicode("◀")));
-        buttons.add(Button.danger("page_cancel", Emoji.fromUnicode("❌")));
-        buttons.add(Button.primary("page_2", Emoji.fromUnicode("▶")));
-        buttons.add(Button.primary("page_4", Emoji.fromUnicode("⏩")));
+        buttons.add(Button.primary("page_1", Emoji.fromUnicode("\u23EA")));
+        buttons.add(Button.primary("page_1", Emoji.fromUnicode("\u25C0")));
+        buttons.add(Button.danger("page_cancel", Emoji.fromUnicode("\u274C")));
+        buttons.add(Button.primary("page_2", Emoji.fromUnicode("\u25B6")));
+        buttons.add(Button.primary("page_4", Emoji.fromUnicode("\u23E9")));
 
         e.replyEmbeds(msg.build()).addActionRow(buttons).queue();
-}
+    }
 }
