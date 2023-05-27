@@ -21,9 +21,9 @@ public class PropertiesReader {
      */
     private static void loadDiscordProperties() {
 
-        String pathToPropFile  = "discord.properties";
+        String pathToPropFile = "discord.properties";
         ///etc/environment
-        if (System.getenv("SERVER_ENVIRONMENT").equals("DEV")) {
+        if (System.getenv("SERVER_ENVIRONMENT")!= null  && System.getenv("SERVER_ENVIRONMENT").equals("DEV")) {
             pathToPropFile = "src/main/resources/discord.properties";
         }
         try (InputStream inputStream = new FileInputStream(pathToPropFile)) {
@@ -79,10 +79,12 @@ public class PropertiesReader {
         loadDiscordProperties();
         return prop.getProperty("discord.delay.in.m.before.new.auto.bump.round");
     }
+
     public static String getDisboardUrl() {
         loadDiscordProperties();
         return prop.getProperty("discord.site.disboard.url");
     }
+
     public static String getDiscadiaUrl() {
         loadDiscordProperties();
         return prop.getProperty("discord.site.discadia.url");
@@ -136,7 +138,6 @@ public class PropertiesReader {
         loadMyAnimeListProperties();
         return prop.getProperty("mal.client.id");
     }
-
 
 
 }
