@@ -21,13 +21,10 @@ public class PropertiesReader {
      */
     private static void loadDiscordProperties() {
 
-        String pathToPropFile;
+        String pathToPropFile  = "discord.properties";
         ///etc/environment
         if (System.getenv("SERVER_ENVIRONMENT").equals("DEV")) {
             pathToPropFile = "src/main/resources/discord.properties";
-
-        } else {//System.getenv("SERVER_ENVIRONMENT").equals("PROD")
-            pathToPropFile = "discord.properties";
         }
         try (InputStream inputStream = new FileInputStream(pathToPropFile)) {
             prop = new Properties();
