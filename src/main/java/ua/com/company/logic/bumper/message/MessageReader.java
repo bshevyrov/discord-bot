@@ -6,9 +6,7 @@ import ua.com.company.handler.BotMessageCommand;
 import ua.com.company.logic.bumper.bot.IBot;
 import ua.com.company.utils.PropertiesReader;
 
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ScheduledExecutorService;
 
 
 public class MessageReader extends ListenerAdapter {
@@ -19,21 +17,19 @@ public class MessageReader extends ListenerAdapter {
 
     @Override
     public void onGenericMessage(GenericMessageEvent event) { //for Server Monitoring
-
+//TODO check if guild not test than full if check
         if (event.getChannel().getId().equals(CHANNEL_ID)
-//                && !event.getGuild().getSelfMember().getUser().equals(
-//                        event.getChannel().retrieveMessageById(event.getMessageId()).complete().getAuthor())
-        && event.getChannel().retrieveMessageById(event.getMessageId()).complete().getAuthor().isBot()
+                && !event.getGuild().getSelfMember().getUser().equals(
+                event.getChannel().retrieveMessageById(event.getMessageId()).complete().getAuthor())
+                && event.getChannel().retrieveMessageById(event.getMessageId()).complete().getAuthor().isBot()
         ) {
             BotMessageCommand botMessageCommand = new BotMessageCommand();
             botMap = botMessageCommand.getBotsMap();
 //            System.out.println((event.getChannel().retrieveMessageById(event.getMessageId()).complete().getAuthor().getAsTag()));
-           String messageBotAuthorTag = event.getChannel().retrieveMessageById(event.getMessageId()).complete().getAuthor().getAsTag();
-            botMap.get(messageBotAuthorTag).execute(event);
-
-
+            String messageBotAuthorTag = event.getChannel().retrieveMessageById(event.getMessageId()).complete().getAuthor().getAsTag();
+            if (botMap.containsKey(messageBotAuthorTag)) {
+                botMap.get(messageBotAuthorTag).execute(event);
+            }
         }
     }
-
-
 }
