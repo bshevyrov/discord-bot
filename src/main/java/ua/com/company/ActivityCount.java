@@ -1,13 +1,17 @@
 package ua.com.company;
 
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.GenericEvent;
+import net.dv8tion.jda.api.hooks.EventListener;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apache.commons.collections4.comparators.ComparableComparator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ActivityCount implements EventListener{
+public class ActivityCount implements EventListener {
+
     public ActivityCount() {
     }
 
@@ -67,6 +71,11 @@ public class ActivityCount implements EventListener{
     public boolean isBlacklisted(User user){
       return   blacklist.contains(user);
     }
+
+    @Override
+    public void onEvent(@NotNull GenericEvent event) {
+    }
+
     public class Count implements Comparable<Count> {
         public Count() {
         }

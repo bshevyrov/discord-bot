@@ -11,9 +11,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicReference;
@@ -50,7 +48,7 @@ public class BannerTask {
         MessageCounter messageCounter = new MessageCounter();
         ScheduledFuture<?> job = scheduleFor(() -> {
 
-            List<TextChannel> channels = guild.getTextChannels();
+            List<TextChannel> channels = new LinkedList<>(guild.getTextChannels());
             //remove offtop chanell
             channels.remove(guild.getTextChannelById(1086225112514175011L));
             channels.forEach(
