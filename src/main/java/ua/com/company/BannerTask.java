@@ -98,7 +98,7 @@ public class BannerTask {
                                         lst.get("minutes")
                                 )
                         )
-                );
+                ).queue();
             } catch (IOException e) {
                 e.printStackTrace();
             }

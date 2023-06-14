@@ -42,7 +42,7 @@ public class BannerWriter {
         Graphics g = background.getGraphics();
 
         //add avatar to background
-        g.drawImage(output, 75, 239, 200, 200, null);
+        g.drawImage(output, 80, 239, 200, 200, null);
         //add name
         g.setFont(new Font("TimesRoman", Font.PLAIN, 33));
         long LENGTH_OF_NAME = 14L;
