@@ -23,6 +23,7 @@ public interface Slash {
         return new ArrayList<>();
     }
 
+    //generilize bumper and bumpers to MAL get command data
     default CommandData getCommandData() {
         return new CommandDataImpl(getName(), getDescription())
                 .setGuildOnly(isGuildOnly())

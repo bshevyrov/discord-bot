@@ -7,17 +7,20 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ActivityCount {
+public class ActivityCount implements EventListener{
     public ActivityCount() {
     }
 
     private Map<User, ActivityCount.Count> participant = new HashMap<>();
+    private List<User> blacklist = new LinkedList<>();
 
-    public void clearParticipant() {
+
+    public void clear() {
         participant.clear();
     }
 
     public void addMessageCount(User user, int messageCount) {
+        if(isBlacklisted(user)){ return;}
         Count count = participant.getOrDefault(user, new Count());
         count.addMessages(messageCount);
         participant.put(user, count);
@@ -25,6 +28,7 @@ public class ActivityCount {
     }
 
     public void addMinutesCount(User user, int minuteCount) {
+        if(isBlacklisted(user)){ return;}
         Count count = participant.getOrDefault(user, new Count());
         count.addMinutes(minuteCount);
         participant.put(user, count);
@@ -44,6 +48,25 @@ public class ActivityCount {
         return rsl;
     }
 
+    /**
+     *
+     * @return Copy of blacklist.
+     */
+    public List<User> getBlacklist() {
+        return new ArrayList<>(blacklist);
+    }
+
+    public void removeFromBlacklist(User user) {
+        blacklist.remove(user);
+    }
+
+    public void addToBlacklist(User user) {
+        blacklist.add(user);
+    }
+
+    public boolean isBlacklisted(User user){
+      return   blacklist.contains(user);
+    }
     public class Count implements Comparable<Count> {
         public Count() {
         }

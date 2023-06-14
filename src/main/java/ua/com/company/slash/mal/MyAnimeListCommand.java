@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 public class MyAnimeListCommand implements Slash {
     @Override
     public void onSlashCommandEvent(SlashCommandInteractionEvent event) {
+        //TODO do i need event.getFullCommandName().equals("bumper add")
         String type = event.getOption("type", OptionMapping::getAsString);
         String title = event.getOption("title", OptionMapping::getAsString);
 

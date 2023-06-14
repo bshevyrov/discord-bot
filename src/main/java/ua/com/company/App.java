@@ -35,6 +35,8 @@ public class App {
                 .addEventListeners(new MalButtonInteraction())
                 .addEventListeners(new VoiceCount())
                 .addEventListeners(new ListenerEvents())
+                //hack to storeActivity count / And have access everywhere
+                .addEventListeners(new ActivityCount())
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .build();
         jda.awaitReady().addEventListener(
@@ -42,7 +44,6 @@ public class App {
 
 //          new SiteScheduleExecute().init();
 
-//        jda.getGuildById(PropertiesReader.getGuild()).getManager().setBanner()
 
 
         LocalTime localTime = LocalTime.of(0, 0, 0);

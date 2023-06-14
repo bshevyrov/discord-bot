@@ -10,7 +10,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiConsumer;
+
 
 public class VoiceCount extends ListenerAdapter {
 
@@ -20,11 +20,21 @@ public class VoiceCount extends ListenerAdapter {
     }
 
     //TODO replace map with write to file
-  private Map<User, VoiceDuration> participant = new HashMap<>();
-  private   Map<User, Integer> rsl = new HashMap<>();
+    private Map<User, VoiceDuration> participant = new HashMap<>();
+    private Map<User, Integer> rsl = new HashMap<>();
 
     @Override
     public void onGuildVoiceUpdate(@NotNull GuildVoiceUpdateEvent event) {
+        ActivityCount activityCount = (ActivityCount) event.getJDA().getEventManager().getRegisteredListeners().stream()
+                .filter(o -> o instanceof ActivityCount)
+                .findFirst()
+                .get();
+
+        if (activityCount.isBlacklisted(event.getMember().getUser())) {
+            return;
+        }
+
+
         VoiceDuration voiceDuration = new VoiceDuration();
         if (event.getChannelJoined() != null) {
             User user = event.getEntity().getUser();
@@ -38,7 +48,7 @@ public class VoiceCount extends ListenerAdapter {
                 System.out.println("ERROR! NO START VOICE");
             } else {
                 user = event.getEntity().getUser();
-                endUserVoice(user);
+                collectCurrentVoiceData(user);
                 participant.remove(user);
             }
 
@@ -50,7 +60,12 @@ public class VoiceCount extends ListenerAdapter {
 
     }
 
-    public Map<User,Integer> getResultMap() {
+    /**
+     * If it`s case of collecting data to write banner. Must call clearResultMap() after calling this method to start writing new day data.
+     *
+     * @return Map User and his total activity points for voice
+     */
+    public Map<User, Integer> getResultMap() {
 // participant.values().forEach(voiceDuration -> {
 //           //always not null??
 //            if (voiceDuration != null) {
@@ -58,20 +73,24 @@ public class VoiceCount extends ListenerAdapter {
 //                voiceDuration.setStart();
 //            }
 
-            participant.forEach((user, voiceDuration) -> {
-                endUserVoice(user);
-                participant.get(user).setStart();
-            });
+        participant.forEach((user, voiceDuration) -> {
+            collectCurrentVoiceData(user);
+            participant.get(user).setStart();
+        });
 
 
-       // });
-        Map<User,Integer> tmp = Map.copyOf(rsl);
+        // });
+        Map<User, Integer> tmp = Map.copyOf(rsl);
         //memory leak? size really 0??
         rsl.clear();
         return tmp;
     }
 
-    private void endUserVoice(User user) {
+    public void clearResultMap() {
+        rsl.clear();
+    }
+
+    private void collectCurrentVoiceData(User user) {
         if (rsl.containsKey(user)) {
             int tmp = rsl.get(user);
             rsl.put(user, tmp + participant.get(user).setFinish());

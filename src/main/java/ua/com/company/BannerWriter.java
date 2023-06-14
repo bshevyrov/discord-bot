@@ -8,8 +8,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class BannerWriter {
     public InputStream makeBackground(String avatarUrl, String memberName, String memberStatus, String messageCount, String minutesCount) throws IOException {
@@ -83,11 +81,11 @@ public class BannerWriter {
         g.drawString(messageCount, 753, 445);
 
 //write to file
-        ImageIO.write(background, "png", Files.newOutputStream(Paths.get("src/main/resources/1111.png")));
+//        ImageIO.write(background, "png", Files.newOutputStream(Paths.get("src/main/resources/1111.png")));
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         ImageIO.write(background, "png", os);
-   return  new ByteArrayInputStream(os.toByteArray());
+        return new ByteArrayInputStream(os.toByteArray());
 
     }
 
