@@ -82,7 +82,6 @@ public class VoiceCount extends ListenerAdapter {
         // });
         Map<User, Integer> tmp = Map.copyOf(rsl);
         //memory leak? size really 0??
-        rsl.clear();
         return tmp;
     }
 

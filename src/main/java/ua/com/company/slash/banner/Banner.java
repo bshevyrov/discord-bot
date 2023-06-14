@@ -15,6 +15,7 @@ import ua.com.company.ActivityCount;
 import ua.com.company.handler.slash.Slash;
 
 import java.util.List;
+import java.util.Map;
 
 public class Banner implements Slash {
 
@@ -25,6 +26,7 @@ public class Banner implements Slash {
                 .filter(o -> o instanceof ActivityCount)
                 .findFirst()
                 .get();
+
         String type = event.getOption("type", OptionMapping::getAsString);
         String member = event.getOption("member", OptionMapping::getAsString);
 
@@ -33,8 +35,10 @@ public class Banner implements Slash {
 
 
             event.getHook()
-                    .setEphemeral(true)
+
+
                     .sendMessageEmbeds(buildEmbedFromActivity(activityCount, event))
+//                  .setEphemeral(true)
                     .queue();
         }
         if (event.getFullCommandName().equals("banner blacklist")) {
@@ -105,11 +109,14 @@ public class Banner implements Slash {
     private MessageEmbed buildEmbedFromActivity(ActivityCount activityCount, SlashCommandInteractionEvent event) {
         EmbedBuilder eb = new EmbedBuilder();
         final int[] number = {0};
-        activityCount.getMap().forEach((user, count) -> eb.addField(++number[0] + ". " + event.getGuild().getMember(user).getNickname() == null
-                        ? user.getName()
-                        : event.getGuild().getMember(user).getNickname(),
-                "Messages: " + count.getMessages() + "Minutes in voice: " + count.getMinutes(),
+        activityCount.getCurrentStateMap(event.getGuild()).forEach(
+                (user, count) -> eb.addField(
+                      event.getGuild().getMember(user).getNickname() == null
+                        ?  ++number[0] + ". " +  user.getName()
+                        :   ++number[0] + ". " + event.getGuild().getMember(user).getNickname(),
+                "Messages: " + count.getMessages() + " Minutes in voice: " + count.getMinutes(),
                 false));
+
 
         return eb.build();
     }

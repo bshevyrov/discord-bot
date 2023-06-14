@@ -1,13 +1,18 @@
 package ua.com.company;
 
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apache.commons.collections4.comparators.ComparableComparator;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class ActivityCount implements EventListener {
@@ -38,15 +43,36 @@ public class ActivityCount implements EventListener {
         participant.put(user, count);
     }
 
-    public Map<User, Count> getMap() {
-        return participant.entrySet().stream()
-                .sorted(Map.Entry.comparingByValue(new ComparableComparator<>()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+    public Map<User, Count> getCurrentStateMap(Guild guild) {
+        List<TextChannel> channels = new LinkedList<>(guild.getTextChannels());
+        Map<User,ActivityCount.Count> rsl= new HashMap<>();
+        MessageCounter messageCounter = new MessageCounter();
+        //remove offtop chanell
+        channels.remove(guild.getTextChannelById(1086225112514175011L));
+        channels.forEach(
+                messageChannel -> {
+                    try {
+                        messageCounter.getMessageCountDuring(ZonedDateTime.now(ZoneId.of("Europe/Kiev")), messageChannel).get()
+                                .forEach((user, integer) -> {
+                                    if (!this.isBlacklisted(user)) {
+                                        this.addMessageCount(user, integer);
+                                    }
+                                });
+                    } catch (InterruptedException | ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                });
+        VoiceCount voiceCount = (VoiceCount) guild.getJDA().getEventManager().getRegisteredListeners().stream()
+                .filter(o -> o instanceof VoiceCount).findFirst().get();
+        voiceCount.getResultMap().forEach(this::addMinutesCount);
+rsl.putAll(participant);
+participant.clear();
+        return rsl;
     }
 
-    public List<Map<User, ActivityCount.Count>> getList() {
+    public List<Map<User, ActivityCount.Count>> getList(Guild guild) {
         List<Map<User, ActivityCount.Count>> rsl = new ArrayList<>();
-        getMap().forEach((key, value) -> rsl.add(new HashMap<>() {{
+        getCurrentStateMap(guild).forEach((key, value) -> rsl.add(new HashMap<>() {{
             put(key, value);
         }}));
         return rsl;

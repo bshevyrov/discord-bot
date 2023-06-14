@@ -76,12 +76,13 @@ public class BannerTask {
             }
 
             Map<String, String> lst = new HashMap<>();
-            User user = activityCount.getList().get(0).keySet().stream().findFirst().get();
+            List<Map<User, ActivityCount.Count>> sortedTotalResult = activityCount.getList(guild);
+            User user = sortedTotalResult.get(0).keySet().stream().findFirst().get();
             lst.put("avatar", user.getAvatarUrl());
             lst.put("name", guild.getMember(user).getNickname() == null ? user.getName() : guild.getMember(user).getNickname());
             lst.put("status", getStatus(guild, user));
-            lst.put("minutes", String.valueOf(activityCount.getList().get(0).values().stream().findFirst().get().getMinutes()));
-            lst.put("message", String.valueOf(activityCount.getList().get(0).values().stream().findFirst().get().getMessages()));
+            lst.put("minutes", String.valueOf(sortedTotalResult.get(0).values().stream().findFirst().get().getMinutes()));
+            lst.put("message", String.valueOf(sortedTotalResult.get(0).values().stream().findFirst().get().getMessages()));
 
             activityCount.clear();
 
