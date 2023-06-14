@@ -3,14 +3,16 @@ package ua.com.company;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class BannerWriter {
-    public void method(String avatarUrl,String memberName,String memberStatus,String messageCount, String minutesCount) throws IOException {
+    public InputStream makeBackground(String avatarUrl, String memberName, String memberStatus, String messageCount, String minutesCount) throws IOException {
         int DISCORD_AVATAR_SIZE = 128;
 
         BufferedImage background = ImageIO.read(
@@ -19,7 +21,7 @@ public class BannerWriter {
 
 //        BufferedImage avatar = ImageIO.read(
 //                new URL("https://cdn.discordapp.com/avatars/232929050652311553/d28baec466a01e42a92118d175e5246e.png"));
-BufferedImage avatar = ImageIO.read(
+        BufferedImage avatar = ImageIO.read(
                 new URL(avatarUrl));
 
 
@@ -74,15 +76,18 @@ BufferedImage avatar = ImageIO.read(
         g.drawString(memberStatus, 333, 400);
 
         //add voice minutes
-        g.drawString(minutesCount+"хв", 750, 250);
+        g.drawString(minutesCount + " хв", 750, 250);
 
 
         //add message count
         g.drawString(messageCount, 753, 445);
 
-
+//write to file
         ImageIO.write(background, "png", Files.newOutputStream(Paths.get("src/main/resources/1111.png")));
 
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        ImageIO.write(background, "png", os);
+   return  new ByteArrayInputStream(os.toByteArray());
 
     }
 

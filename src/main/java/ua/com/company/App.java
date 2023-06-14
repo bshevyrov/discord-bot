@@ -21,9 +21,6 @@ public class App {
 
 
     public static void main(String[] args) throws InterruptedException {
-        ActivityCount activityCount = new ActivityCount();
-        VoiceCount voiceCount = new VoiceCount(activityCount);
-
         //init bot
         JDA jda = JDABuilder.createDefault(PropertiesReader.getBotToken())
                 .enableIntents(GatewayIntent.GUILD_MEMBERS,
@@ -36,7 +33,7 @@ public class App {
                 .enableCache(CacheFlag.ACTIVITY)
                 .addEventListeners(new MessageReader())
                 .addEventListeners(new MalButtonInteraction())
-                .addEventListeners(voiceCount)
+                .addEventListeners(new VoiceCount())
                 .addEventListeners(new ListenerEvents())
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .build();
@@ -44,19 +41,16 @@ public class App {
                 new SlashCommandHandler(jda, jda.getGuildById(PropertiesReader.getGuild())));
 
 //          new SiteScheduleExecute().init();
+
+//        jda.getGuildById(PropertiesReader.getGuild()).getManager().setBanner()
+
+
         LocalTime localTime = LocalTime.of(0, 0, 0);
         ZoneId zoneId = ZoneId.of("Europe/Kiev");
-        final ZonedDateTime[] zonedDateTime = {ZonedDateTime.of(LocalDate.now(zoneId), localTime, zoneId)};
+        final ZonedDateTime zonedDateTime = ZonedDateTime.of(LocalDate.now(zoneId), localTime, zoneId);
 
-        new Thread(() -> {
-            while (true) {
-                new Thread(() -> {
-                    System.out.println(zonedDateTime[0]);
-                    new BannerTask().extracted(activityCount, voiceCount, jda.getGuildById(PropertiesReader.getGuild()), zonedDateTime[0]);
-                }).run();
-                zonedDateTime[0] = zonedDateTime[0].plusDays(1L);
-            }
-        }).start();
+        BannerTask bannerTask = new BannerTask();
+        bannerTask.collectDataForBanner(zonedDateTime, jda.getGuildById(PropertiesReader.getGuild()));
 
         /*
         BannerTask bannerTask = new BannerTask();

@@ -4,35 +4,53 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import ua.com.company.utils.PropertiesReader;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Predicate;
 
 import static ua.com.company.BannerTaskExecutor.scheduleFor;
 
 public class BannerTask {
     //TODO NEED TO BE 0:00:00 time!!!
 
-    void extracted(ActivityCount activityCount, VoiceCount voiceCount, Guild guild, ZonedDateTime when) {
+
+    public void collectDataForBanner(ZonedDateTime zonedDateTime, Guild guild){
+//        LocalTime localTime = LocalTime.of(0, 0, 0);
+//        ZoneId zoneId = ZoneId.of("Europe/Kiev");
+        final ZonedDateTime[] zonedDateTimes ={zonedDateTime};
+
+        new Thread(() -> {
+            while (true) {
+                new Thread(() -> {
+                    System.out.println(zonedDateTimes[0]);
+                    new BannerTask().extracted(new ActivityCount(), guild, zonedDateTimes[0]);
+                }).run();
+                zonedDateTimes[0] = zonedDateTimes[0].plusDays(1L);
+            }
+        }).start();
 
 
-//        ZonedDateTime when = ZonedDateTime.of(LocalDate.now(ZoneId.of("Europe/Kiev")),
-//                localTime, ZoneId.of("Europe/Kiev"));
+
+    }
+    void extracted(ActivityCount activityCount, Guild guild, ZonedDateTime when) {
         MessageCounter messageCounter = new MessageCounter();
         ScheduledFuture<?> job = scheduleFor(() -> {
+
             List<TextChannel> channels = guild.getTextChannels();
             //remove offtop chanell
             // channels.remove(jda.getTextChannelById(1086225112514175011L));
-            LocalDate date = LocalDate.now(ZoneId.of("Europe/Kiev"));
             channels.forEach(
                     messageChannel -> {
                         try {
@@ -43,8 +61,16 @@ public class BannerTask {
                         }
                     }
             );
+//if X date was ignore voice.
+            Instant now = Instant.from(ZonedDateTime.now(ZoneId.of("Europe/Kiev")));
+            long secondsUntil = ChronoUnit.SECONDS.between(now, when.toInstant());
+            if(secondsUntil>0) {
+                VoiceCount voiceCount = (VoiceCount) guild.getJDA().getEventManager().getRegisteredListeners().stream()
+                        .filter(o -> o instanceof VoiceCount).findFirst().get();
+                voiceCount.getResultMap().forEach(activityCount::addMinutesCount);
+            }
+
             Map<String, String> lst = new HashMap<>();
-            voiceCount.stopStart();
             User user = activityCount.getList().get(0).keySet().stream().findFirst().get();
             lst.put("avatar", user.getAvatarUrl());
             lst.put("name", guild.getMember(user).getNickname() == null ? user.getName() : guild.getMember(user).getNickname());
@@ -58,28 +84,23 @@ public class BannerTask {
 
             BannerWriter bannerWriter = new BannerWriter();
             try {
-                bannerWriter.method(lst.get("avatar"),
+                bannerWriter.makeBackground(lst.get("avatar"),
                         lst.get("name"),
                         lst.get("status"),
                         lst.get("message"),
                         lst.get("minutes")
-
                 );
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }, when);
 
         //wait until thread finish
         try {
             job.get();
-//            endSchedule();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-
-
     }
 
     private String getStatus(Guild guild, User user) {

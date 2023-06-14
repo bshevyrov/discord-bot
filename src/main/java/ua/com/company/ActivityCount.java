@@ -18,27 +18,16 @@ public class ActivityCount {
     }
 
     public void addMessageCount(User user, int messageCount) {
-        if (participant.get(user) == null) {
-            Count count = new Count();
-            count.addMessages(messageCount);
-            participant.put(user, count);
-        } else {
-            Count count = participant.get(user);
-            count.addMessages(messageCount);
-            participant.put(user, count);
-        }
+        Count count = participant.getOrDefault(user, new Count());
+        count.addMessages(messageCount);
+        participant.put(user, count);
+
     }
 
     public void addMinutesCount(User user, int minuteCount) {
-        if (participant.get(user) == null) {
-            Count count = new Count();
-            count.addMinutes(minuteCount);
-            participant.put(user, count);
-        } else {
-            Count count = participant.get(user);
-            count.addMinutes(minuteCount);
-            participant.put(user, count);
-        }
+        Count count = participant.getOrDefault(user, new Count());
+        count.addMinutes(minuteCount);
+        participant.put(user, count);
     }
 
     public Map<User, Count> getMap() {
