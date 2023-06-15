@@ -15,7 +15,7 @@ public class BannerWriter {
     public InputStream makeBackground(String avatarUrl, String memberName, String memberStatus, String messageCount, String minutesCount) throws IOException {
         int DISCORD_AVATAR_SIZE = 128;
 
-        Font mainFont = new Font("SansSerif", Font.BOLD, 36);
+        Font mainFont = new Font("SansSerif", Font.BOLD, 48);
         BufferedImage background = ImageIO.read(
                 new URL("https://media.discordapp.net/attachments/1086227895791398953/1102713165852188822/Untitled_Artwork.png"));
 
