@@ -46,7 +46,7 @@ public class MessageSender extends Thread {
 
 //        sendChannelMessage("Send PM to " + user.getAsTag());
 //              sendChannelMessage("Send PM to " + "<@"+user.getName()+">");
-        textChannel.sendMessage("Send PM to " + "<@"+user.getName()+">")
+        textChannel.sendMessage("Send PM to " + "<@"+user.getId()+">")
                 .delay(BumperConstants.DELAY_BEFORE_DELETE_MESSAGE, TimeUnit.SECONDS)
                 .flatMap(Message::delete)
                 .queue();

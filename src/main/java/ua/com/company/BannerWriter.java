@@ -15,7 +15,8 @@ public class BannerWriter {
     public InputStream makeBackground(String avatarUrl, String memberName, String memberStatus, String messageCount, String minutesCount) throws IOException {
         int DISCORD_AVATAR_SIZE = 128;
 
-        Font mainFont = new Font("SansSerif", Font.BOLD, 48);
+        Font statFont = new Font("SansSerif", Font.BOLD, 48);
+        Font userFont = new Font("SansSerif", Font.BOLD, 36);
         BufferedImage background = ImageIO.read(
                 new URL("https://media.discordapp.net/attachments/1086227895791398953/1102713165852188822/Untitled_Artwork.png"));
 
@@ -47,7 +48,7 @@ public class BannerWriter {
         //add avatar to background
         g.drawImage(output, 100, 250, 200, 200, null);
         //add name
-        g.setFont(mainFont);
+        g.setFont(userFont);
         long LENGTH_OF_NAME = 14L;
         if (memberName.length() > LENGTH_OF_NAME) {
             StringBuilder builder = new StringBuilder(memberName.substring(0, 13));
@@ -62,7 +63,7 @@ public class BannerWriter {
         g.drawString(memberName, 320, 333);
 
         //add status
-//        g.setFont(mainFont);
+//        g.setFont(statFont);
         if (memberStatus.length() > LENGTH_OF_NAME) {
             StringBuilder builder = new StringBuilder(memberStatus.substring(0, 13));
             builder.append("...");
