@@ -8,7 +8,6 @@ import net.dv8tion.jda.api.hooks.EventListener;
 import org.apache.commons.collections4.comparators.ComparableComparator;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
@@ -29,7 +28,9 @@ public class ActivityCount implements EventListener {
     }
 
     public void addMessageCount(User user, int messageCount) {
-        if(isBlacklisted(user)){ return;}
+        if (isBlacklisted(user)) {
+            return;
+        }
         Count count = participant.getOrDefault(user, new Count());
         count.addMessages(messageCount);
         participant.put(user, count);
@@ -37,7 +38,9 @@ public class ActivityCount implements EventListener {
     }
 
     public void addMinutesCount(User user, int minuteCount) {
-        if(isBlacklisted(user)){ return;}
+        if (isBlacklisted(user)) {
+            return;
+        }
         Count count = participant.getOrDefault(user, new Count());
         count.addMinutes(minuteCount);
         participant.put(user, count);
@@ -45,7 +48,7 @@ public class ActivityCount implements EventListener {
 
     public Map<User, Count> getCurrentStateMap(Guild guild) {
         List<TextChannel> channels = new LinkedList<>(guild.getTextChannels());
-        Map<User,ActivityCount.Count> rsl= new HashMap<>();
+        Map<User, ActivityCount.Count> rsl = new LinkedHashMap<>();
         MessageCounter messageCounter = new MessageCounter();
         //remove offtop chanell
         channels.remove(guild.getTextChannelById(1086225112514175011L));
@@ -65,8 +68,17 @@ public class ActivityCount implements EventListener {
         VoiceCount voiceCount = (VoiceCount) guild.getJDA().getEventManager().getRegisteredListeners().stream()
                 .filter(o -> o instanceof VoiceCount).findFirst().get();
         voiceCount.getResultMap().forEach(this::addMinutesCount);
-rsl.putAll(participant);
-participant.clear();
+
+
+//        return participant.entrySet().stream()
+//                .sorted(Map.Entry.comparingByValue(new ComparableComparator<>()))
+//                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));//   }
+
+
+        rsl.putAll((LinkedHashMap<? extends User, ? extends Count>) participant.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(new ComparableComparator<>()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new)));
+        participant.clear();
         return rsl;
     }
 
@@ -79,7 +91,6 @@ participant.clear();
     }
 
     /**
-     *
      * @return Copy of blacklist.
      */
     public List<User> getBlacklist() {
@@ -94,8 +105,8 @@ participant.clear();
         blacklist.add(user);
     }
 
-    public boolean isBlacklisted(User user){
-      return   blacklist.contains(user);
+    public boolean isBlacklisted(User user) {
+        return blacklist.contains(user);
     }
 
     @Override

@@ -15,7 +15,6 @@ import ua.com.company.ActivityCount;
 import ua.com.company.handler.slash.Slash;
 
 import java.util.List;
-import java.util.Map;
 
 public class Banner implements Slash {
 
@@ -32,13 +31,9 @@ public class Banner implements Slash {
 
         if (event.getFullCommandName().equals("banner leaderboard")) {
             event.deferReply().queue();
-
-
             event.getHook()
-
-
                     .sendMessageEmbeds(buildEmbedFromActivity(activityCount, event))
-//                  .setEphemeral(true)
+                    .setEphemeral(true)
                     .queue();
         }
         if (event.getFullCommandName().equals("banner blacklist")) {
@@ -111,11 +106,11 @@ public class Banner implements Slash {
         final int[] number = {0};
         activityCount.getCurrentStateMap(event.getGuild()).forEach(
                 (user, count) -> eb.addField(
-                      event.getGuild().getMember(user).getNickname() == null
-                        ?  ++number[0] + ". " +  user.getName()
-                        :   ++number[0] + ". " + event.getGuild().getMember(user).getNickname(),
-                "Messages: " + count.getMessages() + " Minutes in voice: " + count.getMinutes(),
-                false));
+                        event.getGuild().getMember(user).getNickname() == null
+                                ? ++number[0] + ". " + user.getName()
+                                : ++number[0] + ". " + event.getGuild().getMember(user).getNickname(),
+                        "Messages: " + count.getMessages() + " Minutes in voice: " + count.getMinutes(),
+                        false));
 
 
         return eb.build();
