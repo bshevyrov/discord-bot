@@ -47,13 +47,10 @@ public class MessageSender extends Thread {
 //        sendChannelMessage("Send PM to " + user.getAsTag());
 //              sendChannelMessage("Send PM to " + "<@"+user.getName()+">");
         textChannel.sendMessage("Send PM to " + "<@"+user.getId()+">")
-                .delay(BumperConstants.DELAY_BEFORE_DELETE_MESSAGE, TimeUnit.SECONDS)
-                .flatMap(Message::delete)
-                .queue();
+                .queue(message -> message.delete()
+                        .queueAfter(BumperConstants.DELAY_BEFORE_DELETE_MESSAGE, TimeUnit.SECONDS));
 
-
-
-        sendPrivateMessage(user, textChannel, BumperConstants.PRIVATE_MESSAGE);
+//        sendPrivateMessage(user, textChannel, BumperConstants.PRIVATE_MESSAGE);
         try {
             sleep(BumperConstants.DELAY_BEFORE_SEND_ANOTHER_MESSAGE);
         } catch (InterruptedException ex) {

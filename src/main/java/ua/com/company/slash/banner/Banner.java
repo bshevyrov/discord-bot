@@ -15,6 +15,7 @@ import ua.com.company.ActivityCount;
 import ua.com.company.handler.slash.Slash;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class Banner implements Slash {
 
@@ -105,12 +106,18 @@ public class Banner implements Slash {
         EmbedBuilder eb = new EmbedBuilder();
         final int[] number = {0};
         activityCount.getCurrentStateMap(event.getGuild()).forEach(
-                (user, count) -> eb.addField(
-                        event.getGuild().getMember(user).getNickname() == null
-                                ? ++number[0] + ". " + user.getName()
-                                : ++number[0] + ". " + event.getGuild().getMember(user).getNickname(),
-                        "Messages: " + count.getMessages() + " Minutes in voice: " + count.getMinutes(),
-                        false));
+                (user, count) -> {
+                    try {
+                        eb.addField(
+                                event.getGuild().retrieveMember(user).submit().get().getNickname() == null
+                                        ? ++number[0] + ". " + user.getName()
+                                        : ++number[0] + ". " + event.getGuild().retrieveMember(user).submit().get().getNickname(),
+                                "Messages: " + count.getMessages() + " Minutes in voice: " + count.getMinutes(),
+                                false);
+                    } catch (InterruptedException | ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                });
 
 
         return eb.build();
@@ -119,11 +126,18 @@ public class Banner implements Slash {
     private MessageEmbed buildEmbedFromBlacklist(List<User> users, SlashCommandInteractionEvent event) {
         EmbedBuilder eb = new EmbedBuilder();
         final int[] number = {0};
-        users.forEach((user) -> eb.addField(++number[0] + ". " + event.getGuild().getMember(user).getNickname() == null
-                        ? user.getName()
-                        : event.getGuild().getMember(user).getNickname(),
-                "",
-                false));
+        users.forEach((user) -> {
+            try {
+                eb.addField(
+                        event.getGuild().retrieveMember(user).submit().get().getNickname() == null
+                                ? ++number[0] + ". " + user.getName()
+                                : ++number[0] + ". " + event.getGuild().retrieveMember(user).submit().get().getNickname(),
+                        "",
+                        false);
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        });
 
         return eb.build();
     }
