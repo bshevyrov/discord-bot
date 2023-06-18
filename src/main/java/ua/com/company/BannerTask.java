@@ -11,7 +11,10 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicReference;
@@ -30,7 +33,7 @@ public class BannerTask {
                 .filter(o -> o instanceof ActivityCount)
                 .findFirst()
                 .get();
-
+        activityCount.clear();
         new Thread(() -> {
             while (true) {
                 new Thread(() -> {
@@ -76,6 +79,7 @@ public class BannerTask {
             }
 
             Map<String, String> lst = new HashMap<>();
+//            List<Map<User, ActivityCount.Count>> sortedTotalResult = activityCount.getList(guild);
             List<Map<User, ActivityCount.Count>> sortedTotalResult = activityCount.getList(guild);
             User user = sortedTotalResult.get(0).keySet().stream().findFirst().get();
             lst.put("avatar", user.getAvatarUrl());
