@@ -38,20 +38,23 @@ public class VoiceCount extends ListenerAdapter {
         VoiceDuration voiceDuration = new VoiceDuration();
         if (event.getChannelJoined() != null) {
             User user = event.getEntity().getUser();
-            voiceDuration.setStart();
-            participant.put(user, voiceDuration);
+            if (!user.isBot()) {
+                voiceDuration.setStart();
+                participant.put(user, voiceDuration);
+            }
             // call methods that need to know on any join
         }
         if (event.getChannelLeft() != null) {
             User user = event.getEntity().getUser();
-            if (participant.get(user) == null) {
-                System.out.println("ERROR! NO START VOICE");
-            } else {
-                user = event.getEntity().getUser();
-                collectCurrentVoiceData(user);
-                participant.remove(user);
+            if (!user.isBot()) {
+                if (participant.get(user) == null) {
+                    System.out.println("ERROR! NO START VOICE");
+                } else {
+                    user = event.getEntity().getUser();
+                    collectCurrentVoiceData(user);
+                    participant.remove(user);
+                }
             }
-
             // call methods that need to know on any leave
         }
        /* if (joinedChannel != null && leftChannel != null) {

@@ -20,7 +20,7 @@ public class ActivityCount implements EventListener {
     }
 
     private Map<User, ActivityCount.Count> participant = new HashMap<>();
-    private List<User> blacklist = new LinkedList<>();
+    private LinkedHashSet<User> blacklist = new LinkedHashSet<>();
 
 
     public void clear() {
@@ -101,8 +101,8 @@ public class ActivityCount implements EventListener {
         blacklist.remove(user);
     }
 
-    public void addToBlacklist(User user) {
-        blacklist.add(user);
+    public boolean addToBlacklist(User user) {
+      return   blacklist.add(user);
     }
 
     public boolean isBlacklisted(User user) {

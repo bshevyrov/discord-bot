@@ -1,6 +1,7 @@
 package ua.com.company.slash.banner;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -28,7 +29,7 @@ public class Banner implements Slash {
                 .get();
 
         String type = event.getOption("type", OptionMapping::getAsString);
-        String member = event.getOption("member", OptionMapping::getAsString);
+        Member member = event.getOption("member", OptionMapping::getAsMember);
 
         if (event.getFullCommandName().equals("banner leaderboard")) {
             event.deferReply().queue();
@@ -41,13 +42,13 @@ public class Banner implements Slash {
 
             if (type.equals("add")) {
                 if (member != null) {
-                    activityCount.addToBlacklist(event.getUser());
+                    activityCount.addToBlacklist(member.getUser());
                 }
                 activityCount.addToBlacklist(event.getUser());
             }
             if (type.equals("remove")) {
                 if (member != null) {
-                    activityCount.removeFromBlacklist(event.getUser());
+                    activityCount.removeFromBlacklist(member.getUser());
                 }
                 activityCount.removeFromBlacklist(event.getUser());
             }

@@ -6,13 +6,13 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import ua.com.company.logic.bumper.task.ManualBotTimerTask;
-import ua.com.company.model.Bumper;
 import ua.com.company.utils.BumperConstants;
 
 import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MessageSender extends Thread {
     private final TextChannel textChannel;
@@ -46,9 +46,10 @@ public class MessageSender extends Thread {
 
 //        sendChannelMessage("Send PM to " + user.getAsTag());
 //              sendChannelMessage("Send PM to " + "<@"+user.getName()+">");
+        AtomicReference<String> messageId = new AtomicReference<>("");
         textChannel.sendMessage("Send PM to " + "<@"+user.getId()+">")
-                .queue(message -> message.delete()
-                        .queueAfter(BumperConstants.DELAY_BEFORE_DELETE_MESSAGE, TimeUnit.SECONDS));
+                .delay( BumperConstants.DELAY_BEFORE_DELETE_MESSAGE, TimeUnit.SECONDS)
+            .flatMap(Message::delete);
 
 //        sendPrivateMessage(user, textChannel, BumperConstants.PRIVATE_MESSAGE);
         try {
