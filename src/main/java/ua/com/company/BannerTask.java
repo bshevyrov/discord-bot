@@ -91,8 +91,8 @@ public class BannerTask {
             lst.put("avatar", user.getAvatarUrl());
             lst.put("name", guild.getMember(user).getNickname() == null ? user.getName() : guild.getMember(user).getNickname());
             lst.put("status", getStatus(guild, user));
-            lst.put("minutes", String.valueOf(currentStateMap.values().stream().findFirst().get().getMinutes()));
-            lst.put("message", String.valueOf(currentStateMap.values().stream().findFirst().get().getMessages()));
+            lst.put("minutes", String.valueOf(currentStateMap.get(user).getMinutes()));
+            lst.put("message", String.valueOf(currentStateMap.get(user).getMessages()));
 
             activityCount.clear();
 
