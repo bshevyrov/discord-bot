@@ -7,9 +7,7 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -41,6 +39,15 @@ public class BannerTask {
                     new BannerTask().extracted(activityCount, guild, zonedDateTimes[0]);
                 }).run();
                 zonedDateTimes[0] = zonedDateTimes[0].plusDays(1L);
+//                ZoneId zoneId = ZoneId.of("Europe/Kiev");
+//                LocalTime localTime = LocalTime.now(zoneId);
+//                ZonedDateTime zonedDateTime1 = ZonedDateTime.of(LocalDate.now(zoneId), localTime, zoneId);
+//                zonedDateTimes[0] = zonedDateTime1.plusMinutes(3L);
+//                System.out.println("+3");
+
+
+
+
             }
         }).start();
 
@@ -48,16 +55,16 @@ public class BannerTask {
     }
 
     void extracted(ActivityCount activityCount, Guild guild, ZonedDateTime when) {
-        MessageCounter messageCounter = new MessageCounter();
         ScheduledFuture<?> job = scheduleFor(() -> {
+/*
 
             List<TextChannel> channels = new LinkedList<>(guild.getTextChannels());
             //remove offtop chanell
             channels.remove(guild.getTextChannelById(1086225112514175011L));
             channels.forEach(
-                    messageChannel -> {
+                    textChannel -> {
                         try {
-                            messageCounter.getMessageCountDuring(when, messageChannel).get()
+                            messageCounter.getMessageCountDuring(when, textChannel).get()
                                     .forEach((user, integer) -> {
                                         if (!activityCount.isBlacklisted(user)) {
                                             activityCount.addMessageCount(user, integer);
@@ -77,9 +84,14 @@ public class BannerTask {
                 voiceCount.getResultMap().forEach(activityCount::addMinutesCount);
                 voiceCount.clearResultMap();
             }
+*/
+//            activityCount.countActivity(guild,true);
+
 
             Map<String, String> lst = new HashMap<>();
-            Map<User, ActivityCount.Count> currentStateMap = activityCount.getCurrentStateMap(guild);
+            Map<User, ActivityCount.Count> currentStateMap =             activityCount.countActivity(guild,true);
+            activityCount.clear();
+
 //            List<Map<User, ActivityCount.Count>> sortedTotalResult = activityCount.getList(guild);
 //            User user = sortedTotalResult.get(0).keySet().stream().findFirst().get();
 //            lst.put("avatar", user.getAvatarUrl());
@@ -94,7 +106,6 @@ public class BannerTask {
             lst.put("minutes", String.valueOf(currentStateMap.get(user).getMinutes()));
             lst.put("message", String.valueOf(currentStateMap.get(user).getMessages()));
 
-            activityCount.clear();
 
 //            ActivityCount.Count count = (ActivityCount.Count) map.get(0).get(1);
 //            System.out.println(String.valueOf(guild.getMember(user).getActivities()));
