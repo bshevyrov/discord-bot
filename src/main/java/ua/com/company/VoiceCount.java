@@ -21,7 +21,7 @@ public class VoiceCount extends ListenerAdapter {
 
     //TODO replace map with write to file
     private Map<User, VoiceDuration> participant = new HashMap<>();
-    private Map<User, Integer> rsl = new HashMap<>();
+    private Map<User, Integer> dailyResult = new HashMap<>();
 
     @Override
     public void onGuildVoiceUpdate(@NotNull GuildVoiceUpdateEvent event) {
@@ -69,35 +69,24 @@ public class VoiceCount extends ListenerAdapter {
      * @return Map User and his total activity points for voice
      */
     public Map<User, Integer> getResultMap() {
-// participant.values().forEach(voiceDuration -> {
-//           //always not null??
-//            if (voiceDuration != null) {
-//                voiceDuration.setFinish();
-//                voiceDuration.setStart();
-//            }
-
         participant.forEach((user, voiceDuration) -> {
             collectCurrentVoiceData(user);
             participant.get(user).setStart();
         });
-
-
-        // });
-        Map<User, Integer> tmp = Map.copyOf(rsl);
         //memory leak? size really 0??
-        return tmp;
+        return Map.copyOf(dailyResult);
     }
 
-    public void clearResultMap() {
-        rsl.clear();
+    public void clearDailyVoiceResult() {
+        dailyResult.clear();
     }
 
     private void collectCurrentVoiceData(User user) {
-        if (rsl.containsKey(user)) {
-            int tmp = rsl.get(user);
-            rsl.put(user, tmp + participant.get(user).setFinish());
+        if (dailyResult.containsKey(user)) {
+            int tmp = dailyResult.get(user);
+            dailyResult.put(user, tmp + participant.get(user).setFinish());
         } else {
-            rsl.put(user, participant.get(user).setFinish());
+            dailyResult.put(user, participant.get(user).setFinish());
         }
     }
 
@@ -110,14 +99,13 @@ public class VoiceCount extends ListenerAdapter {
 
         //todo check time to zone
         private void setStart() {
-
             this.start = Instant.now();
         }
 
         private int setFinish() {
-
             int rsl = Duration.between(start, Instant.now()).toMinutes() < 1 ? 0 : (int) Duration.between(start, Instant.now()).toMinutes();
             start = null;
+            System.out.println(rsl);
             return rsl;
         }
     }

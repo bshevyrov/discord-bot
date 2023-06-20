@@ -30,10 +30,11 @@ public class MessageCounter {
                     Instant time = message.getTimeCreated().toInstant();
                     if (time.isBefore(endOfDayDT) && time.isAfter(startOfDayDT)) {
                         if (!message.getAuthor().isBot()) {
-                            if (cMap.get(message.getAuthor()) != null) {
-                                cMap.computeIfPresent(message.getAuthor(), (user, integer) -> integer + 1);
-                            } else {
+                            if (cMap.get(message.getAuthor()) == null) {
                                 cMap.put(message.getAuthor(), 1);
+                            } else {
+                                Integer integer = cMap.get(message.getAuthor());
+                                cMap.put(message.getAuthor(), integer+1);
                             }
                         }
                     }

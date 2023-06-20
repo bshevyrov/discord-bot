@@ -106,7 +106,7 @@ public class Banner implements Slash {
     private MessageEmbed buildEmbedFromActivity(ActivityCount activityCount, SlashCommandInteractionEvent event) {
         EmbedBuilder eb = new EmbedBuilder();
         final int[] number = {0};
-        activityCount.getCurrentStateMap(event.getGuild()).forEach(
+        activityCount.countActivity(event.getGuild()).forEach(
                 (user, count) -> {
                     try {
                         eb.addField(

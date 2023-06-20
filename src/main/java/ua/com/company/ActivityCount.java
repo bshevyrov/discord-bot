@@ -46,7 +46,13 @@ public class ActivityCount implements EventListener {
         participant.put(user, count);
     }
 
-    public Map<User, Count> getCurrentStateMap(Guild guild) {
+    public Map<User, Count> countActivity(Guild guild) {
+      return   countActivity(guild,false);
+
+        }
+
+
+        public Map<User, Count> countActivity(Guild guild,boolean clear) {
         List<TextChannel> channels = new LinkedList<>(guild.getTextChannels());
         Map<User, ActivityCount.Count> rsl = new LinkedHashMap<>();
         MessageCounter messageCounter = new MessageCounter();
@@ -57,8 +63,8 @@ public class ActivityCount implements EventListener {
                     try {
                         messageCounter.getMessageCountDuring(ZonedDateTime.now(ZoneId.of("Europe/Kiev")), messageChannel).get()
                                 .forEach((user, integer) -> {
-                                    if (!this.isBlacklisted(user)) {
-                                        this.addMessageCount(user, integer);
+                                    if (!isBlacklisted(user)) {
+                                        addMessageCount(user, integer);
                                     }
                                 });
                     } catch (InterruptedException | ExecutionException e) {
@@ -68,13 +74,9 @@ public class ActivityCount implements EventListener {
         VoiceCount voiceCount = (VoiceCount) guild.getJDA().getEventManager().getRegisteredListeners().stream()
                 .filter(o -> o instanceof VoiceCount).findFirst().get();
         voiceCount.getResultMap().forEach(this::addMinutesCount);
-
-
-//        return participant.entrySet().stream()
-//                .sorted(Map.Entry.comparingByValue(new ComparableComparator<>()))
-//                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));//   }
-
-
+        if(clear){
+            voiceCount.clearDailyVoiceResult();
+        }
         rsl.putAll((LinkedHashMap<? extends User, ? extends Count>) participant.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(new ComparableComparator<>()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new)));
@@ -82,14 +84,13 @@ public class ActivityCount implements EventListener {
         return rsl;
     }
 
-    public List<Map<User, ActivityCount.Count>> getList(Guild guild) {
-        List<Map<User, ActivityCount.Count>> rsl = new ArrayList<>();
-        getCurrentStateMap(guild).forEach((key, value) -> rsl.add(new HashMap<>() {{
-            put(key, value);
-        }}));
-        return rsl;
+    public LinkedHashMap<User,Count> getParticipant() {
+        return new LinkedHashMap<>() {{
+            putAll((LinkedHashMap<? extends User, ? extends Count>) participant.entrySet().stream()
+                    .sorted(Map.Entry.comparingByValue(new ComparableComparator<>()))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new)));
+        }};
     }
-
     /**
      * @return Copy of blacklist.
      */
