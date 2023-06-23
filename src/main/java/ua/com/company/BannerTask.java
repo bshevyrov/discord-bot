@@ -89,8 +89,8 @@ public class BannerTask {
 
 
             Map<String, String> lst = new HashMap<>();
-            Map<User, ActivityCount.Count> currentStateMap =             activityCount.countActivity(guild,true);
-            activityCount.clear();
+            Map<User, ActivityCount.Count> currentStateMap = activityCount.countActivity(guild,true);
+//            activityCount.clear();
 
 //            List<Map<User, ActivityCount.Count>> sortedTotalResult = activityCount.getList(guild);
 //            User user = sortedTotalResult.get(0).keySet().stream().findFirst().get();

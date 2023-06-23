@@ -48,8 +48,7 @@ public class MessageSender extends Thread {
 //              sendChannelMessage("Send PM to " + "<@"+user.getName()+">");
         AtomicReference<String> messageId = new AtomicReference<>("");
         textChannel.sendMessage("Send PM to " + "<@"+user.getId()+">")
-                .delay( BumperConstants.DELAY_BEFORE_SEND_ANOTHER_MESSAGE, TimeUnit.SECONDS)
-            .flatMap(Message::delete).queue();
+                .queue();
 
 //        sendPrivateMessage(user, textChannel, BumperConstants.PRIVATE_MESSAGE);
         try {
