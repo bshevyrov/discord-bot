@@ -3,7 +3,6 @@ package ua.com.company;
 
 import okhttp3.Call;
 import ua.com.company.logic.bumper.bot.AutoBumper;
-import ua.com.company.logic.bumper.selfbot.wss.Heartbeat;
 import ua.com.company.utils.UA;
 
 import java.io.IOException;
@@ -24,8 +23,8 @@ public class TESTAPP {
     public static void main(String[] args) throws InterruptedException, ExecutionException, IOException {
 //        System.out.println(new UA().getUA());
 
-       Heartbeat heartbeat = new Heartbeat();
-       heartbeat.init();
+//       Heartbeat heartbeat = new Heartbeat();
+//       heartbeat.init();
     }
 //    public static void main(String[] args) throws IOException, InterruptedException {
 //

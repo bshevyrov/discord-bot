@@ -1,7 +1,25 @@
+HELP.md
+.gradle
+build/
 target/
+!gradle/wrapper/gradle-wrapper.jar
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
 #IDE metadata
@@ -13,6 +31,10 @@ target/
 *.iws
 *.iml
 *.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
 
 ### Eclipse ###
 .apt_generated
@@ -29,10 +51,9 @@ target/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
+!**/src/build/
+/main/**/build/
+!**/src/test/**
 ### VS Code ###
 .vscode/
 

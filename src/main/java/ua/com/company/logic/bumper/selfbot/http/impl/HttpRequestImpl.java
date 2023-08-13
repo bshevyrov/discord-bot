@@ -1,8 +1,5 @@
 package ua.com.company.logic.bumper.selfbot.http.impl;
 
-import com.google.gson.Gson;
-import ua.com.company.logic.bumper.selfbot.http.HttpRequestBuilder;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -13,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class HttpRequestImpl  {
+public class HttpRequestImpl {
 
     public HttpClient getHttpClient() {
         return HttpClient.newBuilder()
@@ -23,14 +20,13 @@ public class HttpRequestImpl  {
     }
 
 
-
     private URI uri;
     private String[] stringRepresentationOfHeaders;
     private HttpRequest.BodyPublisher body;
 
 
     public HttpRequestImpl(URI uri, Map<String, String> headers, String jsonBody) {
-        Gson gson = new Gson();
+
         this.uri = uri;
         String[] headerStr = new String[headers.size() * 2];
 
@@ -52,7 +48,8 @@ public class HttpRequestImpl  {
                 .headers(stringRepresentationOfHeaders)//wrap
                 .build();
     }
-    public HttpResponse<String> getResponse(){
+
+    public HttpResponse<String> getResponse() {
         HttpRequest request = createRequest();
         HttpResponse<String> response = null;
 
@@ -61,6 +58,6 @@ public class HttpRequestImpl  {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-                return response;
+        return response;
     }
 }

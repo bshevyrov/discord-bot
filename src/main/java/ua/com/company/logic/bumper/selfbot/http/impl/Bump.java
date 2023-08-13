@@ -1,6 +1,7 @@
 package ua.com.company.logic.bumper.selfbot.http.impl;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import ua.com.company.logic.bumper.selfbot.http.HttpRequestBuilder;
 import ua.com.company.utils.PropertiesReader;
 
@@ -16,12 +17,18 @@ public class Bump implements HttpRequestBuilder {
     private URI uri;
     //    private Map<String, String> headers;
     private String[] stringRepresentationOfHeaders;
-    Gson gson = new Gson();
+//    Gson gson = new Gson();
+ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public void setPostData(String message) {
-      this.body=  HttpRequest.BodyPublishers.ofString(
-                gson.toJson(new DiscordHttpMessage(message)));
+    public void setPostData(String message)  {
+        try {
+            this.body=  HttpRequest.BodyPublishers.ofString(
+                    mapper.writeValueAsString(new DiscordHttpMessage(message)));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+//                gson.toJson(new DiscordHttpMessage(message)));
 
     }
 
